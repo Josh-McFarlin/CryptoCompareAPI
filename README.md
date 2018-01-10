@@ -2,7 +2,7 @@
 Java implementation of CryptoCompare API service
 
 ## Installation
-I have released this library onto maven central:
+Maven:
 ```
 <dependency>
     <groupId>me.joshmcfarlin.CryptoCompareAPI</groupId>
@@ -29,4 +29,4 @@ System.out.println(btcPrice);
 An example is provided in the Maven test sources.
 
 ## License
-This project is developed under the MIT license. This license can be found under [LICENSE](LICENSE).
+This project is developed under the MIT license. This license can be found at [LICENSE](LICENSE).
