@@ -138,6 +138,9 @@ public class Market {
         return new Gson().fromJson(jobject.get("Data"), type);
     }
 
+    /**
+     * Represents the trading pair to-symvol
+     */
     public class toSym {
         /**
          * Type
@@ -188,7 +191,7 @@ public class Market {
          * Last trade ID
          */
         @SerializedName("LASTTRADEID")
-        public double lastTradeID;
+        public String lastTradeID;
         /**
          * Volume of day
          */
@@ -299,7 +302,7 @@ public class Market {
          * Markets used to get data
          */
         @SerializedName("MARKET")
-        public String Market;
+        public String market;
         /**
          * The from symbol of the pair
          */
@@ -339,7 +342,7 @@ public class Market {
          * Last trade id
          */
         @SerializedName("LASTTRADEID")
-        public double lastTradeID;
+        public String lastTradeID;
         /**
          * 24 hour volume
          */

@@ -4,7 +4,6 @@ import me.joshmcfarlin.CryptoCompareAPI.Utils.CallTypes;
 import me.joshmcfarlin.CryptoCompareAPI.Utils.OutOfCallsException;
 import me.joshmcfarlin.CryptoCompareAPI.Utils.RateLimiting;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,12 +18,20 @@ public class Example {
         System.out.println(RateLimiting.checkHour().CallsLeft);
     }
 
-    private static void coinsTest() throws IOException, OutOfCallsException {
+    private static void coinsTest() throws IOException, OutOfCallsException, NumberFormatException {
         System.out.println("\nCoins APITest:");
         Coins.CoinList coinList = Coins.getCoinList();
 
-        System.out.println("BTC coin name:");
-        System.out.println(coinList.coins.get("BTC").name);
+        System.out.println("Bitcoin ID:");
+        System.out.println(coinList.coins.get("BTC").id);
+
+        Coins.PairSnapshot ethBTCSnapshot = Coins.getPairSnapshot("ETH", "BTC");
+        System.out.println("Ethereum Block Number:");
+        System.out.println(ethBTCSnapshot.data.blockNumber);
+
+        Coins.CoinSnapshot btcSnapshot = Coins.getCoinSnapshot(1182);
+        System.out.println("Bitcoin Start Date:");
+        System.out.println(btcSnapshot.data.general.startDate);
     }
 
     private static void exchangesTest() throws IOException, OutOfCallsException {
