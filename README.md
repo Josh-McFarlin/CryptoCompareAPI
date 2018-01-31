@@ -2,7 +2,7 @@
 Java implementation of CryptoCompare API service
 
 ## Installation
-Maven: (Yet to be uploaded)
+Maven:
 ```
 <dependency>
     <groupId>me.joshmcfarlin</groupId>
