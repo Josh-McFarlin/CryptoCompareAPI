@@ -1,9 +1,9 @@
 package me.joshmcfarlin.cryptocompareapi.Utils;
 
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
+
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URL;
 import java.time.Duration;
 
 import java.net.http.HttpClient;
@@ -13,7 +13,6 @@ import java.net.http.HttpResponse;
 /**
  * Contains methods for creating JSON GET requests
  * @author joshuamcfarlin
- * @version 1
  */
 public class Connection {
     /**
@@ -24,10 +23,10 @@ public class Connection {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Reader getJSON(URL url, CallTypes type) throws IOException, OutOfCallsException, InterruptedException {
+    public static Reader getJSON(URI url, CallTypes type) throws IOException, OutOfCallsException, InterruptedException {
         if (RateLimiting.callable(type)) {
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(url.toString())).GET()
+                    .uri(url).GET()
                     .timeout(Duration.ofSeconds(10))
                     .build();
 

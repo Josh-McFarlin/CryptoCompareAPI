@@ -5,17 +5,16 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import me.joshmcfarlin.cryptocompareapi.Utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.Utils.Connection;
-import me.joshmcfarlin.cryptocompareapi.Utils.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 
 /**
  * Contains methods for requesting information about news listed on CryptoCompare
- * @author joshuamcfarlin
- * @version 1
+ * @author Josh McFarlin
  */
 public class News {
     /**
@@ -24,8 +23,8 @@ public class News {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static List<NewsProvider> NewsProviderList() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON(new URL("https://min-api.cryptocompare.com/data/news/providers"), CallTypes.NEWS);
+    public static List<NewsProvider> NewsProviderList() throws IOException, OutOfCallsException, InterruptedException {
+        Reader r = Connection.getJSON(URI.create("https://min-api.cryptocompare.com/data/news/providers"), CallTypes.NEWS);
         Type newsListType = new TypeToken<List<NewsProvider>>() {}.getType();
         return new Gson().fromJson(r, newsListType);
     }
@@ -36,8 +35,8 @@ public class News {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static List<NewsStory> NewsList() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON(new URL("https://min-api.cryptocompare.com/data/news/"), CallTypes.NEWS);
+    public static List<NewsStory> NewsList() throws IOException, OutOfCallsException, InterruptedException {
+        Reader r = Connection.getJSON(URI.create("https://min-api.cryptocompare.com/data/news/"), CallTypes.NEWS);
         Type newsListType = new TypeToken<List<NewsStory>>() {}.getType();
         return new Gson().fromJson(r, newsListType);
     }

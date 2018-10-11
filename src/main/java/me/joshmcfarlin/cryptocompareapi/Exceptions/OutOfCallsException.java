@@ -1,9 +1,8 @@
-package me.joshmcfarlin.cryptocompareapi.Utils;
+package me.joshmcfarlin.cryptocompareapi.Exceptions;
 
 /**
  * Represents an error when no more API calls remain
  * @author joshuamcfarlin
- * @version 1
  */
 public class OutOfCallsException extends Exception {
     /**

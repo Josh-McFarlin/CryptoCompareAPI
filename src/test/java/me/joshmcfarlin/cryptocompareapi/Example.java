@@ -1,7 +1,7 @@
 package me.joshmcfarlin.cryptocompareapi;
 
 import me.joshmcfarlin.cryptocompareapi.Utils.CallTypes;
-import me.joshmcfarlin.cryptocompareapi.Utils.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.Utils.RateLimiting;
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +18,7 @@ public class Example {
         System.out.println(RateLimiting.checkHour().CallsLeft);
     }
 
-    private static void coinsTest() throws IOException, OutOfCallsException, NumberFormatException {
+    private static void coinsTest() throws IOException, OutOfCallsException, NumberFormatException, InterruptedException {
         System.out.println("\nCoins APITest:");
         Coins.CoinList coinList = Coins.getCoinList();
 
@@ -34,7 +34,7 @@ public class Example {
         System.out.println(btcSnapshot.data.general.startDate);
     }
 
-    private static void exchangesTest() throws IOException, OutOfCallsException {
+    private static void exchangesTest() throws IOException, OutOfCallsException, InterruptedException {
         System.out.println("\nExchanges APITest:");
         Exchanges.ExchangeList exchangeList = Exchanges.getAllExchanges();
 
@@ -46,7 +46,7 @@ public class Example {
         System.out.println(topExchanges.get(0).exchange);
     }
 
-    private static void newsTest() throws IOException, OutOfCallsException {
+    private static void newsTest() throws IOException, OutOfCallsException, InterruptedException {
         System.out.println("\nNews APITest:");
         List<News.NewsProvider> newsProviders = News.NewsProviderList();
         System.out.println("First news provider:");
@@ -59,14 +59,14 @@ public class Example {
         System.out.println(newsList.get(0));
     }
 
-    private static void socialTest() throws IOException, OutOfCallsException {
+    private static void socialTest() throws IOException, OutOfCallsException, InterruptedException {
         System.out.println("\nSocial APITest:");
         Social.SocialStats socialStats = Social.getStats(1182);
         System.out.println("Facebook likes:");
         System.out.println(socialStats.data.facebook.likes);
     }
 
-    private static void historicTest() throws IOException, OutOfCallsException {
+    private static void historicTest() throws IOException, OutOfCallsException, InterruptedException {
         System.out.println("\nHistoric APITest:");
         Historic.History history = Historic.getDay("BTC", "USD", 30);
         System.out.println("First high price for BTC-USD:");
@@ -77,7 +77,7 @@ public class Example {
         System.out.println(bitcoinPriceAt);
     }
 
-    private static void marketTest() throws IOException, OutOfCallsException {
+    private static void marketTest() throws IOException, OutOfCallsException, InterruptedException {
         System.out.println("\nMarket APITest:");
         double dayAverage = Market.getDayAverage("BTC", "USD");
         System.out.println("Bitcoin day average:");
@@ -110,7 +110,7 @@ public class Example {
         System.out.println(topPairs);
     }
 
-    private static void miningTest() throws IOException, OutOfCallsException {
+    private static void miningTest() throws IOException, OutOfCallsException, InterruptedException {
         System.out.println("\nMining APITest:");
         Mining.Contracts contracts = Mining.getContracts();
         System.out.println("Current mining contracts:");

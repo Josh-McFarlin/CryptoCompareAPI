@@ -5,10 +5,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import me.joshmcfarlin.cryptocompareapi.Utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.Utils.Connection;
-import me.joshmcfarlin.cryptocompareapi.Utils.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +17,7 @@ import java.util.Map;
 
 /**
  * Contains methods for requesting information about Exchanges listed by CryptoCompare
- * @author joshuamcfarlin
- * @version 1
+ * @author Josh McFarlin
  */
 public class Exchanges {
     /**
@@ -26,8 +26,8 @@ public class Exchanges {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static ExchangeList getAllExchanges() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON(new URL("https://min-api.cryptocompare.com/data/all/exchanges"), CallTypes.PRICE);
+    public static ExchangeList getAllExchanges() throws IOException, OutOfCallsException, InterruptedException {
+        Reader r = Connection.getJSON(URI.create("https://min-api.cryptocompare.com/data/all/exchanges"), CallTypes.PRICE);
         Type type = new TypeToken<Map<String, Map<String, List<String>>>>() {}.getType();
         Map<String, Map<String, List<String>>> exchangeMap = new Gson().fromJson(r, type);
         return new ExchangeList(exchangeMap);
@@ -41,10 +41,10 @@ public class Exchanges {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static List<Exchange> getTopExchanges(String fromSym, String toSym) throws IOException, OutOfCallsException {
+    public static List<Exchange> getTopExchanges(String fromSym, String toSym) throws IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/top/exchanges?fsym=%s&tsym=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase());
-        Reader r = Connection.getJSON(new URL(formattedUrl), CallTypes.PRICE);
+        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.PRICE);
 
         JsonObject jobject = new Gson().fromJson(r, JsonObject.class);
         Type type = new TypeToken<List<Exchange>>() {}.getType();
