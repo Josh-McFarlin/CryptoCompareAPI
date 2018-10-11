@@ -1,4 +1,4 @@
-package me.joshmcfarlin.CryptoCompareAPI.Utils;
+package me.joshmcfarlin.cryptocompareapi.Utils;
 
 /**
  * Represents an error when no more API calls remain

@@ -1,8 +1,8 @@
-package me.joshmcfarlin.CryptoCompareAPI;
+package me.joshmcfarlin.cryptocompareapi;
 
-import me.joshmcfarlin.CryptoCompareAPI.Utils.CallTypes;
-import me.joshmcfarlin.CryptoCompareAPI.Utils.OutOfCallsException;
-import me.joshmcfarlin.CryptoCompareAPI.Utils.RateLimiting;
+import me.joshmcfarlin.cryptocompareapi.Utils.CallTypes;
+import me.joshmcfarlin.cryptocompareapi.Utils.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.Utils.RateLimiting;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +136,7 @@ public class Example {
             miningTest();
         } catch (Exception e) {
             System.out.println("Something went wrong!");
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 }

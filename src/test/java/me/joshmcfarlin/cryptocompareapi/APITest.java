@@ -1,6 +1,6 @@
-package me.joshmcfarlin.CryptoCompareAPI;
+package me.joshmcfarlin.cryptocompareapi;
 
-import me.joshmcfarlin.CryptoCompareAPI.Utils.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.Utils.OutOfCallsException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,29 +11,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class APITest {
     @Test
-    void shouldNotReturnNullEmptyCoinList() throws IOException, OutOfCallsException {
-        Coins.CoinList coinList = Coins.getCoinList();
-        assertNotNull(coinList);
-        assertFalse(coinList.coins.isEmpty());
-    }
-
-    @Test
     void shouldReturnCoinListWithCoins() throws IOException, OutOfCallsException {
         Coins.CoinList coinList = Coins.getCoinList();
+        assertNotNull(coinList);
         assertFalse(coinList.coins.isEmpty());
         assertEquals("BTC", coinList.coins.get("BTC").name);
     }
 
     @Test
-    void shouldNotReturnNullEmptyExchangeList() throws IOException, OutOfCallsException {
-        Exchanges.ExchangeList exchangeList = Exchanges.getAllExchanges();
-        assertNotNull(exchangeList);
-        assertFalse(exchangeList.exchanges.isEmpty());
-    }
-
-    @Test
     void shouldReturnExchangeListWithExchanges() throws IOException, OutOfCallsException {
         Exchanges.ExchangeList exchangeList = Exchanges.getAllExchanges();
+        assertNotNull(exchangeList);
         assertFalse(exchangeList.exchanges.isEmpty());
         assertNotNull(exchangeList.exchanges.get("Cryptsy").coins.get("BTC"));
     }

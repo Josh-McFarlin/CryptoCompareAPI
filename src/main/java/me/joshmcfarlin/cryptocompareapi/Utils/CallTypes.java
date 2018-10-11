@@ -1,4 +1,4 @@
-package me.joshmcfarlin.CryptoCompareAPI.Utils;
+package me.joshmcfarlin.cryptocompareapi.Utils;
 
 /**
  * Represents all available API call types

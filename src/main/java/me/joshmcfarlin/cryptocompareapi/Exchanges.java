@@ -1,11 +1,11 @@
-package me.joshmcfarlin.CryptoCompareAPI;
+package me.joshmcfarlin.cryptocompareapi;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import me.joshmcfarlin.CryptoCompareAPI.Utils.CallTypes;
-import me.joshmcfarlin.CryptoCompareAPI.Utils.Connection;
-import me.joshmcfarlin.CryptoCompareAPI.Utils.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.Utils.CallTypes;
+import me.joshmcfarlin.cryptocompareapi.Utils.Connection;
+import me.joshmcfarlin.cryptocompareapi.Utils.OutOfCallsException;
 
 import java.io.*;
 import java.lang.reflect.Type;

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="CryptoCompareAPI_main" target="1.8" />
-      <module name="CryptoCompareAPI_test" target="1.8" />
+      <module name="cryptocompareapi_main" target="11" />
+      <module name="cryptocompareapi_test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
