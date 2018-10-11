@@ -1,0 +1,30 @@
+apply plugin: 'java'
+
+group = 'me.joshmcfarlin'
+version = '1.1'
+
+description = """A Java implementation of the CryptoCompare API service."""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+configurations.all {
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+}
+
+test {
+    useJUnit()
+    maxHeapSize = '1G'
+}
