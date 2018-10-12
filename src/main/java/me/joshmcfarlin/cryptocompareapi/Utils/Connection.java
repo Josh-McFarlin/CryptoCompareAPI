@@ -12,18 +12,40 @@ import java.net.http.HttpResponse;
 
 /**
  * Contains methods for creating JSON GET requests
- * @author joshuamcfarlin
+ * @author Josh McFarlin
  */
 public class Connection {
     /**
-     * Gets JSON data from a provided URL
-     * @param url The URL to get JSON information from
+     * Gets JSON data from a provided URL without checking call availability
+     * @param urlString The URL to get JSON information from
+     * @return Reader containing Json information
+     * @throws IOException when a connection cannot be made
+     * @throws InterruptedException when the connection is interrupted
+     */
+    public static Reader getJSON(String urlString) throws IOException, InterruptedException {
+        URI url = URI.create(urlString);
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(url).GET()
+                .timeout(Duration.ofSeconds(10))
+                .build();
+
+        HttpResponse response = HttpClient.newBuilder().build().send(httpRequest, HttpResponse.BodyHandlers.ofInputStream());
+        return new InputStreamReader((InputStream) response.body());
+    }
+
+    /**
+     * Gets JSON data from a provided URL after checking call availability
+     * @param urlString The URL to get JSON information from
      * @param type The type of API call being made
      * @return Reader containing Json information
      * @throws IOException when a connection cannot be made
+     * @throws InterruptedException when the connection is interrupted
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Reader getJSON(URI url, CallTypes type) throws IOException, OutOfCallsException, InterruptedException {
+    public static Reader getJSON(String urlString, CallTypes type) throws IOException, OutOfCallsException, InterruptedException {
+        URI url = URI.create(urlString);
+
         if (RateLimiting.callable(type)) {
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(url).GET()

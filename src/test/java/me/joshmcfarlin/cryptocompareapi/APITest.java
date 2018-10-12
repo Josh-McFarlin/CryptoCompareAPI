@@ -1,6 +1,8 @@
 package me.joshmcfarlin.cryptocompareapi;
 
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.Utils.IntervalTypes;
+import me.joshmcfarlin.cryptocompareapi.Utils.RateLimiting;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -10,6 +12,12 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class APITest {
+    @Test
+    void shouldReturnValidAPIUsage() throws IOException, InterruptedException {
+        RateLimiting.Rates rates = RateLimiting.getInterval(IntervalTypes.HOUR);
+        assertNotNull(rates);
+    }
+
     @Test
     void shouldReturnCoinListWithCoins() throws IOException, OutOfCallsException, InterruptedException {
         Coins.CoinList coinList = Coins.getCoinList();

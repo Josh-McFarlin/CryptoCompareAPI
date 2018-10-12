@@ -7,7 +7,6 @@ import me.joshmcfarlin.cryptocompareapi.Utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ public class Coins {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static CoinList getCoinList() throws IOException, OutOfCallsException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create("https://min-api.cryptocompare.com/data/all/coinlist"), CallTypes.PRICE);
+        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/coinlist", CallTypes.PRICE);
         return new Gson().fromJson(r, CoinList.class);
     }
 
@@ -38,13 +37,13 @@ public class Coins {
     public static PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException, NumberFormatException, InterruptedException {
         String formattedUrl = String.format("https://www.cryptocompare.com/api/data/coinsnapshot/?fsym=%s&tsym=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase());
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.PRICE);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
         return new Gson().fromJson(r, PairSnapshot.class);
     }
 
     public static CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException, NumberFormatException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create(
-                "https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=" + id), CallTypes.PRICE);
+        String formattedUrl = "https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=" + id;
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
         return new Gson().fromJson(r, CoinSnapshot.class);
     }
 

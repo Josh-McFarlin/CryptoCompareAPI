@@ -1,68 +1,76 @@
 package me.joshmcfarlin.cryptocompareapi.Utils;
 
 import com.google.gson.Gson;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 /**
  * Contains methods for limiting API calls to provided limits
- * @author joshuamcfarlin
- * @version 1
+ * @author Josh McFarlin
  */
 public class RateLimiting {
     /**
+     * Gets the number of API calls used and available in the current interval
+     * @param interval The time-frame to check API rates
+     * @return Rates A class containing different API rates
+     * @throws IOException When the connection fails
+     * @throws InterruptedException When the connection is interrupted
+     */
+    public static Rates getInterval(IntervalTypes interval) throws InterruptedException, IOException {
+        String formattedUrl = String.format("https://min-api.cryptocompare.com/stats/rate/%s/limit", interval.name().toLowerCase());
+        Reader r = Connection.getJSON(formattedUrl);
+        return new Gson().fromJson(r, Rates.class);
+    }
+
+    /**
+     * Checks if the provided call type has calls left in the provided interval
+     * @param type The API call type to be checked
+     * @return boolean True if calls of the provided type are left
+     * @throws IOException When the connection fails
+     * @throws InterruptedException When the connection is interrupted
+     */
+    public static boolean checkInterval(CallTypes type, IntervalTypes interval) throws InterruptedException, IOException {
+        String formattedUrl = String.format("https://min-api.cryptocompare.com/stats/rate/%s/limit", interval.name().toLowerCase());
+        Reader r = Connection.getJSON(formattedUrl);
+        Rates rates = new Gson().fromJson(r, Rates.class);
+        return rates.CallsLeft.available(type);
+    }
+
+    /**
      * Gets number of API calls used and available for the next second
+     * @param type The API call type to be checked
      * @return Rates A class containing different API rates
      * @throws IOException When a connection fails
      */
-    public static Rates checkSecond() throws IOException {
-        URL url = new URL("https://min-api.cryptocompare.com/stats/rate/second/limit");
-        HttpURLConnection request = (HttpURLConnection) url.openConnection();
-        request.setDoOutput(true);
-        request.setRequestMethod("GET");
-        request.connect();
-
-        InputStream in = new BufferedInputStream(request.getInputStream());
-        Reader r = new InputStreamReader(in);
-
-        return new Gson().fromJson(r, Rates.class);
+    public static boolean checkSecond(CallTypes type) throws InterruptedException, OutOfCallsException, IOException {
+        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/stats/rate/second/limit", CallTypes.OTHER);
+        Rates rates = new Gson().fromJson(r, Rates.class);
+        return rates.CallsLeft.available(type);
     }
 
     /**
      * Gets number of API calls used and available for the next minute
-     * @return Rates A class containing different API rates
+     * @param type The API call type to be checked
+     * @return boolean True if there are calls left of the provided type
      * @throws IOException When a connection fails
      */
-    public static Rates checkMinute() throws IOException {
-        URL url = new URL("https://min-api.cryptocompare.com/stats/rate/minute/limit");
-        HttpURLConnection request = (HttpURLConnection) url.openConnection();
-        request.setDoOutput(true);
-        request.setRequestMethod("GET");
-        request.connect();
-
-        InputStream in = new BufferedInputStream(request.getInputStream());
-        Reader r = new InputStreamReader(in);
-
-        return new Gson().fromJson(r, Rates.class);
+    public static boolean checkMinute(CallTypes type) throws InterruptedException, OutOfCallsException, IOException {
+        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/stats/rate/minute/limit", CallTypes.OTHER);
+        Rates rates = new Gson().fromJson(r, Rates.class);
+        return rates.CallsLeft.available(type);
     }
 
     /**
      * Gets number of API calls used and available for the next hour
+     * @param type The API call type to be checked
      * @return Rates A class containing different API rates
      * @throws IOException When a connection fails
      */
-    public static Rates checkHour() throws IOException {
-        URL url = new URL("https://min-api.cryptocompare.com/stats/rate/hour/limit");
-        HttpURLConnection request = (HttpURLConnection) url.openConnection();
-        request.setDoOutput(true);
-        request.setRequestMethod("GET");
-        request.connect();
-
-        InputStream in = new BufferedInputStream(request.getInputStream());
-        Reader r = new InputStreamReader(in);
-        return new Gson().fromJson(r, Rates.class);
+    public static boolean checkHour(CallTypes type) throws InterruptedException, OutOfCallsException, IOException {
+        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/stats/rate/hour/limit", CallTypes.OTHER);
+        Rates rates = new Gson().fromJson(r, Rates.class);
+        return rates.CallsLeft.available(type);
     }
 
     /**
@@ -71,12 +79,11 @@ public class RateLimiting {
      * @return true if a call can be made, false if no more calls are available
      * @throws IOException When a connection fails
      */
-    public static boolean callable(CallTypes type) throws IOException {
-        Rates second = checkSecond();
-        Rates minute = checkMinute();
-        Rates hour = checkHour();
-
-        return second.CallsLeft.available(type) && minute.CallsLeft.available(type) && hour.CallsLeft.available(type);
+    public static boolean callable(CallTypes type) throws InterruptedException, IOException {
+        //return checkSecond(type) && checkMinute(type) && checkHour(type);
+        return checkInterval(type, IntervalTypes.SECOND)
+                && checkInterval(type, IntervalTypes.MINUTE)
+                && checkInterval(type, IntervalTypes.HOUR);
     }
 
     /**
@@ -111,7 +118,7 @@ public class RateLimiting {
 
             @Override
             public String toString() {
-                return String.format("Histo: %d, Market: %d, News: %d", Histo, Price, News);
+                return String.format("API calls made: Histo: %d, Market: %d, News: %d", Histo, Price, News);
             }
         }
 
@@ -152,7 +159,7 @@ public class RateLimiting {
 
             @Override
             public String toString() {
-                return String.format("Histo: %d, Market: %d, News: %d", Histo, Price, News);
+                return String.format("API calls left: Histo: %d, Market: %d, News: %d", Histo, Price, News);
             }
         }
     }

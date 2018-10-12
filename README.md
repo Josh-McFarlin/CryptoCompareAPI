@@ -1,16 +1,6 @@
 # CryptoCompareAPI
 A Java implementation of the [CryptoCompare API service.](https://min-api.cryptocompare.com/)
 
-## Installation
-Maven:
-```xml
-<dependency>
-    <groupId>me.joshmcfarlin</groupId>
-    <artifactId>CryptoCompareAPI</artifactId>
-    <version>1.0-SNAPSHOT</version>
-</dependency>
-```
-
 ## Usage
 ```java
 public class Test {

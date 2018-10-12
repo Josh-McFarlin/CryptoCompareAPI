@@ -9,8 +9,6 @@ import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.net.URI;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +25,7 @@ public class Exchanges {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static ExchangeList getAllExchanges() throws IOException, OutOfCallsException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create("https://min-api.cryptocompare.com/data/all/exchanges"), CallTypes.PRICE);
+        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/exchanges", CallTypes.PRICE);
         Type type = new TypeToken<Map<String, Map<String, List<String>>>>() {}.getType();
         Map<String, Map<String, List<String>>> exchangeMap = new Gson().fromJson(r, type);
         return new ExchangeList(exchangeMap);
@@ -44,11 +42,11 @@ public class Exchanges {
     public static List<Exchange> getTopExchanges(String fromSym, String toSym) throws IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/top/exchanges?fsym=%s&tsym=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase());
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.PRICE);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
-        JsonObject jobject = new Gson().fromJson(r, JsonObject.class);
+        JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         Type type = new TypeToken<List<Exchange>>() {}.getType();
-        return new Gson().fromJson(jobject.get("Data"), type);
+        return new Gson().fromJson(jsonObject.get("Data"), type);
     }
 
     /**

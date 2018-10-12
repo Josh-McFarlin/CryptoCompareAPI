@@ -2,20 +2,20 @@ package me.joshmcfarlin.cryptocompareapi;
 
 import me.joshmcfarlin.cryptocompareapi.Utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.Utils.IntervalTypes;
 import me.joshmcfarlin.cryptocompareapi.Utils.RateLimiting;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class Example {
-    private static void rateLimitingTest() throws IOException {
+    private static void rateLimitingTest() throws IOException, InterruptedException {
         System.out.println("\nRate Limiting APITest:");
-        RateLimiting.Rates r = RateLimiting.checkHour();
+        RateLimiting.Rates r = RateLimiting.getInterval(IntervalTypes.HOUR);
         System.out.println(r.CallsMade);
 
         System.out.println("Are any price calls left?");
         System.out.println(RateLimiting.callable(CallTypes.PRICE));
-        System.out.println(RateLimiting.checkHour().CallsLeft);
     }
 
     private static void coinsTest() throws IOException, OutOfCallsException, NumberFormatException, InterruptedException {

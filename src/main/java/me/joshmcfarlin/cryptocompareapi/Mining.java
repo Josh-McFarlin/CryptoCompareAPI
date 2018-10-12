@@ -7,7 +7,6 @@ import me.joshmcfarlin.cryptocompareapi.Utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
-import java.net.URI;
 import java.util.Map;
 
 /**
@@ -22,7 +21,7 @@ public class Mining {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static Contracts getContracts() throws IOException, OutOfCallsException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create("https://www.cryptocompare.com/api/data/miningcontracts/"), CallTypes.OTHER);
+        Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningcontracts/", CallTypes.OTHER);
         return new Gson().fromJson(r, Contracts.class);
     }
 
@@ -33,7 +32,7 @@ public class Mining {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static Equipment getEquipment() throws IOException, OutOfCallsException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create("https://www.cryptocompare.com/api/data/miningequipment/"), CallTypes.OTHER);
+        Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningequipment/", CallTypes.OTHER);
         return new Gson().fromJson(r, Equipment.class);
     }
 

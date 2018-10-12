@@ -10,7 +10,6 @@ import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +30,7 @@ public class Market {
             IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/price?fsym=%s&tsyms=%s",
                 fromSym.toUpperCase(), String.join(",", toSym).toUpperCase());
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.PRICE);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
         Type type = new TypeToken<Map<String, Double>>() {}.getType();
         return new Gson().fromJson(r, type);
     }
@@ -48,7 +47,7 @@ public class Market {
             IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricemulti?fsyms=%s&tsyms=%s",
                 String.join(",", fromSym).toUpperCase(), String.join(",", toSym).toUpperCase());
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.PRICE);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
         Type type = new TypeToken<Map<String, Map<String, Double>>>() {}.getType();
         return new Gson().fromJson(r, type);
     }
@@ -65,10 +64,10 @@ public class Market {
             IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricemultifull?fsyms=%s&tsyms=%s",
                 String.join(",", fromSym).toUpperCase(), String.join(",", toSym).toUpperCase());
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.PRICE);
-        JsonObject jobject = new Gson().fromJson(r, JsonObject.class);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         Type type = new TypeToken<Map<String, Map<String, toSym>>>() {}.getType();
-        return new Gson().fromJson(jobject.get("RAW"), type);
+        return new Gson().fromJson(jsonObject.get("RAW"), type);
     }
 
     /**
@@ -83,10 +82,10 @@ public class Market {
             IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/dayAvg?fsym=%s&tsym=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase());
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.PRICE);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
-        JsonObject jobj = new Gson().fromJson(r, JsonObject.class);
-        return jobj.get(toSym).getAsDouble();
+        JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
+        return jsonObject.get(toSym).getAsDouble();
     }
 
     /**
@@ -102,9 +101,9 @@ public class Market {
             IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/generateAvg?fsym=%s&tsym=%s&e=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase(), String.join(",", exchanges).toUpperCase());
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.PRICE);
-        JsonObject jobject = new Gson().fromJson(r, JsonObject.class);
-        return new Gson().fromJson(jobject.getAsJsonObject("RAW"), ExchangeAverage.class);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
+        return new Gson().fromJson(jsonObject.getAsJsonObject("RAW"), ExchangeAverage.class);
     }
 
     /**
@@ -115,11 +114,11 @@ public class Market {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static List<Coin> getTopVolumes(String toSym) throws IOException, OutOfCallsException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create("https://min-api.cryptocompare.com/data/top/volumes?tsym="
-                + toSym.toUpperCase()), CallTypes.PRICE);
-        JsonObject jobject = new Gson().fromJson(r, JsonObject.class);
+        String formattedUrl = "https://min-api.cryptocompare.com/data/top/volumes?tsym=" + toSym.toUpperCase();
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         Type type = new TypeToken<List<Coin>>() {}.getType();
-        return new Gson().fromJson(jobject.get("Data"), type);
+        return new Gson().fromJson(jsonObject.get("Data"), type);
     }
 
     /**
@@ -130,15 +129,15 @@ public class Market {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static List<Pair> getTopPairs(String fromSym) throws IOException, OutOfCallsException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create("https://min-api.cryptocompare.com/data/top/pairs?fsym="
-                + fromSym.toUpperCase()), CallTypes.PRICE);
-        JsonObject jobject = new Gson().fromJson(r, JsonObject.class);
+        String formattedUrl = "https://min-api.cryptocompare.com/data/top/pairs?fsym=" + fromSym.toUpperCase();
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         Type type = new TypeToken<List<Pair>>() {}.getType();
-        return new Gson().fromJson(jobject.get("Data"), type);
+        return new Gson().fromJson(jsonObject.get("Data"), type);
     }
 
     /**
-     * Represents the trading pair to-symvol
+     * Represents the trading pair to-symbol
      */
     public class toSym {
         /**

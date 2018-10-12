@@ -7,7 +7,6 @@ import me.joshmcfarlin.cryptocompareapi.Utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -23,7 +22,8 @@ public class Social {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static SocialStats getStats(int id) throws IOException, OutOfCallsException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create("https://www.cryptocompare.com/api/data/socialstats/?id=" + id), CallTypes.OTHER);
+        String formattedUrl = "https://www.cryptocompare.com/api/data/socialstats/?id=" + id;
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.OTHER);
         return new Gson().fromJson(r, SocialStats.class);
     }
 

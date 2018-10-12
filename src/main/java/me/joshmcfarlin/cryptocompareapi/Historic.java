@@ -7,7 +7,6 @@ import me.joshmcfarlin.cryptocompareapi.Utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class Historic {
     public static History getMinute(String fromSym, String toSym, int limit) throws IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histominute?fsym=%s&tsym=%s&limit=%d",
                 fromSym.toUpperCase(), toSym.toUpperCase(), limit);
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.HISTO);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
         return new Gson().fromJson(r, History.class);
     }
 
@@ -44,7 +43,7 @@ public class Historic {
     public static History getHour(String fromSym, String toSym, int limit) throws IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histohour?fsym=%s&tsym=%s&limit=%d",
                 fromSym.toUpperCase(), toSym.toUpperCase(), limit);
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.HISTO);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
         return new Gson().fromJson(r, History.class);
     }
 
@@ -60,7 +59,7 @@ public class Historic {
     public static History getDay(String fromSym, String toSym, int limit) throws IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histoday?fsym=%s&tsym=%s&limit=%d",
                 fromSym.toUpperCase(), toSym.toUpperCase(), limit);
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.HISTO);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
         return new Gson().fromJson(r, History.class);
     }
 
@@ -77,7 +76,7 @@ public class Historic {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricehistorical?fsym=%s&tsyms=%s&ts=%d",
                 fromSym.toUpperCase(), String.join(",", toSym).toUpperCase(), timestamp);
 
-        Reader r = Connection.getJSON(URI.create(formattedUrl), CallTypes.HISTO);
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
         JsonObject jobject = new Gson().fromJson(r, JsonObject.class);
         return new Gson().fromJson(jobject.get(fromSym), Map.class);
     }

@@ -9,7 +9,6 @@ import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public class News {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static List<NewsProvider> NewsProviderList() throws IOException, OutOfCallsException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create("https://min-api.cryptocompare.com/data/news/providers"), CallTypes.NEWS);
+        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/news/providers", CallTypes.NEWS);
         Type newsListType = new TypeToken<List<NewsProvider>>() {}.getType();
         return new Gson().fromJson(r, newsListType);
     }
@@ -36,7 +35,7 @@ public class News {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static List<NewsStory> NewsList() throws IOException, OutOfCallsException, InterruptedException {
-        Reader r = Connection.getJSON(URI.create("https://min-api.cryptocompare.com/data/news/"), CallTypes.NEWS);
+        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/news/", CallTypes.NEWS);
         Type newsListType = new TypeToken<List<NewsStory>>() {}.getType();
         return new Gson().fromJson(r, newsListType);
     }
