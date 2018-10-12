@@ -1,5 +1,6 @@
 package me.joshmcfarlin.cryptocompareapi;
 
+import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.utils.IntervalTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.RateLimiting;
@@ -64,15 +65,15 @@ class APITest {
     }
 
     @Test
-    void shouldNotReturnNullEmptyHistoricData() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldNotReturnNullEmptyHistoricData() throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
         Historic.History history = Historic.getDay("BTC", "USD", 30);
         assertNotNull(history);
         assertFalse(history.getData().isEmpty());
     }
 
     @Test
-    void shouldNotReturnNullEmptyHistoricPriceMap() throws IOException, OutOfCallsException, InterruptedException {
-        Map bitcoinPriceAt = Historic.getPriceAtTime(1515190000, "BTC", "USD", "EUR", "ETH");
+    void shouldNotReturnNullEmptyHistoricPriceMap() throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        Map bitcoinPriceAt = Historic.getPriceAtTime("BTC", "USD,EUR,ETH", 1515190000);
         assertNotNull(bitcoinPriceAt);
         assertFalse(bitcoinPriceAt.isEmpty());
     }

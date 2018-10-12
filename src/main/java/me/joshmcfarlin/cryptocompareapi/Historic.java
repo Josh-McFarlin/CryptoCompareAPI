@@ -2,9 +2,11 @@ package me.joshmcfarlin.cryptocompareapi;
 
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.utils.IntervalTypes;
 
 import java.io.*;
 import java.util.List;
@@ -17,76 +19,374 @@ import java.util.Map;
 public class Historic {
     /**
      * Get market data for a symbol pair by minute up to to the provided limit
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @param limit The number of prices by minute to get
+     * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
+     * @param tSym The currency symbol to convert into [Max character length: 10]
+     * @param tryConversion If set to false, it will try to get only direct trading values
+     * @param e The exchange to obtain data from (our aggregated average - CCCAGG - by default) [Max character length: 30]
+     * @param aggregate Time period to aggregate the data over (for daily it's days, for hourly it's hours and for minute histo it's minutes)
+     * @param aggregatePredictableTimePeriods True by default, only used when the aggregate param is also in use. If false it will aggregate based on the current time.
+     * @param limit The number of data points to return
+     * @param toTs Last unix timestamp to return data for
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
      * @return History A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      * @throws InterruptedException When the connection is interrupted
      */
-    public static History getMinute(String fromSym, String toSym, int limit) throws IOException, OutOfCallsException, InterruptedException {
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histominute?fsym=%s&tsym=%s&limit=%d",
-                fromSym.toUpperCase(), toSym.toUpperCase(), limit);
+    public static History getMinute(String fSym, String tSym, Boolean tryConversion, String e,
+                                    Integer aggregate, Boolean aggregatePredictableTimePeriods,
+                                    Integer limit, Integer toTs, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        if (fSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of fSym is 10!");
+        }
+
+        if (tSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of tSym is 10!");
+        }
+
+        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histominute?fsym=%s&tsym=%s",
+                fSym.toUpperCase(), tSym.toUpperCase());
+
+        if (tryConversion != null) {
+            formattedUrl += "&tryConversion=" + tryConversion.toString();
+        }
+
+        if (e != null) {
+            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            formattedUrl += "&e=" + e;
+        }
+
+        if (aggregate != null) {
+            formattedUrl += "&aggregate=" + aggregate;
+
+            if (aggregatePredictableTimePeriods != null) {
+                formattedUrl += "&aggregatePredictableTimePeriods=" + aggregatePredictableTimePeriods.toString();
+            }
+        }
+
+        if (limit != null) {
+            formattedUrl += "&limit=" + limit;
+        }
+
+        if (toTs != null) {
+            formattedUrl += "&toTs=" + toTs;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
         Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
 
         return new Gson().fromJson(r, History.class);
+    }
+
+    /**
+     * @see Historic#getMinute(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
+     */
+    public static History getMinute(String fSym, String tSym) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getMinute(fSym, tSym, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * @see Historic#getMinute(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
+     */
+    public static History getMinute(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getMinute(fSym, tSym, null, null, null, null, limit, null, null, null);
+    }
+
+    /**
+     * @see Historic#getMinute(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
+     */
+    public static History getMinute(String fSym, String tSym, Integer limit, Integer toTs) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getMinute(fSym, tSym, null, null, null, null, limit, toTs, null, null);
     }
 
     /**
      * Gets market data for a symbol pair by hour up to to the provided limit
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @param limit The number of prices by hour to get
+     * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
+     * @param tSym The currency symbol to convert into [Max character length: 10]
+     * @param tryConversion If set to false, it will try to get only direct trading values
+     * @param e The exchange to obtain data from (our aggregated average - CCCAGG - by default) [Max character length: 30]
+     * @param aggregate Time period to aggregate the data over (for daily it's days, for hourly it's hours and for minute histo it's minutes)
+     * @param aggregatePredictableTimePeriods True by default, only used when the aggregate param is also in use. If false it will aggregate based on the current time.
+     * @param limit The number of data points to return
+     * @param toTs Last unix timestamp to return data for
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
      * @return History A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      * @throws InterruptedException When the connection is interrupted
      */
-    public static History getHour(String fromSym, String toSym, int limit) throws IOException, OutOfCallsException, InterruptedException {
+    public static History getHour(String fSym, String tSym, Boolean tryConversion, String e,
+                                  Integer aggregate, Boolean aggregatePredictableTimePeriods,
+                                  Integer limit, Integer toTs, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        if (fSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of fSym is 10!");
+        }
+
+        if (tSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of tSym is 10!");
+        }
+
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histohour?fsym=%s&tsym=%s&limit=%d",
-                fromSym.toUpperCase(), toSym.toUpperCase(), limit);
+                fSym.toUpperCase(), tSym.toUpperCase(), limit);
+
+        if (tryConversion != null) {
+            formattedUrl += "&tryConversion=" + tryConversion.toString();
+        }
+
+        if (e != null) {
+            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            formattedUrl += "&e=" + e;
+        }
+
+        if (aggregate != null) {
+            formattedUrl += "&aggregate=" + aggregate;
+
+            if (aggregatePredictableTimePeriods != null) {
+                formattedUrl += "&aggregatePredictableTimePeriods=" + aggregatePredictableTimePeriods.toString();
+            }
+        }
+
+        if (limit != null) {
+            formattedUrl += "&limit=" + limit;
+        }
+
+        if (toTs != null) {
+            formattedUrl += "&toTs=" + toTs;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
         Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
 
         return new Gson().fromJson(r, History.class);
+    }
+
+    /**
+     * @see Historic#getHour(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
+     */
+    public static History getHour(String fSym, String tSym) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getHour(fSym, tSym, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * @see Historic#getHour(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
+     */
+    public static History getHour(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getHour(fSym, tSym, null, null, null, null, limit, null, null, null);
+    }
+
+    /**
+     * @see Historic#getHour(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
+     */
+    public static History getHour(String fSym, String tSym, Integer limit, Integer toTs) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getHour(fSym, tSym, null, null, null, null, limit, toTs, null, null);
     }
 
     /**
      * Gets market data for a symbol pair by day up to to the provided limit
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @param limit The number of prices by day to get
+     * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
+     * @param tSym The currency symbol to convert into [Max character length: 10]
+     * @param tryConversion If set to false, it will try to get only direct trading values
+     * @param e The exchange to obtain data from (our aggregated average - CCCAGG - by default) [Max character length: 30]
+     * @param aggregate Time period to aggregate the data over (for daily it's days, for hourly it's hours and for minute histo it's minutes)
+     * @param aggregatePredictableTimePeriods True by default, only used when the aggregate param is also in use. If false it will aggregate based on the current time.
+     * @param limit The number of data points to return
+     * @param toTs Last unix timestamp to return data for
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
      * @return History A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      * @throws InterruptedException When the connection is interrupted
      */
-    public static History getDay(String fromSym, String toSym, int limit) throws IOException, OutOfCallsException, InterruptedException {
+    public static History getDay(String fSym, String tSym, Boolean tryConversion, String e,
+                                 Integer aggregate, Boolean aggregatePredictableTimePeriods,
+                                 Integer limit, Integer toTs, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        if (fSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of fSym is 10!");
+        }
+
+        if (tSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of tSym is 10!");
+        }
+
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histoday?fsym=%s&tsym=%s&limit=%d",
-                fromSym.toUpperCase(), toSym.toUpperCase(), limit);
+                fSym.toUpperCase(), tSym.toUpperCase(), limit);
+
+        if (tryConversion != null) {
+            formattedUrl += "&tryConversion=" + tryConversion.toString();
+        }
+
+        if (e != null) {
+            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            formattedUrl += "&e=" + e;
+        }
+
+        if (aggregate != null) {
+            formattedUrl += "&aggregate=" + aggregate;
+
+            if (aggregatePredictableTimePeriods != null) {
+                formattedUrl += "&aggregatePredictableTimePeriods=" + aggregatePredictableTimePeriods.toString();
+            }
+        }
+
+        if (limit != null) {
+            formattedUrl += "&limit=" + limit;
+        }
+
+        if (toTs != null) {
+            formattedUrl += "&toTs=" + toTs;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
         Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
 
         return new Gson().fromJson(r, History.class);
     }
 
     /**
+     * @see Historic#getDay(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
+     */
+    public static History getDay(String fSym, String tSym) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getDay(fSym, tSym, null, null, null, null, null, null, null, null);
+    }
+
+    /**
+     * @see Historic#getDay(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
+     */
+    public static History getDay(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getDay(fSym, tSym, null, null, null, null, limit, null, null, null);
+    }
+
+    /**
+     * @see Historic#getDay(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
+     */
+    public static History getDay(String fSym, String tSym, Integer limit, Integer toTs) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getDay(fSym, tSym, null, null, null, null, limit, toTs, null, null);
+    }
+
+    /**
      * Gets the price of a symbol pair at an input Unix time
-     * @param timestamp Unix time to find price at
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
+     * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
+     * @param tSyms Comma separated cryptocurrency symbols list to convert into [Max character length: 30]
+     * @param tryConversion If set to false, it will try to get only direct trading values
+     * @param ts The unix timestamp of interest
+     * @param e The exchange to obtain data from (our aggregated average - CCCAGG - by default) [Max character length: 30]
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param calculationType Type of average to calculate (Close - a Close of the day close price, MidHighLow - the average between the 24 H high and low, VolFVolT - the total volume to / the total volume from)
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
      * @return Map containing information about price at input time
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      * @throws InterruptedException When the connection is interrupted
      */
-    public static Map getPriceAtTime(int timestamp, String fromSym, String... toSym) throws IOException, OutOfCallsException, InterruptedException {
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricehistorical?fsym=%s&tsyms=%s&ts=%d",
-                fromSym.toUpperCase(), String.join(",", toSym).toUpperCase(), timestamp);
+    public static Map getPriceAtTime(String fSym, String tSyms, Boolean tryConversion, Integer ts,
+                                     String e, String extraParams, calcType calculationType, Boolean sign) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        if (fSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of fSym is 10!");
+        }
+
+        if (tSyms.length() > 30) {
+            throw new InvalidParameterException("The max character length of tSyms is 30!");
+        }
+
+        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricehistorical?fsym=%s&tsyms=%s",
+                fSym.toUpperCase(), tSyms.toUpperCase());
+
+        if (tryConversion != null) {
+            formattedUrl += "&tryConversion=" + tryConversion.toString();
+        }
+
+        if (ts != null) {
+            formattedUrl += "&ts=" + ts;
+        }
+
+        if (e != null) {
+            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            formattedUrl += "&e=" + e;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (calculationType != null) {
+            formattedUrl += "&calculationType=" + calculationType.getText();
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
 
         Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
-        return new Gson().fromJson(jsonObject.get(fromSym), Map.class);
+        return new Gson().fromJson(jsonObject.get(fSym), Map.class);
+    }
+
+    /**
+     * @see Historic#getPriceAtTime(String, String, Boolean, Integer, String, String, calcType, Boolean)
+     */
+    public static Map getPriceAtTime(String fSym, String tSyms, Integer ts) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getPriceAtTime(fSym, tSyms, null, ts, null, null, null, null);
+    }
+
+    /**
+     * @see Historic#getPriceAtTime(String, String, Boolean, Integer, String, String, calcType, Boolean)
+     */
+    public static Map getPriceAtTime(String fSym, String tSyms, Integer ts, String e) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+        return getPriceAtTime(fSym, tSyms, null, ts, e, null, null, null);
+    }
+
+    /**
+     * Represents Calculation Type used by the API
+     */
+    public enum calcType {
+        CLOSE("Close"),
+        MIDHIGHLOW("MidHighLow"),
+        VOLFVOLT("VolFVolT");
+
+        /**
+         * The text that will be passed to the API call
+         */
+        private String text;
+
+        calcType(String text) {
+            this.text = text;
+        }
+
+        /**
+         * {@link calcType#text}
+         */
+        public String getText() {
+            return text;
+        }
     }
 
     /**

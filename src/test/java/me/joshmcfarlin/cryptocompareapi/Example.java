@@ -1,5 +1,6 @@
 package me.joshmcfarlin.cryptocompareapi;
 
+import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.utils.IntervalTypes;
@@ -34,7 +35,7 @@ public class Example {
         System.out.println(btcSnapshot.getData().getGeneral().getStartDate());
     }
 
-    private static void exchangesTest() throws IOException, OutOfCallsException, InterruptedException {
+    private static void exchangesTest() throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
         System.out.println("\nExchanges APITest:");
         Exchanges.ExchangeList exchangeList = Exchanges.getAllExchanges();
 
@@ -66,14 +67,14 @@ public class Example {
         System.out.println(socialStats.getData().getFacebook().getLikes());
     }
 
-    private static void historicTest() throws IOException, OutOfCallsException, InterruptedException {
+    private static void historicTest() throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
         System.out.println("\nHistoric APITest:");
         Historic.History history = Historic.getDay("BTC", "USD", 30);
         System.out.println("First high price for BTC-USD:");
         System.out.println(history.getData().get(0).getHigh());
 
         System.out.println("Bitcoin price at 1515190000 in USD, EUR, and ETH:");
-        Map bitcoinPriceAt = Historic.getPriceAtTime(1515190000, "BTC", "USD", "EUR", "ETH");
+        Map bitcoinPriceAt = Historic.getPriceAtTime("BTC", "USD,EUR,ETH", 1515190000);
         System.out.println(bitcoinPriceAt);
     }
 
