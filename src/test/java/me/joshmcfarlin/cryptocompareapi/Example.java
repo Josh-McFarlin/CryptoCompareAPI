@@ -18,7 +18,7 @@ public class Example {
         System.out.println(RateLimiting.callable(CallTypes.PRICE));
     }
 
-    private static void coinsTest() throws IOException, OutOfCallsException, NumberFormatException, InterruptedException {
+    private static void coinsTest() throws IOException, OutOfCallsException, InterruptedException {
         System.out.println("\nCoins APITest:");
         Coins.CoinList coinList = Coins.getCoinList();
 
