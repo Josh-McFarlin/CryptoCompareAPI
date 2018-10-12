@@ -2,8 +2,8 @@ package me.joshmcfarlin.cryptocompareapi;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import me.joshmcfarlin.cryptocompareapi.Utils.CallTypes;
-import me.joshmcfarlin.cryptocompareapi.Utils.Connection;
+import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
+import me.joshmcfarlin.cryptocompareapi.utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
@@ -17,12 +17,14 @@ import java.util.Map;
 public class Coins {
     /**
      * Gets general info for all the coins available through the CryptoCompare API
-     * @return CoinList a class containing different API data
+     * @return CoinList A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
+     * @throws InterruptedException When the connection is interrupted
      */
     public static CoinList getCoinList() throws IOException, OutOfCallsException, InterruptedException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/coinlist", CallTypes.PRICE);
+
         return new Gson().fromJson(r, CoinList.class);
     }
 
@@ -30,20 +32,31 @@ public class Coins {
      * Gets snapshot data for a cryptocurrency pair
      * @param fromSym The symbol (cryptocurrency or currency) to convert from
      * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @return PairSnapshot a class containing different API data
+     * @return PairSnapshot A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
+     * @throws InterruptedException When the connection is interrupted
      */
-    public static PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException, NumberFormatException, InterruptedException {
+    public static PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://www.cryptocompare.com/api/data/coinsnapshot/?fsym=%s&tsym=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase());
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+
         return new Gson().fromJson(r, PairSnapshot.class);
     }
 
-    public static CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException, NumberFormatException, InterruptedException {
+    /**
+     * Gets snapshot data for a single cryptocurrency
+     * @param id The id representing the cryptocurrency on CryptoCompare's website
+     * @return CoinSnapshot A object containing different API data
+     * @throws IOException when a connection cannot be made
+     * @throws OutOfCallsException when no more API calls are available
+     * @throws InterruptedException When the connection is interrupted
+     */
+    public static CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = "https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=" + id;
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+
         return new Gson().fromJson(r, CoinSnapshot.class);
     }
 
@@ -55,17 +68,40 @@ public class Coins {
          * Indicates request success
          */
         @SerializedName("Response")
-        public String response;
+        private String response;
+
         /**
          * A message provided by the API
          */
         @SerializedName("Message")
-        public String message;
+        private String message;
+
         /**
          * All coins provided by the API
          */
         @SerializedName("Data")
-        public Map<String, CoinEntry> coins;
+        private Map<String, CoinEntry> coins;
+
+        /**
+         * {@link CoinList#response}
+         */
+        public String getResponse() {
+            return response;
+        }
+
+        /**
+         * {@link CoinList#message}
+         */
+        public String getMessage() {
+            return message;
+        }
+
+        /**
+         * {@link CoinList#coins}
+         */
+        public Map<String, CoinEntry> getCoins() {
+            return coins;
+        }
 
         /**
          * Represents a coin on CryptoCompare's website
@@ -75,77 +111,196 @@ public class Coins {
              * The ID of the coin on CryptoCompare's website
              */
             @SerializedName("Id")
-            public int id;
+            private int id;
+
             /**
              * The URL for the coin on CryptoCompare's website
              */
             @SerializedName("Url")
-            public String url;
+            private String url;
+
             /**
              * The URL for the coin's image on CryptoCompare's website
              */
             @SerializedName("ImageUrl")
-            public String imageUrl;
+            private String imageUrl;
+
             /**
              * The coin's symbol
              */
             @SerializedName("Name")
-            public String name;
+            private String name;
+
             /**
              * The coin's symbol
              */
             @SerializedName("Symbol")
-            public String symbol;
+            private String symbol;
+
             /**
              * The coin's name
              */
             @SerializedName("CoinName")
-            public String coinName;
+            private String coinName;
+
             /**
              * The coin's full name
              */
             @SerializedName("FullName")
-            public String fullName;
+            private String fullName;
+
             /**
              * The coin's algorithm
              */
             @SerializedName("Algorithm")
-            public String algorithm;
+            private String algorithm;
+
             /**
              * The type of proof used by the coin
              */
             @SerializedName("ProofType")
-            public String proofType;
+            private String proofType;
+
             /**
              * Indicates if the coin has been fully premined
              */
             @SerializedName("FullyPremined")
-            public String fullyPremined;
+            private String fullyPremined;
+
             /**
              * Total supply of the coin
              */
             @SerializedName("TotalCoinSupply")
-            public String totalCoinSupply;
+            private String totalCoinSupply;
+
             /**
              * The value of all the premined coins
              */
             @SerializedName("PreMinedValue")
-            public String preMinedValue;
+            private String preMinedValue;
+
             /**
              * The total number of coins
              */
             @SerializedName("TotalCoinsFreeFloat")
-            public String totalCoinsFreeFloat;
+            private String totalCoinsFreeFloat;
+
             /**
              * Sorting order of the coin on CryptoCompare's website
              */
             @SerializedName("SortOrder")
-            public int sortOrder;
+            private int sortOrder;
+
             /**
              * Indicates if the coin is sponsored on CryptoCompare's website
              */
             @SerializedName("Sponsored")
-            public boolean sponsored;
+            private boolean sponsored;
+
+            /**
+             * {@link CoinEntry#id}
+             */
+            public int getId() {
+                return id;
+            }
+
+            /**
+             * {@link CoinEntry#url}
+             */
+            public String getUrl() {
+                return url;
+            }
+
+            /**
+             * {@link CoinEntry#imageUrl}
+             */
+            public String getImageUrl() {
+                return imageUrl;
+            }
+
+            /**
+             * {@link CoinEntry#name}
+             */
+            public String getName() {
+                return name;
+            }
+
+            /**
+             * {@link CoinEntry#symbol}
+             */
+            public String getSymbol() {
+                return symbol;
+            }
+
+            /**
+             * {@link CoinEntry#coinName}
+             */
+            public String getCoinName() {
+                return coinName;
+            }
+
+            /**
+             * {@link CoinEntry#fullName}
+             */
+            public String getFullName() {
+                return fullName;
+            }
+
+            /**
+             * {@link CoinEntry#algorithm}
+             */
+            public String getAlgorithm() {
+                return algorithm;
+            }
+
+            /**
+             * {@link CoinEntry#proofType}
+             */
+            public String getProofType() {
+                return proofType;
+            }
+
+            /**
+             * {@link CoinEntry#fullyPremined}
+             */
+            public String getFullyPremined() {
+                return fullyPremined;
+            }
+
+            /**
+             * {@link CoinEntry#totalCoinSupply}
+             */
+            public String getTotalCoinSupply() {
+                return totalCoinSupply;
+            }
+
+            /**
+             * {@link CoinEntry#preMinedValue}
+             */
+            public String getPreMinedValue() {
+                return preMinedValue;
+            }
+
+            /**
+             * {@link CoinEntry#totalCoinsFreeFloat}
+             */
+            public String getTotalCoinsFreeFloat() {
+                return totalCoinsFreeFloat;
+            }
+
+            /**
+             * {@link CoinEntry#sortOrder}
+             */
+            public int getSortOrder() {
+                return sortOrder;
+            }
+
+            /**
+             * {@link CoinEntry#sponsored}
+             */
+            public boolean getSponsored() {
+                return sponsored;
+            }
         }
     }
 
@@ -158,23 +313,53 @@ public class Coins {
          * Indicates request success
          */
         @SerializedName("Response")
-        public String response;
+        private String response;
+
         /**
          * A message provided by the API
          */
         @SerializedName("Message")
-        public String message;
+        private String message;
+
         /**
          * Response type
          */
         @SerializedName("Type")
-        public int type;
+        private int type;
 
         /**
          * Response data
          */
         @SerializedName("Data")
-        public Data data;
+        private Data data;
+
+        /**
+         * {@link PairSnapshot#response}
+         */
+        public String getResponse() {
+            return response;
+        }
+
+        /**
+         * {@link PairSnapshot#message}
+         */
+        public String getMessage() {
+            return message;
+        }
+
+        /**
+         * {@link PairSnapshot#type}
+         */
+        public int getType() {
+            return type;
+        }
+
+        /**
+         * {@link PairSnapshot#data}
+         */
+        public Data getData() {
+            return data;
+        }
 
         /**
          * Represents data about the coin
@@ -184,42 +369,105 @@ public class Coins {
              * The algorithm used by the cryptocurrency
              */
             @SerializedName("Algorithm")
-            public String algorithm;
+            private String algorithm;
+
             /**
              * The type of proof used by the cryptocurrency
              */
             @SerializedName("ProofType")
-            public String proofType;
+            private String proofType;
+
             /**
              * The current block number of the cryptocurrency
              */
             @SerializedName("BlockNumber")
-            public int blockNumber;
+            private int blockNumber;
+
             /**
              * The current mining net hashes per second for the cryptocurrency
              */
             @SerializedName("NetHashesPerSecond")
-            public double netHashesPerSecond;
+            private double netHashesPerSecond;
+
             /**
              * The total number of coins mined for the cryptocurrency
              */
             @SerializedName("TotalCoinsMined")
-            public double totalCoinsMined;
+            private double totalCoinsMined;
+
             /**
              * The current reward for mining a block
              */
             @SerializedName("BlockReward")
-            public double blockReward;
+            private double blockReward;
+
             /**
              * Aggregated data about the cryptocurrency
              */
             @SerializedName("AggregatedData")
-            public AggregatedData aggregatedData;
+            private AggregatedData aggregatedData;
+
             /**
-             * A list of Exchange classes
+             * A list of Exchange objects
              */
             @SerializedName("Exchanges")
-            public List<Exchange> exchanges;
+            private List<Exchange> exchanges;
+
+            /**
+             * {@link Data#algorithm}
+             */
+            public String getAlgorithm() {
+                return algorithm;
+            }
+
+            /**
+             * {@link Data#proofType}
+             */
+            public String getProofType() {
+                return proofType;
+            }
+
+            /**
+             * {@link Data#blockNumber}
+             */
+            public int getBlockNumber() {
+                return blockNumber;
+            }
+
+            /**
+             * {@link Data#netHashesPerSecond}
+             */
+            public double getNetHashesPerSecond() {
+                return netHashesPerSecond;
+            }
+
+            /**
+             * {@link Data#totalCoinsMined}
+             */
+            public double getTotalCoinsMined() {
+                return totalCoinsMined;
+            }
+
+            /**
+             * {@link Data#blockReward}
+             */
+            public double getBlockReward() {
+                return blockReward;
+            }
+
+            /**
+             * {@link Data#aggregatedData}
+             */
+            public AggregatedData getAggregatedData() {
+                return aggregatedData;
+            }
+
+            /**
+             * {@link Data#exchanges}
+             */
+            public List<Exchange> getExchanges() {
+                return exchanges;
+            }
 
             /**
              * Represents general data about the coin
@@ -229,107 +477,274 @@ public class Coins {
                  * Type
                  */
                 @SerializedName("TYPE")
-                public int type;
+                private int type;
+
                 /**
                  * Markets used to get data
                  */
                 @SerializedName("MARKET")
-                public String market;
+                private String market;
+
                 /**
                  * The from symbol of the pair
                  */
                 @SerializedName("FROMSYMBOL")
-                public String fromSymbol;
+                private String fromSymbol;
+
                 /**
                  * The to symbol of the pair
                  */
                 @SerializedName("TOSYMBOL")
-                public String toSymbol;
+                private String toSymbol;
+
                 /**
                  * The number of flags used
                  */
                 @SerializedName("FLAGS")
-                public int flags;
+                private int flags;
+
                 /**
                  * The price of the from symbol
                  */
                 @SerializedName("PRICE")
-                public double price;
+                private double price;
+
                 /**
                  * Unix time of the last update
                  */
                 @SerializedName("LASTUPDATE")
-                public int lastUpdate;
+                private int lastUpdate;
+
                 /**
                  * Last volume
                  */
                 @SerializedName("LASTVOLUME")
-                public double lastVolume;
+                private double lastVolume;
+
                 /**
                  * Last volume to
                  */
                 @SerializedName("LASTVOLUMETO")
-                public double lastVolumeTo;
+                private double lastVolumeTo;
+
                 /**
                  * Last trade id
                  */
                 @SerializedName("LASTTRADEID")
-                public String lastTradeID;
+                private String lastTradeID;
+
                 /**
                  * Day volume
                  */
                 @SerializedName("VOLUMEDAY")
-                public double volumeDay;
+                private double volumeDay;
+
                 /**
                  * Day volume to
                  */
                 @SerializedName("VOLUMEDAYTO")
-                public double volumeDayTo;
+                private double volumeDayTo;
+
                 /**
                  * 24 hour volume
                  */
                 @SerializedName("VOLUME24HOUR")
-                public double volume24Hour;
+                private double volume24Hour;
+
                 /**
                  * 24 hour volume to
                  */
                 @SerializedName("VOLUME24HOURTO")
-                public double volume24HourTo;
+                private double volume24HourTo;
+
                 /**
                  * Day open
                  */
                 @SerializedName("OPENDAY")
-                public double openDay;
+                private double openDay;
+
                 /**
                  * Day high
                  */
                 @SerializedName("HIGHDAY")
-                public double highDay;
+                private double highDay;
+
                 /**
                  * Day low
                  */
                 @SerializedName("LOWDAY")
-                public double lowDay;
+                private double lowDay;
+
                 /**
                  * 24 hour open
                  */
                 @SerializedName("OPEN24HOUR")
-                public double open24Hour;
+                private double open24Hour;
+
                 /**
                  * 24 hour high
                  */
                 @SerializedName("HIGH24HOUR")
-                public double high24Hour;
+                private double high24Hour;
+
                 /**
                  * 24 hour low
                  */
                 @SerializedName("LOW24HOUR")
-                public double low24Hour;
+                private double low24Hour;
+
                 /**
                  * Last market
                  */
                 @SerializedName("LASTMARKET")
-                public String lastMarket;
+                private String lastMarket;
+
+                /**
+                 * {@link AggregatedData#type}
+                 */
+                public int getType() {
+                    return type;
+                }
+
+                /**
+                 * {@link AggregatedData#market}
+                 */
+                public String getMarket() {
+                    return market;
+                }
+
+                /**
+                 * {@link AggregatedData#fromSymbol}
+                 */
+                public String getFromSymbol() {
+                    return fromSymbol;
+                }
+
+                /**
+                 * {@link AggregatedData#toSymbol}
+                 */
+                public String getToSymbol() {
+                    return toSymbol;
+                }
+
+                /**
+                 * {@link AggregatedData#flags}
+                 */
+                public int getFlags() {
+                    return flags;
+                }
+
+                /**
+                 * {@link AggregatedData#price}
+                 */
+                public double getPrice() {
+                    return price;
+                }
+
+                /**
+                 * {@link AggregatedData#lastUpdate}
+                 */
+                public int getLastUpdate() {
+                    return lastUpdate;
+                }
+
+                /**
+                 * {@link AggregatedData#lastVolume}
+                 */
+                public double getLastVolume() {
+                    return lastVolume;
+                }
+
+                /**
+                 * {@link AggregatedData#lastVolumeTo}
+                 */
+                public double getLastVolumeTo() {
+                    return lastVolumeTo;
+                }
+
+                /**
+                 * {@link AggregatedData#lastTradeID}
+                 */
+                public String getLastTradeID() {
+                    return lastTradeID;
+                }
+
+                /**
+                 * {@link AggregatedData#volumeDay}
+                 */
+                public double getVolumeDay() {
+                    return volumeDay;
+                }
+
+                /**
+                 * {@link AggregatedData#volumeDayTo}
+                 */
+                public double getVolumeDayTo() {
+                    return volumeDayTo;
+                }
+
+                /**
+                 * {@link AggregatedData#volume24Hour}
+                 */
+                public double getVolume24Hour() {
+                    return volume24Hour;
+                }
+
+                /**
+                 * {@link AggregatedData#volume24HourTo}
+                 */
+                public double getVolume24HourTo() {
+                    return volume24HourTo;
+                }
+
+                /**
+                 * {@link AggregatedData#openDay}
+                 */
+                public double getOpenDay() {
+                    return openDay;
+                }
+
+                /**
+                 * {@link AggregatedData#highDay}
+                 */
+                public double getHighDay() {
+                    return highDay;
+                }
+
+                /**
+                 * {@link AggregatedData#lowDay}
+                 */
+                public double getLowDay() {
+                    return lowDay;
+                }
+
+                /**
+                 * {@link AggregatedData#open24Hour}
+                 */
+                public double getOpen24Hour() {
+                    return open24Hour;
+                }
+
+                /**
+                 * {@link AggregatedData#high24Hour}
+                 */
+                public double getHigh24Hour() {
+                    return high24Hour;
+                }
+
+                /**
+                 * {@link AggregatedData#low24Hour}
+                 */
+                public double getLow24Hour() {
+                    return low24Hour;
+                }
+
+                /**
+                 * {@link AggregatedData#lastMarket}
+                 */
+                public String getLastMarket() {
+                    return lastMarket;
+                }
             }
 
             /**
@@ -340,77 +755,196 @@ public class Coins {
                  * Type
                  */
                 @SerializedName("TYPE")
-                public int type;
+                private int type;
+
                 /**
                  * Markets used to get data
                  */
                 @SerializedName("MARKET")
-                public String market;
+                private String market;
+
                 /**
                  * The from symbol of the pair
                  */
                 @SerializedName("FROMSYMBOL")
-                public String fromSymbol;
+                private String fromSymbol;
+
                 /**
                  * The to symbol of the pair
                  */
                 @SerializedName("TOSYMBOL")
-                public String toSymbol;
+                private String toSymbol;
+
                 /**
                  * The number of flags used
                  */
                 @SerializedName("FLAGS")
-                public int flags;
+                private int flags;
+
                 /**
                  * The price of the from symbol
                  */
                 @SerializedName("PRICE")
-                public double price;
+                private double price;
+
                 /**
                  * Unix time of the last update
                  */
                 @SerializedName("LASTUPDATE")
-                public int lastUpdate;
+                private int lastUpdate;
+
                 /**
                  * Last volume
                  */
                 @SerializedName("LASTVOLUME")
-                public double lastVolume;
+                private double lastVolume;
+
                 /**
                  * Last volume to
                  */
                 @SerializedName("LASTVOLUMETO")
-                public double lastVolumeTo;
+                private double lastVolumeTo;
+
                 /**
                  * Last trade id
                  */
                 @SerializedName("LASTTRADEID")
-                public String lastTradeID;
+                private String lastTradeID;
+
                 /**
                  * 24 hour volume
                  */
                 @SerializedName("VOLUME24HOUR")
-                public double volume24Hour;
+                private double volume24Hour;
+
                 /**
                  * 24 hour volume to
                  */
                 @SerializedName("VOLUME24HOURTO")
-                public double volume24HourTo;
+                private double volume24HourTo;
+
                 /**
                  * 24 hour open
                  */
                 @SerializedName("OPEN24HOUR")
-                public double open24Hour;
+                private double open24Hour;
+
                 /**
                  * 24 hour high
                  */
                 @SerializedName("HIGH24HOUR")
-                public double high24Hour;
+                private double high24Hour;
+
                 /**
                  * 24 hour low
                  */
                 @SerializedName("LOW24HOUR")
-                public double low24Hour;
+                private double low24Hour;
+
+                /**
+                 * {@link Exchange#type}
+                 */
+                public int getType() {
+                    return type;
+                }
+
+                /**
+                 * {@link Exchange#market}
+                 */
+                public String getMarket() {
+                    return market;
+                }
+
+                /**
+                 * {@link Exchange#fromSymbol}
+                 */
+                public String getFromSymbol() {
+                    return fromSymbol;
+                }
+
+                /**
+                 * {@link Exchange#toSymbol}
+                 */
+                public String getToSymbol() {
+                    return toSymbol;
+                }
+
+                /**
+                 * {@link Exchange#flags}
+                 */
+                public int getFlags() {
+                    return flags;
+                }
+
+                /**
+                 * {@link Exchange#price}
+                 */
+                public double getPrice() {
+                    return price;
+                }
+
+                /**
+                 * {@link Exchange#lastUpdate}
+                 */
+                public int getLastUpdate() {
+                    return lastUpdate;
+                }
+
+                /**
+                 * {@link Exchange#lastVolume}
+                 */
+                public double getLastVolume() {
+                    return lastVolume;
+                }
+
+                /**
+                 * {@link Exchange#lastVolumeTo}
+                 */
+                public double getLastVolumeTo() {
+                    return lastVolumeTo;
+                }
+
+                /**
+                 * {@link Exchange#lastTradeID}
+                 */
+                public String getLastTradeID() {
+                    return lastTradeID;
+                }
+
+                /**
+                 * {@link Exchange#volume24Hour}
+                 */
+                public double getVolume24Hour() {
+                    return volume24Hour;
+                }
+
+                /**
+                 * {@link Exchange#volume24HourTo}
+                 */
+                public double getVolume24HourTo() {
+                    return volume24HourTo;
+                }
+
+                /**
+                 * {@link Exchange#open24Hour}
+                 */
+                public double getOpen24Hour() {
+                    return open24Hour;
+                }
+
+                /**
+                 * {@link Exchange#high24Hour}
+                 */
+                public double getHigh24Hour() {
+                    return high24Hour;
+                }
+
+                /**
+                 * {@link Exchange#low24Hour}
+                 */
+                public double getLow24Hour() {
+                    return low24Hour;
+                }
             }
         }
     }
@@ -423,23 +957,53 @@ public class Coins {
          * Indicates request success
          */
         @SerializedName("Response")
-        public String response;
+        private String response;
+
         /**
          * A message provided by the API
          */
         @SerializedName("Message")
-        public String message;
+        private String message;
+
         /**
          * Response type
          */
         @SerializedName("Type")
-        public int type;
+        private int type;
 
         /**
          * Response data
          */
         @SerializedName("Data")
-        public Data data;
+        private Data data;
+
+        /**
+         * {@link CoinSnapshot#response}
+         */
+        public String getResponse() {
+            return response;
+        }
+
+        /**
+         * {@link CoinSnapshot#message}
+         */
+        public String getMessage() {
+            return message;
+        }
+
+        /**
+         * {@link CoinSnapshot#type}
+         */
+        public int getType() {
+            return type;
+        }
+
+        /**
+         * {@link CoinSnapshot#data}
+         */
+        public Data getData() {
+            return data;
+        }
 
         /**
          * Represents the data
@@ -449,27 +1013,66 @@ public class Coins {
              * SEO data for the coin
              */
             @SerializedName("SEO")
-            public SEO seo;
+            private SEO seo;
+
             /**
              * General data about the coin
              */
             @SerializedName("General")
-            public General general;
+            private General general;
+
             /**
              * ICO data about the coin
              */
             @SerializedName("Ico")
-            public ICO ico;
+            private ICO ico;
+
             /**
              * A list of subscriptions used for the streamer and for figuring out what the coin pairs are
              */
             @SerializedName("Subs")
-            public List<String> subs;
+            private List<String> subs;
+
             /**
              * A list of aggregated prices for all pairs available
              */
             @SerializedName("StreamerDataRaw")
-            public List<String> streamerDataRaw;
+            private List<String> streamerDataRaw;
+
+            /**
+             * {@link Data#seo}
+             */
+            public SEO getSeo() {
+                return seo;
+            }
+
+            /**
+             * {@link Data#general}
+             */
+            public General getGeneral() {
+                return general;
+            }
+
+            /**
+             * {@link Data#ico}
+             */
+            public ICO getIco() {
+                return ico;
+            }
+
+            /**
+             * {@link Data#subs}
+             */
+            public List<String> getSubs() {
+                return subs;
+            }
+
+            /**
+             * {@link Data#streamerDataRaw}
+             */
+            public List<String> getStreamerDataRaw() {
+                return streamerDataRaw;
+            }
 
             /**
              * Represents SEO data
@@ -479,37 +1082,92 @@ public class Coins {
                  * The page title on CryptoCompare
                  */
                 @SerializedName("PageTitle")
-                public String pageTitle;
+                private String pageTitle;
+
                 /**
                  * The page description on CryptoCompare
                  */
                 @SerializedName("PageDescription")
-                public String pageDescription;
+                private String pageDescription;
+
                 /**
                  * The base URL
                  */
                 @SerializedName("BaseUrl")
-                public String baseUrl;
+                private String baseUrl;
+
                 /**
                  * The image base url
                  */
                 @SerializedName("BaseImageUrl")
-                public String baseImageUrl;
+                private String baseImageUrl;
+
                 /**
                  * The remaining image URL
                  */
                 @SerializedName("OgImageUrl")
-                public String ogImageUrl;
+                private String ogImageUrl;
+
                 /**
                  * The image width
                  */
                 @SerializedName("OgImageWidth")
-                public double ogImageWidth;
+                private double ogImageWidth;
+
                 /**
                  * The image height
                  */
                 @SerializedName("OgImageHeight")
-                public double ogImageHeight;
+                private double ogImageHeight;
+
+                /**
+                 * {@link SEO#pageTitle}
+                 */
+                public String getPageTitle() {
+                    return pageTitle;
+                }
+
+                /**
+                 * {@link SEO#pageDescription}
+                 */
+                public String getPageDescription() {
+                    return pageDescription;
+                }
+
+                /**
+                 * {@link SEO#baseUrl}
+                 */
+                public String getBaseUrl() {
+                    return baseUrl;
+                }
+
+                /**
+                 * {@link SEO#baseImageUrl}
+                 */
+                public String getBaseImageUrl() {
+                    return baseImageUrl;
+                }
+
+                /**
+                 * {@link SEO#ogImageUrl}
+                 */
+                public String getOgImageUrl() {
+                    return ogImageUrl;
+                }
+
+                /**
+                 * {@link SEO#ogImageWidth}
+                 */
+                public double getOgImageWidth() {
+                    return ogImageWidth;
+                }
+
+                /**
+                 * {@link SEO#ogImageHeight}
+                 */
+                public double getOgImageHeight() {
+                    return ogImageHeight;
+                }
             }
 
             /**
@@ -520,157 +1178,404 @@ public class Coins {
                  * The id of the coin
                  */
                 @SerializedName("Id")
-                public int id;
+                private int id;
+
                 /**
                  * The type of document
                  */
                 @SerializedName("DocumentType")
-                public String documentType;
+                private String documentType;
+
                 /**
                  * The title used on the CryptoCompare website (a combination of the coin name and the symbol)
                  */
                 @SerializedName("H1Text")
-                public String h1Text;
+                private String h1Text;
+
                 /**
                  * The text displayed in red on the website at the top, generally a big issue with the coin
                  */
                 @SerializedName("DangerTop")
-                public String dangerTop;
+                private String dangerTop;
+
                 /**
                  * The text displayed in yellow on the website at the top, generally an issue with the coin
                  */
                 @SerializedName("WarningTop")
-                public String warningTop;
+                private String warningTop;
+
                 /**
                  * The text displayed in green on the website at the top, generally an announcement or extra info that is important
                  */
                 @SerializedName("InfoTop")
-                public String infoTop;
+                private String infoTop;
+
                 /**
                  * The symbol of the coin
                  */
                 @SerializedName("Symbol")
-                public String symbol;
+                private String symbol;
+
                 /**
                  * The relative path to the coin, prefix this value with the BaseLinkUrl to get the absolute path
                  */
                 @SerializedName("Url")
-                public String url;
+                private String url;
+
                 /**
                  * The base angular URL
                  */
                 @SerializedName("BaseAngularUrl")
-                public String baseAngularUrl;
+                private String baseAngularUrl;
+
                 /**
                  * The name of the coin
                  */
                 @SerializedName("Name")
-                public String name;
+                private String name;
+
                 /**
                  * The relative path to the logo of the coin, prefix this value with the BaseImageUrl to get the absolute path
                  */
                 @SerializedName("ImageUrl")
-                public String imageUrl;
+                private String imageUrl;
+
                 /**
                  * The description of the coin, this is returned as html
                  */
                 @SerializedName("Description")
-                public String description;
+                private String description;
+
                 /**
                  * The features of the coin, this is returned as html
                  */
                 @SerializedName("Features")
-                public String features;
+                private String features;
+
                 /**
                  * The technology of the coin, this is returned as html
                  */
                 @SerializedName("Technology")
-                public String technology;
+                private String technology;
+
                 /**
                  * The maximum number of coins
                  */
                 @SerializedName("TotalCoinSupply")
-                public String totalCoinSupply;
+                private String totalCoinSupply;
+
                 /**
                  * The algorithm of the coin
                  */
                 @SerializedName("Algorithm")
-                public String algorithm;
+                private String algorithm;
+
                 /**
                  * The proof type of the coin
                  */
                 @SerializedName("ProofType")
-                public String proofType;
+                private String proofType;
+
                 /**
                  * The day the first block was mined, so the day the coin actually came into existence
                  */
                 @SerializedName("StartDate")
-                public String startDate;
+                private String startDate;
+
                 /**
                  * The twitter address of the coin
                  */
                 @SerializedName("Twitter")
-                public String twitter;
+                private String twitter;
+
                 /**
                  * The affiliate URL
                  */
                 @SerializedName("AffiliateUrl")
-                public String affiliateUrl;
+                private String affiliateUrl;
+
                 /**
                  * The coin official website
                  */
                 @SerializedName("Website")
-                public String website;
+                private String website;
+
                 /**
                  * The sponsor of the coin if it is being sponsored
                  */
                 @SerializedName("Sponsor")
-                public Sponsor sponsor;
+                private Sponsor sponsor;
+
                 /**
                  * The last time our block explorer got data about this coin
                  */
                 @SerializedName("LastBlockExplorerUpdateTS")
-                public String lastBlockExplorerUpdateTS;
+                private String lastBlockExplorerUpdateTS;
+
                 /**
                  * The difficulty adjustment
                  */
                 @SerializedName("DifficultyAdjustment")
-                public String difficultyAdjustment;
+                private String difficultyAdjustment;
+
                 /**
                  * The value by which the block reward is reduced when there is a block reward reduction
                  */
                 @SerializedName("BlockRewardReduction")
-                public String blockRewardReduction;
+                private String blockRewardReduction;
+
                 /**
                  * The current block number (delayed by 1 hour max)
                  */
                 @SerializedName("BlockNumber")
-                public String blockNumber;
+                private String blockNumber;
+
                 /**
                  * The estimated time it takes to mine a block
                  */
                 @SerializedName("BlockTime")
-                public String blockTime;
+                private String blockTime;
+
                 /**
                  * The current network hashes per second (delayed by 1 hour max)
                  */
                 @SerializedName("NetHashesPerSecond")
-                public String netHashesPerSecond;
+                private String netHashesPerSecond;
+
                 /**
                  * The current total coins mined (delayed by 1 hour max)
                  */
                 @SerializedName("TotalCoinsMined")
-                public String totalCoinsMined;
+                private String totalCoinsMined;
+
                 /**
                  * The total coins mined as of the previous block, this should be the value of the current block total coins mined - the block reward in most cases.
                  */
                 @SerializedName("PreviousTotalCoinsMined")
-                public String previousTotalCoinsMined;
+                private String previousTotalCoinsMined;
+
                 /**
                  * The current block reward (delayed by 1 hour max)
                  */
                 @SerializedName("BlockReward")
-                public String blockReward;
+                private String blockReward;
+
+                /**
+                 * {@link General#id}
+                 */
+                public int getId() {
+                    return id;
+                }
+
+                /**
+                 * {@link General#documentType}
+                 */
+                public String getDocumentType() {
+                    return documentType;
+                }
+
+                /**
+                 * {@link General#h1Text}
+                 */
+                public String getH1Text() {
+                    return h1Text;
+                }
+
+                /**
+                 * {@link General#dangerTop}
+                 */
+                public String getDangerTop() {
+                    return dangerTop;
+                }
+
+                /**
+                 * {@link General#warningTop}
+                 */
+                public String getWarningTop() {
+                    return warningTop;
+                }
+
+                /**
+                 * {@link General#infoTop}
+                 */
+                public String getInfoTop() {
+                    return infoTop;
+                }
+
+                /**
+                 * {@link General#symbol}
+                 */
+                public String getSymbol() {
+                    return symbol;
+                }
+
+                /**
+                 * {@link General#url}
+                 */
+                public String getUrl() {
+                    return url;
+                }
+
+                /**
+                 * {@link General#baseAngularUrl}
+                 */
+                public String getBaseAngularUrl() {
+                    return baseAngularUrl;
+                }
+
+                /**
+                 * {@link General#name}
+                 */
+                public String getName() {
+                    return name;
+                }
+
+                /**
+                 * {@link General#imageUrl}
+                 */
+                public String getImageUrl() {
+                    return imageUrl;
+                }
+
+                /**
+                 * {@link General#description}
+                 */
+                public String getDescription() {
+                    return description;
+                }
+
+                /**
+                 * {@link General#features}
+                 */
+                public String getFeatures() {
+                    return features;
+                }
+
+                /**
+                 * {@link General#technology}
+                 */
+                public String getTechnology() {
+                    return technology;
+                }
+
+                /**
+                 * {@link General#totalCoinSupply}
+                 */
+                public String getTotalCoinSupply() {
+                    return totalCoinSupply;
+                }
+
+                /**
+                 * {@link General#algorithm}
+                 */
+                public String getAlgorithm() {
+                    return algorithm;
+                }
+
+                /**
+                 * {@link General#proofType}
+                 */
+                public String getProofType() {
+                    return proofType;
+                }
+
+                /**
+                 * {@link General#startDate}
+                 */
+                public String getStartDate() {
+                    return startDate;
+                }
+
+                /**
+                 * {@link General#twitter}
+                 */
+                public String getTwitter() {
+                    return twitter;
+                }
+
+                /**
+                 * {@link General#affiliateUrl}
+                 */
+                public String getAffiliateUrl() {
+                    return affiliateUrl;
+                }
+
+                /**
+                 * {@link General#website}
+                 */
+                public String getWebsite() {
+                    return website;
+                }
+
+                /**
+                 * {@link General#sponsor}
+                 */
+                public Sponsor getSponsor() {
+                    return sponsor;
+                }
+
+                /**
+                 * {@link General#lastBlockExplorerUpdateTS}
+                 */
+                public String getLastBlockExplorerUpdateTS() {
+                    return lastBlockExplorerUpdateTS;
+                }
+
+                /**
+                 * {@link General#difficultyAdjustment}
+                 */
+                public String getDifficultyAdjustment() {
+                    return difficultyAdjustment;
+                }
+
+                /**
+                 * {@link General#blockRewardReduction}
+                 */
+                public String getBlockRewardReduction() {
+                    return blockRewardReduction;
+                }
+
+                /**
+                 * {@link General#blockNumber}
+                 */
+                public String getBlockNumber() {
+                    return blockNumber;
+                }
+
+                /**
+                 * {@link General#blockTime}
+                 */
+                public String getBlockTime() {
+                    return blockTime;
+                }
+
+                /**
+                 * {@link General#netHashesPerSecond}
+                 */
+                public String getNetHashesPerSecond() {
+                    return netHashesPerSecond;
+                }
+
+                /**
+                 * {@link General#totalCoinsMined}
+                 */
+                public String getTotalCoinsMined() {
+                    return totalCoinsMined;
+                }
+
+                /**
+                 * {@link General#previousTotalCoinsMined}
+                 */
+                public String getPreviousTotalCoinsMined() {
+                    return previousTotalCoinsMined;
+                }
+
+                /**
+                 * {@link General#blockReward}
+                 */
+                public String getBlockReward() {
+                    return blockReward;
+                }
 
                 /**
                  * Represents a coin sponsor
@@ -680,17 +1585,40 @@ public class Coins {
                      * The text displayed on the website at the top
                      */
                     @SerializedName("TextTop")
-                    public String textTop;
+                    private String textTop;
+
                     /**
                      * The URL to the sponsor
                      */
                     @SerializedName("Link")
-                    public String link;
+                    private String link;
+
                     /**
                      * The image URL for the sponsor
                      */
                     @SerializedName("ImageUrl")
-                    public String imageUrl;
+                    private String imageUrl;
+
+                    /**
+                     * {@link Sponsor#textTop}
+                     */
+                    public String getTextTop() {
+                        return textTop;
+                    }
+
+                    /**
+                     * {@link Sponsor#link}
+                     */
+                    public String getLink() {
+                        return link;
+                    }
+
+                    /**
+                     * {@link Sponsor#imageUrl}
+                     */
+                    public String getImageUrl() {
+                        return imageUrl;
+                    }
                 }
             }
 
@@ -702,12 +1630,26 @@ public class Coins {
                  * Status of the ICO
                  */
                 @SerializedName("Status")
-                public String status;
+                private String status;
                 /**
-                 * Status of the whitepaper
+                 * Status of the white-paper
                  */
                 @SerializedName("WhitePaper")
-                public String whitePaper;
+                private String whitePaper;
+
+                /**
+                 * {@link ICO#status}
+                 */
+                public String getStatus() {
+                    return status;
+                }
+
+                /**
+                 * {@link ICO#whitePaper}
+                 */
+                public String getWhitePaper() {
+                    return whitePaper;
+                }
             }
         }
     }

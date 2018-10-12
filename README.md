@@ -1,6 +1,8 @@
 # CryptoCompareAPI
 A Java implementation of the [CryptoCompare API service.](https://min-api.cryptocompare.com/)
 
+This package previously supported Java 9, but it has been updated to Java 11 in order to use HttpClient.
+
 ## Usage
 ```java
 public class Test {

@@ -3,8 +3,8 @@ package me.joshmcfarlin.cryptocompareapi;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import me.joshmcfarlin.cryptocompareapi.Utils.CallTypes;
-import me.joshmcfarlin.cryptocompareapi.Utils.Connection;
+import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
+import me.joshmcfarlin.cryptocompareapi.utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
@@ -20,12 +20,14 @@ import java.util.Map;
 public class Exchanges {
     /**
      * Gets all available trading pairs for each cryptocurrency on all exchanges available from the API
-     * @return ExchangeList a class containing different API data
+     * @return ExchangeList a object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
+     * @throws InterruptedException When the connection is interrupted
      */
     public static ExchangeList getAllExchanges() throws IOException, OutOfCallsException, InterruptedException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/exchanges", CallTypes.PRICE);
+
         Type type = new TypeToken<Map<String, Map<String, List<String>>>>() {}.getType();
         Map<String, Map<String, List<String>>> exchangeMap = new Gson().fromJson(r, type);
         return new ExchangeList(exchangeMap);
@@ -35,9 +37,10 @@ public class Exchanges {
      * Finds the top exchanges for a provided pair
      * @param fromSym The symbol (cryptocurrency or currency) to convert from
      * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @return TopExchanges a class containing different API data
+     * @return TopExchanges a object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
+     * @throws InterruptedException When the connection is interrupted
      */
     public static List<Exchange> getTopExchanges(String fromSym, String toSym) throws IOException, OutOfCallsException, InterruptedException {
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/top/exchanges?fsym=%s&tsym=%s",
@@ -52,27 +55,66 @@ public class Exchanges {
     /**
      * Represents a cryptocurrency exchange
      */
-    class Exchange {
+    public class Exchange {
         /**
          * The name of the exchange
          */
-        public String exchange;
+        private String exchange;
+
         /**
          * The symbol being traded from
          */
-        public String fromSymbol;
+        private String fromSymbol;
+
         /**
          * The symbol being traded to
          */
-        public String toSymbol;
+        private String toSymbol;
+
         /**
          * 24 hour volume of the trading pair
          */
-        public double volume24h;
+        private double volume24h;
+
         /**
          * 24 hour volume of the trading pair to
          */
-        public double volume24hTo;
+        private double volume24hTo;
+
+        /**
+         * {@link Exchange#exchange}
+         */
+        public String getExchange() {
+            return exchange;
+        }
+
+        /**
+         * {@link Exchange#fromSymbol}
+         */
+        public String getFromSymbol() {
+            return fromSymbol;
+        }
+
+        /**
+         * {@link Exchange#toSymbol}
+         */
+        public String getToSymbol() {
+            return toSymbol;
+        }
+
+        /**
+         * {@link Exchange#volume24h}
+         */
+        public double getVolume24h() {
+            return volume24h;
+        }
+
+        /**
+         * {@link Exchange#volume24hTo}
+         */
+        public double getVolume24hTo() {
+            return volume24hTo;
+        }
     }
 
     /**
@@ -82,17 +124,24 @@ public class Exchanges {
         /**
          * A map of all exchanges
          */
-        public Map<String, Exchange> exchanges = new HashMap<>();
+        private Map<String, Exchange> exchanges = new HashMap<>();
 
         /**
          * Creates an ExchangeList from a map of exchanges
          * @param map A map of exchanges
          */
-        public ExchangeList(Map<String, Map<String, List<String>>> map) {
+        ExchangeList(Map<String, Map<String, List<String>>> map) {
             map.forEach((key, val) -> {
                 Exchange e = new Exchange(val);
                 this.exchanges.put(key, e);
             });
+        }
+
+        /**
+         * {@link ExchangeList#exchanges}
+         */
+        public Map<String, Exchange> getExchanges() {
+            return exchanges;
         }
 
         /**
@@ -102,19 +151,26 @@ public class Exchanges {
             /**
              * A map of coins listed by the exchange
              */
-            public Map<String, Coin> coins = new HashMap<>();
+            private Map<String, Coin> coins = new HashMap<>();
 
             /**
              * Creates an exchange from a list of coins
              * @param coins A List of coins traded on the exchange
              */
-            public Exchange(Map<String, List<String>> coins) {
+            Exchange(Map<String, List<String>> coins) {
                 coins.forEach((coin, pair) -> {
                     if (pair != null && !pair.isEmpty()) {
                         Coin c = new Coin(pair);
                         this.coins.put(coin, c);
                     }
                 });
+            }
+
+            /**
+             * {@link Exchange#coins}
+             */
+            public Map<String, Coin> getCoins() {
+                return coins;
             }
         }
 
@@ -125,16 +181,23 @@ public class Exchanges {
             /**
              * A list of trading pairs
              */
-            public List<String> tradingPairs;
+            private List<String> tradingPairs;
 
             /**
              * Creates a coin from a list of trading pairs
-             * @param tradingPairs
+             * @param tradingPairs The trading pairs to set
              */
-            public Coin(List<String> tradingPairs) {
+            Coin(List<String> tradingPairs) {
                 if (tradingPairs != null && !tradingPairs.isEmpty()) {
                     this.tradingPairs = tradingPairs;
                 }
+            }
+
+            /**
+             * {@link Coin#tradingPairs}
+             */
+            public List<String> getTradingPairs() {
+                return tradingPairs;
             }
         }
     }

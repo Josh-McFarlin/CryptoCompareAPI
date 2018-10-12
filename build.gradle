@@ -28,3 +28,7 @@ test {
     useJUnit()
     maxHeapSize = '1G'
 }
+
+javadoc {
+    destinationDir = file("${projectDir}/docs")
+}
