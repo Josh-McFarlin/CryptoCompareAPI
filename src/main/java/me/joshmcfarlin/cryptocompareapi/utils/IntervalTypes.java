@@ -5,5 +5,13 @@ package me.joshmcfarlin.cryptocompareapi.utils;
  * @author Josh McFarlin
  */
 public enum IntervalTypes {
-    SECOND, MINUTE, HOUR
+    SECOND("Second"),
+    MINUTE("Minute"),
+    HOUR("Hour");
+
+    String apiName;
+
+    IntervalTypes(String apiName) {
+        this.apiName = apiName;
+    }
 }

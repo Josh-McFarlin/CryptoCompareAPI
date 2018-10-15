@@ -5,5 +5,5 @@ package me.joshmcfarlin.cryptocompareapi.utils;
  * @author Josh McFarlin
  */
 public enum CallTypes {
-    HISTO, PRICE, NEWS, OTHER
+    HISTO, PRICE, NEWS, STRICT, OTHER;
 }

@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class APITest {
     @Test
-    void shouldReturnValidAPIUsage() throws IOException, InterruptedException {
-        RateLimiting.Rates rates = RateLimiting.getInterval(IntervalTypes.HOUR);
+    void shouldReturnValidAPIUsage() throws IOException {
+        RateLimiting.Rates rates = RateLimiting.getRates();
         assertNotNull(rates);
     }
 

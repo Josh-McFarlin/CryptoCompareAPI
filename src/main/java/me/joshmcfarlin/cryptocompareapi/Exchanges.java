@@ -24,9 +24,8 @@ public class Exchanges {
      * @return ExchangeList a object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
-     * @throws InterruptedException When the connection is interrupted
      */
-    public static ExchangeList getAllExchanges() throws IOException, OutOfCallsException, InterruptedException {
+    public static ExchangeList getAllExchanges() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/exchanges", CallTypes.PRICE);
 
         Type type = new TypeToken<Map<String, Map<String, List<String>>>>() {}.getType();
@@ -44,10 +43,9 @@ public class Exchanges {
      * @return TopExchanges a object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
-     * @throws InterruptedException when the connection is interrupted
      * @throws InvalidParameterException when a given parameter does not meet the API guidelines
      */
-    public static List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+    public static List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fromSym is 10!");
         }
@@ -82,15 +80,15 @@ public class Exchanges {
     /**
      * @see Exchanges#getTopExchanges(String, String, Integer, String, Boolean)
      */
-    public static List<Exchange> getTopExchanges(String fSym, String tSym) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+    public static List<Exchange> getTopExchanges(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
         return getTopExchanges(fSym, tSym, null, null, null);
     }
 
     /**
      * @see Exchanges#getTopExchanges(String, String, Integer, String, Boolean)
      */
-    public static List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
-        return getTopExchanges(fSym, tSym, null, null, null);
+    public static List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
+        return getTopExchanges(fSym, tSym, limit, null, null);
     }
 
     /**

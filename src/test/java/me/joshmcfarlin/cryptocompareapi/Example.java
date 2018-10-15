@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Example {
-    private static void rateLimitingTest() throws IOException, InterruptedException {
+    private static void rateLimitingTest() throws IOException {
         System.out.println("\nRate Limiting APITest:");
-        RateLimiting.Rates r = RateLimiting.getInterval(IntervalTypes.HOUR);
-        System.out.println(r.getCallsMade());
+        RateLimiting.Rates r = RateLimiting.getRates();
+        System.out.println(r.getHour().getCallsMade());
 
         System.out.println("Are any price calls left?");
         System.out.println(RateLimiting.callable(CallTypes.PRICE));

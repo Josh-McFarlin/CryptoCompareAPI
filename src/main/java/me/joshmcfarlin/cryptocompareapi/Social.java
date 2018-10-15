@@ -20,9 +20,8 @@ public class Social {
      * @return SocialStats a object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
-     * @throws InterruptedException When the connection is interrupted
      */
-    public static SocialStats getStats(int id) throws IOException, OutOfCallsException, InterruptedException {
+    public static SocialStats getStats(int id) throws IOException, OutOfCallsException {
         String formattedUrl = "https://www.cryptocompare.com/api/data/socialstats/?id=" + id;
 
         Reader r = Connection.getJSON(formattedUrl, CallTypes.OTHER);

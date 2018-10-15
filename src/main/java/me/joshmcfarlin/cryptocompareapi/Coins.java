@@ -20,9 +20,8 @@ public class Coins {
      * @return CoinList A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
-     * @throws InterruptedException When the connection is interrupted
      */
-    public static CoinList getCoinList() throws IOException, OutOfCallsException, InterruptedException {
+    public static CoinList getCoinList() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/coinlist", CallTypes.PRICE);
 
         return new Gson().fromJson(r, CoinList.class);
@@ -35,9 +34,8 @@ public class Coins {
      * @return PairSnapshot A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
-     * @throws InterruptedException When the connection is interrupted
      */
-    public static PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException, InterruptedException {
+    public static PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException {
         String formattedUrl = String.format("https://www.cryptocompare.com/api/data/coinsnapshot/?fsym=%s&tsym=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase());
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
@@ -51,9 +49,8 @@ public class Coins {
      * @return CoinSnapshot A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
-     * @throws InterruptedException When the connection is interrupted
      */
-    public static CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException, InterruptedException {
+    public static CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException {
         String formattedUrl = "https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=" + id;
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 

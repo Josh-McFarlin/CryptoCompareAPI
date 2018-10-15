@@ -19,9 +19,8 @@ public class Mining {
      * @return Contracts A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
-     * @throws InterruptedException When the connection is interrupted
      */
-    public static Contracts getContracts() throws IOException, OutOfCallsException, InterruptedException {
+    public static Contracts getContracts() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningcontracts/", CallTypes.OTHER);
 
         return new Gson().fromJson(r, Contracts.class);
@@ -32,9 +31,8 @@ public class Mining {
      * @return Equipment A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
-     * @throws InterruptedException When the connection is interrupted
      */
-    public static Equipment getEquipment() throws IOException, OutOfCallsException, InterruptedException {
+    public static Equipment getEquipment() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningequipment/", CallTypes.OTHER);
 
         return new Gson().fromJson(r, Equipment.class);

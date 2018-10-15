@@ -1,6 +1,7 @@
 package me.joshmcfarlin.cryptocompareapi.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.*;
 
@@ -11,31 +12,38 @@ import java.io.*;
 public class RateLimiting {
     /**
      * Gets the number of API calls used and available in the current interval
-     * @param interval The time-frame to check API rates
      * @return Rates A class containing different API rates
      * @throws IOException When the connection fails
-     * @throws InterruptedException When the connection is interrupted
      */
-    public static Rates getInterval(IntervalTypes interval) throws InterruptedException, IOException {
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/stats/rate/%s/limit", interval.name().toLowerCase());
-        Reader r = Connection.getJSON(formattedUrl);
+    public static Rates getRates() throws IOException {
+        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/stats/rate/limit");
 
         return new Gson().fromJson(r, Rates.class);
     }
 
     /**
-     * Checks if the provided call type has calls left in the provided interval
+     * Checks if the provided call type has calls left in the provided intervals
      * @param type The API call type to be checked
-     * @return boolean True if calls of the provided type are left
+     * @param intervals A number of IntervalTypes which will each be checked
+     * @return boolean True if calls of the provided type are left for all of the provided intervals
      * @throws IOException When the connection fails
-     * @throws InterruptedException When the connection is interrupted
      */
-    public static boolean checkInterval(CallTypes type, IntervalTypes interval) throws InterruptedException, IOException {
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/stats/rate/%s/limit", interval.name().toLowerCase());
-        Reader r = Connection.getJSON(formattedUrl);
+    public static boolean checkInterval(CallTypes type, IntervalTypes ...intervals) throws IOException {
+        for (IntervalTypes interval: intervals) {
+            Rates rates = getRates();
+            Rates.Interval.Usage callsLeft = rates.getInterval(interval).callsLeft;
 
-        Rates rates = new Gson().fromJson(r, Rates.class);
-        return rates.CallsLeft.available(type);
+            if (type == CallTypes.HISTO && callsLeft.histo <= 0) {
+                return false;
+            } else if (type == CallTypes.PRICE && callsLeft.price <= 0) {
+                return false;
+            } else if (type == CallTypes.NEWS && callsLeft.news <= 0) {
+                return false;
+            } else if (type == CallTypes.STRICT && callsLeft.strict <= 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -44,147 +52,165 @@ public class RateLimiting {
      * @return true if a call can be made, false if no more calls are available
      * @throws IOException When a connection fails
      */
-    public static boolean callable(CallTypes type) throws InterruptedException, IOException {
-        //return checkSecond(type) && checkMinute(type) && checkHour(type);
-        return checkInterval(type, IntervalTypes.SECOND)
-                && checkInterval(type, IntervalTypes.MINUTE)
-                && checkInterval(type, IntervalTypes.HOUR);
+    public static boolean callable(CallTypes type) throws IOException {
+        return checkInterval(type, IntervalTypes.HOUR, IntervalTypes.MINUTE, IntervalTypes.SECOND);
     }
 
-    /**
-     * A class to represent API calls made and remaining
-     */
     public class Rates {
         /**
-         * Stores API calls made
+         * The message returned by the CryptoCompare API
          */
-        private CallsMade CallsMade;
+        @SerializedName("Message")
+        private String message;
 
         /**
-         * Stores API calls remaining
+         * The number of api calls used and left in the current hour
          */
-        private CallsLeft CallsLeft;
+        @SerializedName("Hour")
+        private Interval hour;
 
         /**
-         * {@link Rates#CallsMade}
+         * The number of api calls used and left in the current minute
          */
-        public Rates.CallsMade getCallsMade() {
-            return CallsMade;
+        @SerializedName("Minute")
+        private Interval minute;
+
+        /**
+         * The number of api calls used and left in the current second
+         */
+        @SerializedName("Second")
+        private Interval second;
+
+        /**
+         * {@link Rates#message}
+         */
+        public String getMessage() {
+            return message;
         }
 
         /**
-         * {@link Rates#CallsLeft}
+         * {@link Rates#hour}
          */
-        public Rates.CallsLeft getCallsLeft() {
-            return CallsLeft;
+        public Interval getHour() {
+            return hour;
         }
 
         /**
-         * A class to represent API calls made
+         * {@link Rates#minute}
          */
-        public class CallsMade {
-            /**
-             * API calls made for historic endpoints
-             */
-            private int Histo;
-
-            /**
-             * API calls made for price endpoints
-             */
-            private int Price;
-
-            /**
-             * API calls made for news endpoints
-             */
-            private int News;
-
-            @Override
-            public String toString() {
-                return String.format("API calls made: Histo: %d, Market: %d, News: %d", Histo, Price, News);
-            }
-
-            /**
-             * {@link CallsMade#Histo}
-             */
-            public int getHisto() {
-                return Histo;
-            }
-
-            /**
-             * {@link CallsMade#Price}
-             */
-            public int getPrice() {
-                return Price;
-            }
-
-            /**
-             * {@link CallsMade#News}
-             */
-            public int getNews() {
-                return News;
-            }
+        public Interval getMinute() {
+            return minute;
         }
 
         /**
-         * A class to represent API calls remaining
+         * {@link Rates#second}
          */
-        public class CallsLeft {
+        public Interval getSecond() {
+            return second;
+        }
+
+        /**
+         * Gets a interval from a provided IntervalTypes object
+         * @param interval The provided IntervalTypes object
+         * @return Interval A class containing data about the number of api calls used in the time period
+         */
+        public Interval getInterval(IntervalTypes interval) {
+            if (interval == IntervalTypes.HOUR) {
+                return hour;
+            } else if (interval == IntervalTypes.MINUTE) {
+                return minute;
+            } else {
+                return second;
+            }
+        }
+
+        public class Interval {
             /**
-             * Remaining API calls for historic endpoints
+             * Contains data about the number of api calls used in the time period
              */
-            private int Histo;
+            @SerializedName("CallsMade")
+            private Usage callsMade;
 
             /**
-             * Remaining API calls for price endpoints
+             * Contains data about the number of api calls remaining in the time period
              */
-            private int Price;
+            @SerializedName("CallsLeft")
+            private Usage callsLeft;
 
             /**
-             * Remaining API calls for news endpoints
+             * {@link Interval#callsMade}
              */
-            private int News;
+            public Usage getCallsMade() {
+                return callsMade;
+            }
 
             /**
-             * Checks if an API call can be made for the provided type
-             * @param type The type of API call being made
-             * @return true if a call can be made, false if no more calls are available
+             * {@link Interval#callsLeft}
              */
-            public boolean available(CallTypes type) {
-                if (type == CallTypes.HISTO) {
-                    return Histo > 0;
-                } else if (type == CallTypes.PRICE) {
-                    return Price > 0;
-                } else if (type == CallTypes.NEWS) {
-                    return News > 0;
-                } else {
-                    return type == CallTypes.OTHER;
+            public Usage getCallsLeft() {
+                return callsLeft;
+            }
+
+            /**
+             * Represents the number of api calls for a time period
+             */
+            public class Usage {
+                /**
+                 * The number of Histo calls
+                 */
+                @SerializedName("Histo")
+                private Integer histo;
+
+                /**
+                 * The number of Price calls
+                 */
+                @SerializedName("Price")
+                private Integer price;
+
+                /**
+                 * The number of News calls
+                 */
+                @SerializedName("News")
+                private Integer news;
+
+                /**
+                 * The number of Strict calls
+                 */
+                @SerializedName("Strict")
+                private Integer strict;
+
+                @Override
+                public String toString() {
+                    return String.format("API calls: Histo: %d, Market: %d, News: %d, Strict: %d", histo, price, news, strict);
                 }
-            }
 
-            @Override
-            public String toString() {
-                return String.format("API calls left: Histo: %d, Market: %d, News: %d", Histo, Price, News);
-            }
+                /**
+                 * {@link Usage#histo}
+                 */
+                public Integer getHisto() {
+                    return histo;
+                }
 
-            /**
-             * {@link CallsLeft#Histo}
-             */
-            public int getHisto() {
-                return Histo;
-            }
+                /**
+                 * {@link Usage#price}
+                 */
+                public Integer getPrice() {
+                    return price;
+                }
 
-            /**
-             * {@link CallsLeft#Price}
-             */
-            public int getPrice() {
-                return Price;
-            }
+                /**
+                 * {@link Usage#news}
+                 */
+                public Integer getNews() {
+                    return news;
+                }
 
-            /**
-             * {@link CallsLeft#News}
-             */
-            public int getNews() {
-                return News;
+                /**
+                 * {@link Usage#strict}
+                 */
+                public Integer getStrict() {
+                    return strict;
+                }
             }
         }
     }

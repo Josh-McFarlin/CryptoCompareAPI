@@ -1,7 +1,35 @@
 # CryptoCompareAPI
 A Java implementation of the [CryptoCompare API service.](https://min-api.cryptocompare.com/)
 
-This package previously supported Java 9, but it has been updated to Java 11 in order to use HttpClient.
+## Downloading
+
+#### Gradle
+```
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.Josh-McFarlin:CryptoCompareAPI:master-SNAPSHOT'
+}
+```
+
+#### Maven
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+```xml
+<dependency>
+    <groupId>com.github.Josh-McFarlin</groupId>
+    <artifactId>CryptoCompareAPI</artifactId>
+    <version>master-SNAPSHOT</version>
+</dependency>
+```
 
 ## Usage
 ```java
@@ -22,7 +50,7 @@ public class Test {
 }
 ```
 
-An example is provided in the Maven test sources.
+An example is provided in the test sources.
 
 ## Documentation
 
