@@ -34,18 +34,20 @@ dependencies {
 ## Usage
 ```java
 public class Test {
+    private CryptoCompareAPI api = new CryptoCompareAPI();
+    
     public static void main(String[] args) {
-        double dayAverage = Historic.getDayAverage("BTC", "USD");
-        System.out.println("Bitcoin day average:");
-        System.out.println(dayAverage);
-
-        Market.ExchangeAverage exchangeAverage = Market.getExchangeAverage("BTC", "USD", "Coinbase", "Kraken", "Bitstamp");
-        System.out.println("Bitcoin average from Coinbase, Kraken, and Bitstamp:");
-        System.out.println(exchangeAverage.getHigh24Hour());
-
-        Map<String, Double> btcPrice = Market.getPrice("BTC", "USD,EUR");
-        System.out.println("Bitcoin price in USD and EUR:");
-        System.out.println(btcPrice);
+        double dayAverage = api.historic.getDayAverage("BTC", "USD");
+            System.out.println("Bitcoin day average:");
+            System.out.println(dayAverage);
+    
+            Market.ExchangeAverage exchangeAverage = api.market.getExchangeAverage("BTC", "USD", "Coinbase,Kraken,Bitstamp");
+            System.out.println("Bitcoin average from Coinbase, Kraken, and Bitstamp:");
+            System.out.println(exchangeAverage.getHigh24Hour());
+    
+            Map<String, Double> btcPrice = api.market.getPrice("BTC", "USD,EUR");
+            System.out.println("Bitcoin price in USD and EUR:");
+            System.out.println(btcPrice);
     }
 }
 ```

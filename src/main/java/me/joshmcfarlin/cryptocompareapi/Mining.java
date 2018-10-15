@@ -20,7 +20,7 @@ public class Mining {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Contracts getContracts() throws IOException, OutOfCallsException {
+    Contracts getContracts() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningcontracts/", CallTypes.OTHER);
 
         return new Gson().fromJson(r, Contracts.class);
@@ -32,7 +32,7 @@ public class Mining {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Equipment getEquipment() throws IOException, OutOfCallsException {
+    Equipment getEquipment() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningequipment/", CallTypes.OTHER);
 
         return new Gson().fromJson(r, Equipment.class);
@@ -41,7 +41,7 @@ public class Mining {
     /**
      * Represents mining contracts
      */
-    public static class Contracts {
+    public class Contracts {
         /**
          * The response provided by the API
          */
@@ -110,7 +110,7 @@ public class Mining {
         /**
          * Represents a mining contract
          */
-        public static class Contract {
+        public class Contract {
             /**
              * ID of the equipment
              */
@@ -368,7 +368,7 @@ public class Mining {
     /**
      * Represents mining equipment
      */
-    public static class Equipment {
+    public class Equipment {
         /**
          * The response provided by the API
          */
@@ -437,7 +437,7 @@ public class Mining {
         /**
          * Represents data about mining equipment
          */
-        public static class Equip {
+        public class Equip {
             /**
              * ID of the equipment
              */
@@ -682,7 +682,7 @@ public class Mining {
     /**
      * Represents a cryptocurrency
      */
-    public static class Coin {
+    public class Coin {
         /**
          * The price of the coin in USD
          */

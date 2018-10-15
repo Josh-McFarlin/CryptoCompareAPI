@@ -22,7 +22,7 @@ public class News {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static List<NewsProvider> NewsProviderList() throws IOException, OutOfCallsException {
+    List<NewsProvider> newsProviderList() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/news/providers", CallTypes.NEWS);
 
         Type newsListType = new TypeToken<List<NewsProvider>>() {}.getType();
@@ -35,7 +35,7 @@ public class News {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static List<NewsStory> NewsList() throws IOException, OutOfCallsException {
+    List<NewsStory> newsList() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/news/", CallTypes.NEWS);
 
         Type newsListType = new TypeToken<List<NewsStory>>() {}.getType();
@@ -45,7 +45,7 @@ public class News {
     /**
      * Represents a news provider on CryptoCompare's website
      */
-    public static class NewsProvider {
+    public class NewsProvider {
         /**
          * Key name used by CryptoCompare
          */
@@ -103,7 +103,7 @@ public class News {
     /**
      * Represents a news story on CryptoCompare's website
      */
-    public static class NewsStory {
+    public class NewsStory {
         /**
          * News story ID on CryptoCompare's website
          */
@@ -247,7 +247,7 @@ public class News {
         /**
          * Represents information about a news provider
          */
-        public static class ShortNewsProvider {
+        public class ShortNewsProvider {
             /**
              * Name provided on CryptoCompare's website
              */

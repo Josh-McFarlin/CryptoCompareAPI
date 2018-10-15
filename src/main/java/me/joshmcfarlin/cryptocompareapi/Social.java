@@ -21,7 +21,7 @@ public class Social {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static SocialStats getStats(int id) throws IOException, OutOfCallsException {
+    SocialStats getStats(int id) throws IOException, OutOfCallsException {
         String formattedUrl = "https://www.cryptocompare.com/api/data/socialstats/?id=" + id;
 
         Reader r = Connection.getJSON(formattedUrl, CallTypes.OTHER);
@@ -31,7 +31,7 @@ public class Social {
     /**
      * Represents social statistics provided by the CryptoCompare API
      */
-    public static class SocialStats {
+    public class SocialStats {
         /**
          * Indicates request success
          */
@@ -87,7 +87,7 @@ public class Social {
         /**
          * Represents data returned by the API
          */
-        public static class Data {
+        public class Data {
             /**
              * Represents general social info
              */
@@ -169,7 +169,7 @@ public class Social {
             /**
              * Represents general info
              */
-            public static class General {
+            public class General {
                 /**
                  * The coin's short name
                  */
@@ -226,7 +226,7 @@ public class Social {
             /**
              * Represents social info from CryptoCompare
              */
-            public static class CryptoCompare {
+            public class CryptoCompare {
                 /**
                  * Represents similar items
                  */
@@ -334,7 +334,7 @@ public class Social {
                 /**
                  * Represents similar items on CryptoCompare
                  */
-                public static class SimilarItem {
+                public class SimilarItem {
                     /**
                      * The item's id
                      */
@@ -417,7 +417,7 @@ public class Social {
                 /**
                  * Represents CryptopianFollowers
                  */
-                public static class CryptopianFollowers {
+                public class CryptopianFollowers {
                     /**
                      * The follower's id
                      */
@@ -487,7 +487,7 @@ public class Social {
                 /**
                  * Represents PageViewsSplit
                  */
-                public static class PageViewsSplit {
+                public class PageViewsSplit {
                     /**
                      * The int representing overview
                      */
@@ -597,7 +597,7 @@ public class Social {
             /**
              * Represents social data from Twitter
              */
-            public static class Twitter {
+            public class Twitter {
                 /**
                  * The number of followers on Twitter
                  */
@@ -712,7 +712,7 @@ public class Social {
             /**
              * Represents social data from Reddit
              */
-            public static class Reddit {
+            public class Reddit {
                 /**
                  * The number of posts per hour on Reddit
                  */
@@ -844,7 +844,7 @@ public class Social {
             /**
              * Represents social data from Facebook
              */
-            public static class Facebook {
+            public class Facebook {
                 /**
                  * The number of likes on Facebook
                  */
@@ -924,7 +924,7 @@ public class Social {
             /**
              * Represents social data from a code repository
              */
-            public static class CodeRepository {
+            public class CodeRepository {
                 /**
                  * A list of code repository objects
                  */
@@ -954,7 +954,7 @@ public class Social {
                 /**
                  * Represents data about a code repository
                  */
-                public static class CodeEntry {
+                public class CodeEntry {
                     /**
                      * When the repository was created
                      */
@@ -1184,7 +1184,7 @@ public class Social {
                     /**
                      * Represents data about a repository's parent
                      */
-                    public static class Parent {
+                    public class Parent {
                         /**
                          * The name of the repository's parent
                          */
@@ -1228,7 +1228,7 @@ public class Social {
                     /**
                      * Represents data about a repository's source
                      */
-                    public static class Source {
+                    public class Source {
                         /**
                          * The name of the repository's source
                          */

@@ -21,7 +21,7 @@ public class Coins {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static CoinList getCoinList() throws IOException, OutOfCallsException {
+    CoinList getCoinList() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/coinlist", CallTypes.PRICE);
 
         return new Gson().fromJson(r, CoinList.class);
@@ -35,7 +35,7 @@ public class Coins {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException {
+    PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException {
         String formattedUrl = String.format("https://www.cryptocompare.com/api/data/coinsnapshot/?fsym=%s&tsym=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase());
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
@@ -50,7 +50,7 @@ public class Coins {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException {
+    CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException {
         String formattedUrl = "https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=" + id;
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
@@ -60,7 +60,7 @@ public class Coins {
     /**
      * Represents all coins provided by the CryptoCompare API
      */
-    public static class CoinList {
+    public class CoinList {
         /**
          * Indicates request success
          */
@@ -103,7 +103,7 @@ public class Coins {
         /**
          * Represents a coin on CryptoCompare's website
          */
-        public static class CoinEntry {
+        public class CoinEntry {
             /**
              * The ID of the coin on CryptoCompare's website
              */
@@ -305,7 +305,7 @@ public class Coins {
     /**
      * Represents a snapshot about the coin
      */
-    public static class PairSnapshot {
+    public class PairSnapshot {
         /**
          * Indicates request success
          */
@@ -361,7 +361,7 @@ public class Coins {
         /**
          * Represents data about the coin
          */
-        public static class Data {
+        public class Data {
             /**
              * The algorithm used by the cryptocurrency
              */
@@ -469,7 +469,7 @@ public class Coins {
             /**
              * Represents general data about the coin
              */
-            public static class AggregatedData {
+            public class AggregatedData {
                 /**
                  * Type
                  */
@@ -747,7 +747,7 @@ public class Coins {
             /**
              * Represents exchange data
              */
-            public static class Exchange {
+            public class Exchange {
                 /**
                  * Type
                  */
@@ -949,7 +949,7 @@ public class Coins {
     /**
      * Represents full snapshot data
      */
-    public static class CoinSnapshot {
+    public class CoinSnapshot {
         /**
          * Indicates request success
          */
@@ -1005,7 +1005,7 @@ public class Coins {
         /**
          * Represents the data
          */
-        public static class Data {
+        public class Data {
             /**
              * SEO data for the coin
              */
@@ -1074,7 +1074,7 @@ public class Coins {
             /**
              * Represents SEO data
              */
-            public static class SEO {
+            public class SEO {
                 /**
                  * The page title on CryptoCompare
                  */
@@ -1170,7 +1170,7 @@ public class Coins {
             /**
              * Represents the general data available for this coin
              */
-            public static class General {
+            public class General {
                 /**
                  * The id of the coin
                  */
@@ -1577,7 +1577,7 @@ public class Coins {
                 /**
                  * Represents a coin sponsor
                  */
-                public static class Sponsor {
+                public class Sponsor {
                     /**
                      * The text displayed on the website at the top
                      */
@@ -1622,7 +1622,7 @@ public class Coins {
             /**
              * Represents ICO data
              */
-            public static class ICO {
+            public class ICO {
                 /**
                  * Status of the ICO
                  */

@@ -32,7 +32,7 @@ public class Historic {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static History getMinute(String fSym, String tSym, Boolean tryConversion, String e,
+    History getMinute(String fSym, String tSym, Boolean tryConversion, String e,
                                     Integer aggregate, Boolean aggregatePredictableTimePeriods,
                                     Integer limit, Integer toTs, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
@@ -88,21 +88,21 @@ public class Historic {
     /**
      * @see Historic#getMinute(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
      */
-    public static History getMinute(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
+    History getMinute(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
         return getMinute(fSym, tSym, null, null, null, null, null, null, null, null);
     }
 
     /**
      * @see Historic#getMinute(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
      */
-    public static History getMinute(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
+    History getMinute(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
         return getMinute(fSym, tSym, null, null, null, null, limit, null, null, null);
     }
 
     /**
      * @see Historic#getMinute(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
      */
-    public static History getMinute(String fSym, String tSym, Integer limit, Integer toTs) throws IOException, OutOfCallsException, InvalidParameterException {
+    History getMinute(String fSym, String tSym, Integer limit, Integer toTs) throws IOException, OutOfCallsException, InvalidParameterException {
         return getMinute(fSym, tSym, null, null, null, null, limit, toTs, null, null);
     }
 
@@ -122,7 +122,7 @@ public class Historic {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static History getHour(String fSym, String tSym, Boolean tryConversion, String e,
+    History getHour(String fSym, String tSym, Boolean tryConversion, String e,
                                   Integer aggregate, Boolean aggregatePredictableTimePeriods,
                                   Integer limit, Integer toTs, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
@@ -178,21 +178,21 @@ public class Historic {
     /**
      * @see Historic#getHour(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
      */
-    public static History getHour(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
+    History getHour(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
         return getHour(fSym, tSym, null, null, null, null, null, null, null, null);
     }
 
     /**
      * @see Historic#getHour(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
      */
-    public static History getHour(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
+    History getHour(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
         return getHour(fSym, tSym, null, null, null, null, limit, null, null, null);
     }
 
     /**
      * @see Historic#getHour(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
      */
-    public static History getHour(String fSym, String tSym, Integer limit, Integer toTs) throws IOException, OutOfCallsException, InvalidParameterException {
+    History getHour(String fSym, String tSym, Integer limit, Integer toTs) throws IOException, OutOfCallsException, InvalidParameterException {
         return getHour(fSym, tSym, null, null, null, null, limit, toTs, null, null);
     }
 
@@ -212,7 +212,7 @@ public class Historic {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static History getDay(String fSym, String tSym, Boolean tryConversion, String e,
+    History getDay(String fSym, String tSym, Boolean tryConversion, String e,
                                  Integer aggregate, Boolean aggregatePredictableTimePeriods,
                                  Integer limit, Integer toTs, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
@@ -268,21 +268,21 @@ public class Historic {
     /**
      * @see Historic#getDay(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
      */
-    public static History getDay(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
+    History getDay(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
         return getDay(fSym, tSym, null, null, null, null, null, null, null, null);
     }
 
     /**
      * @see Historic#getDay(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
      */
-    public static History getDay(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
+    History getDay(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
         return getDay(fSym, tSym, null, null, null, null, limit, null, null, null);
     }
 
     /**
      * @see Historic#getDay(String, String, Boolean, String, Integer, Boolean, Integer, Integer, String, Boolean)
      */
-    public static History getDay(String fSym, String tSym, Integer limit, Integer toTs) throws IOException, OutOfCallsException, InvalidParameterException {
+    History getDay(String fSym, String tSym, Integer limit, Integer toTs) throws IOException, OutOfCallsException, InvalidParameterException {
         return getDay(fSym, tSym, null, null, null, null, limit, toTs, null, null);
     }
 
@@ -300,7 +300,7 @@ public class Historic {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Map getPriceAtTime(String fSym, String tSyms, Boolean tryConversion, Integer ts,
+    Map getPriceAtTime(String fSym, String tSyms, Boolean tryConversion, Integer ts,
                                      String e, String extraParams, CalcType calculationType, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
@@ -348,14 +348,14 @@ public class Historic {
     /**
      * @see Historic#getPriceAtTime(String, String, Boolean, Integer, String, String, CalcType, Boolean)
      */
-    public static Map getPriceAtTime(String fSym, String tSyms, Integer ts) throws IOException, OutOfCallsException, InvalidParameterException {
+    Map getPriceAtTime(String fSym, String tSyms, Integer ts) throws IOException, OutOfCallsException, InvalidParameterException {
         return getPriceAtTime(fSym, tSyms, null, ts, null, null, null, null);
     }
 
     /**
      * @see Historic#getPriceAtTime(String, String, Boolean, Integer, String, String, CalcType, Boolean)
      */
-    public static Map getPriceAtTime(String fSym, String tSyms, Integer ts, String e) throws IOException, OutOfCallsException, InvalidParameterException {
+    Map getPriceAtTime(String fSym, String tSyms, Integer ts, String e) throws IOException, OutOfCallsException, InvalidParameterException {
         return getPriceAtTime(fSym, tSyms, null, ts, e, null, null, null);
     }
 
@@ -374,7 +374,7 @@ public class Historic {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Double getDayAverage(String fSym, String tSym, Boolean tryConversion, String e, AverageType avgType,
+    Double getDayAverage(String fSym, String tSym, Boolean tryConversion, String e, AverageType avgType,
                                        Integer UTCHourDiff, Integer toTs, String extraParams, Boolean sign) throws
             IOException, OutOfCallsException, InvalidParameterException {
 
@@ -428,7 +428,7 @@ public class Historic {
     /**
      * @see Historic#getDayAverage(String, String, Boolean, String, AverageType, Integer, Integer, String, Boolean)
      */
-    public static Double getDayAverage(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
+    Double getDayAverage(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
         return getDayAverage(fSym, tSym, null, null, null, null, null, null, null);
     }
 
@@ -509,7 +509,7 @@ public class Historic {
     /**
      * Represents historic data provided by the CryptoCompare API
      */
-    public static class History {
+    public class History {
         /**
          * Indicates request success
          */
@@ -617,7 +617,7 @@ public class Historic {
         /**
          * Represents data returned by the API
          */
-        public static class Data {
+        public class Data {
             /**
              * Represents Unix time
              */
@@ -708,7 +708,7 @@ public class Historic {
         /**
          * Represents a conversion type between cryptocurrencies or currencies
          */
-        public static class ConversionType {
+        public class ConversionType {
             /**
              * The type of currency used to make the conversion
              */
