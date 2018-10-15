@@ -94,7 +94,7 @@ public class Exchanges {
     /**
      * Represents a cryptocurrency exchange
      */
-    public class Exchange {
+    public static class Exchange {
         /**
          * The name of the exchange
          */
@@ -186,7 +186,7 @@ public class Exchanges {
         /**
          * Represents a cryptocurrency exchange
          */
-        public class Exchange {
+        public static class Exchange {
             /**
              * A map of coins listed by the exchange
              */
@@ -216,7 +216,7 @@ public class Exchanges {
         /**
          * Represents a cryptocurrency
          */
-        public class Coin {
+        public static class Coin {
             /**
              * A list of trading pairs
              */

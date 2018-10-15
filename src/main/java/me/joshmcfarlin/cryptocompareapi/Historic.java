@@ -301,7 +301,7 @@ public class Historic {
      * @throws OutOfCallsException when no more API calls are available
      */
     public static Map getPriceAtTime(String fSym, String tSyms, Boolean tryConversion, Integer ts,
-                                     String e, String extraParams, calcType calculationType, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
+                                     String e, String extraParams, CalcType calculationType, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
@@ -346,25 +346,113 @@ public class Historic {
     }
 
     /**
-     * @see Historic#getPriceAtTime(String, String, Boolean, Integer, String, String, calcType, Boolean)
+     * @see Historic#getPriceAtTime(String, String, Boolean, Integer, String, String, CalcType, Boolean)
      */
     public static Map getPriceAtTime(String fSym, String tSyms, Integer ts) throws IOException, OutOfCallsException, InvalidParameterException {
         return getPriceAtTime(fSym, tSyms, null, ts, null, null, null, null);
     }
 
     /**
-     * @see Historic#getPriceAtTime(String, String, Boolean, Integer, String, String, calcType, Boolean)
+     * @see Historic#getPriceAtTime(String, String, Boolean, Integer, String, String, CalcType, Boolean)
      */
     public static Map getPriceAtTime(String fSym, String tSyms, Integer ts, String e) throws IOException, OutOfCallsException, InvalidParameterException {
         return getPriceAtTime(fSym, tSyms, null, ts, e, null, null, null);
     }
 
     /**
-     * Represents Calculation Type used by the API
+     * Gets the current day price average for a symbol pair
+     * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
+     * @param tSym The currency symbol to convert into [Max character length: 10]
+     * @param tryConversion If set to false, it will try to get only direct trading values
+     * @param e The exchange to obtain data from (our aggregated average - CCCAGG - by default) [Max character length: 30]
+     * @param avgType Type of average to calculate (HourVWAP - a HourVWAP of hourly price, MidHighLow - the average between the 24 H high and low, VolFVolT - the total volume to / the total volume from)
+     * @param UTCHourDiff By default it does UTC, if you want a different time zone just pass the hour difference. For PST you would pass -8 for example.
+     * @param toTs Last unix timestamp to return data for
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
+     * @return Double A number containing the day average
+     * @throws IOException when a connection cannot be made
+     * @throws OutOfCallsException when no more API calls are available
      */
-    public enum calcType {
-        CLOSE("Close"),
+    public static Double getDayAverage(String fSym, String tSym, Boolean tryConversion, String e, AverageType avgType,
+                                       Integer UTCHourDiff, Integer toTs, String extraParams, Boolean sign) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+
+        if (fSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of fSym is 10!");
+        }
+
+        if (tSym.length() > 30) {
+            throw new InvalidParameterException("The max character length of tSyms is 10!");
+        }
+
+        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/dayAvg?fsym=%s&tsym=%s",
+                fSym.toUpperCase(), tSym.toUpperCase());
+
+        if (tryConversion != null) {
+            formattedUrl += "&tryConversion=" + tryConversion.toString();
+        }
+
+        if (e != null) {
+            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            formattedUrl += "&e=" + e;
+        }
+
+        if (avgType != null) {
+            formattedUrl += "&avgType=" + avgType.getText();
+        }
+
+        if (UTCHourDiff != null) {
+            formattedUrl += "&UTCHourDiff=" + UTCHourDiff;
+        }
+
+        if (toTs != null) {
+            formattedUrl += "&toTs=" + toTs;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
+        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+
+        JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
+        return jsonObject.get(tSym).getAsDouble();
+    }
+
+    /**
+     * @see Historic#getDayAverage(String, String, Boolean, String, AverageType, Integer, Integer, String, Boolean)
+     */
+    public static Double getDayAverage(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
+        return getDayAverage(fSym, tSym, null, null, null, null, null, null, null);
+    }
+
+    /*
+    TODO:
+    * Historical Daily Exchange Volume
+    * Historical Hourly Exchange Volume
+     */
+
+    /**
+     * Represents Average Type used by the API
+     */
+    public enum AverageType {
+        /**
+         * A VWAP of the hourly close price
+         */
+        HOURVWAP("HourVWAP"),
+        /**
+         * The average between the 24H high and low
+         */
         MIDHIGHLOW("MidHighLow"),
+        /**
+         * The total volume from / the total volume to (only avilable with tryConversion set to false)
+         */
         VOLFVOLT("VolFVolT");
 
         /**
@@ -372,12 +460,46 @@ public class Historic {
          */
         private String text;
 
-        calcType(String text) {
+        AverageType(String text) {
             this.text = text;
         }
 
         /**
-         * {@link calcType#text}
+         * {@link AverageType#text}
+         */
+        public String getText() {
+            return text;
+        }
+    }
+
+    /**
+     * Represents Calculation Type used by the API
+     */
+    public enum CalcType {
+        /**
+         * A close of the day close price
+         */
+        CLOSE("Close"),
+        /**
+         * The average between the 24H high and low
+         */
+        MIDHIGHLOW("MidHighLow"),
+        /**
+         * The total volume to / the total volume from
+         */
+        VOLFVOLT("VolFVolT");
+
+        /**
+         * The text that will be passed to the API call
+         */
+        private String text;
+
+        CalcType(String text) {
+            this.text = text;
+        }
+
+        /**
+         * {@link CalcType#text}
          */
         public String getText() {
             return text;
@@ -387,7 +509,7 @@ public class Historic {
     /**
      * Represents historic data provided by the CryptoCompare API
      */
-    public class History {
+    public static class History {
         /**
          * Indicates request success
          */
@@ -495,7 +617,7 @@ public class Historic {
         /**
          * Represents data returned by the API
          */
-        public class Data {
+        public static class Data {
             /**
              * Represents Unix time
              */
@@ -586,7 +708,7 @@ public class Historic {
         /**
          * Represents a conversion type between cryptocurrencies or currencies
          */
-        public class ConversionType {
+        public static class ConversionType {
             /**
              * The type of currency used to make the conversion
              */

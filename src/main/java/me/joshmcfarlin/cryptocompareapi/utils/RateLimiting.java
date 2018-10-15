@@ -28,7 +28,7 @@ public class RateLimiting {
      * @return boolean True if calls of the provided type are left for all of the provided intervals
      * @throws IOException When the connection fails
      */
-    public static boolean checkInterval(CallTypes type, IntervalTypes ...intervals) throws IOException {
+    public static boolean checkInterval(CallTypes type, IntervalTypes... intervals) throws IOException {
         for (IntervalTypes interval: intervals) {
             Rates rates = getRates();
             Rates.Interval.Usage callsLeft = rates.getInterval(interval).callsLeft;

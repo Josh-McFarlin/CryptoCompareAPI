@@ -41,7 +41,7 @@ public class Mining {
     /**
      * Represents mining contracts
      */
-    public class Contracts {
+    public static class Contracts {
         /**
          * The response provided by the API
          */
@@ -110,7 +110,7 @@ public class Mining {
         /**
          * Represents a mining contract
          */
-        public class Contract {
+        public static class Contract {
             /**
              * ID of the equipment
              */
@@ -368,7 +368,7 @@ public class Mining {
     /**
      * Represents mining equipment
      */
-    public class Equipment {
+    public static class Equipment {
         /**
          * The response provided by the API
          */
@@ -437,7 +437,7 @@ public class Mining {
         /**
          * Represents data about mining equipment
          */
-        public class Equip {
+        public static class Equip {
             /**
              * ID of the equipment
              */
@@ -682,7 +682,7 @@ public class Mining {
     /**
      * Represents a cryptocurrency
      */
-    public class Coin {
+    public static class Coin {
         /**
          * The price of the coin in USD
          */

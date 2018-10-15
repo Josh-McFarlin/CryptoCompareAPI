@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
@@ -20,16 +21,48 @@ import java.util.Map;
 public class Market {
     /**
      * Gets price of an input symbol in multiple output symbols
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @return Map containing price for each to symbol
+     * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
+     * @param tSyms Comma separated cryptocurrency symbols list to convert into [Max character length: 500]
+     * @param tryConversion If set to false, it will try to get only direct trading values
+     * @param e The exchange to obtain data from (our aggregated average - CCCAGG - by default) [Max character length: 30]
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
+     * @return Map containing price for each to-symbol
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Map<String, Double> getPrice(String fromSym, String... toSym) throws
-            IOException, OutOfCallsException {
+    public static Map<String, Double> getPrice(String fSym, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+
+        if (fSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of fSym is 10!");
+        }
+
+        if (tSyms.length() > 500) {
+            throw new InvalidParameterException("The max character length of tSyms is 500!");
+        }
+
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/price?fsym=%s&tsyms=%s",
-                fromSym.toUpperCase(), String.join(",", toSym).toUpperCase());
+                fSym.toUpperCase(), tSyms.toUpperCase());
+
+        if (tryConversion != null) {
+            formattedUrl += "&tryConversion=" + tryConversion.toString();
+        }
+
+        if (e != null) {
+            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            formattedUrl += "&e=" + e;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
         Type type = new TypeToken<Map<String, Double>>() {}.getType();
@@ -37,17 +70,57 @@ public class Market {
     }
 
     /**
-     * Gets price of multiple input symbols to multiple output symbols
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @return Map containing price for each from and to symbol
+     * @see Market#getPrice(String, String, Boolean, String, String, Boolean)
+     */
+    public static Map<String, Double> getPrice(String fSym, String tSyms) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+        return getPrice(fSym, tSyms, null, null, null, null);
+    }
+
+    /**
+     * Gets price of an input symbol in multiple output symbols
+     * @param fSyms Comma separated cryptocurrency symbols list [Max character length: 300]
+     * @param tSyms Comma separated cryptocurrency symbols list to convert into [Max character length: 100]
+     * @param tryConversion If set to false, it will try to get only direct trading values
+     * @param e The exchange to obtain data from (our aggregated average - CCCAGG - by default) [Max character length: 30]
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
+     * @return Map containing price for each to-symbol
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Map<String, Map<String, Double>> getMultiPrice(String[] fromSym, String[] toSym) throws
-            IOException, OutOfCallsException {
+    public static Map<String, Map<String, Double>> getMultiPrice(String fSyms, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+
+        if (fSyms.length() > 300) {
+            throw new InvalidParameterException("The max character length of fSyms is 300!");
+        }
+
+        if (tSyms.length() > 100) {
+            throw new InvalidParameterException("The max character length of tSyms is 100!");
+        }
+
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricemulti?fsyms=%s&tsyms=%s",
-                String.join(",", fromSym).toUpperCase(), String.join(",", toSym).toUpperCase());
+                fSyms.toUpperCase(), tSyms.toUpperCase());
+
+        if (tryConversion != null) {
+            formattedUrl += "&tryConversion=" + tryConversion.toString();
+        }
+
+        if (e != null) {
+            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            formattedUrl += "&e=" + e;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
         Type type = new TypeToken<Map<String, Map<String, Double>>>() {}.getType();
@@ -55,17 +128,57 @@ public class Market {
     }
 
     /**
+     * @see Market#getMultiPrice(String, String, Boolean, String, String, Boolean)
+     */
+    public static Map<String, Map<String, Double>> getMultiPrice(String fSym, String tSyms) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+        return getMultiPrice(fSym, tSyms, null, null, null, null);
+    }
+
+    /**
      * Gets full information about multiple input symbols to multiple output symbols
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @return MultiFull A object containing different API data
+     * @param fSyms Comma separated cryptocurrency symbols list [Max character length: 300]
+     * @param tSyms Comma separated cryptocurrency symbols list to convert into [Max character length: 100]
+     * @param tryConversion If set to false, it will try to get only direct trading values
+     * @param e The exchange to obtain data from (our aggregated average - CCCAGG - by default) [Max character length: 30]
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
+     * @return Map containing price for each to-symbol
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Map<String, Map<String, toSym>> getMultiFull(String[] fromSym, String[] toSym) throws
-            IOException, OutOfCallsException {
+    public static Map<String, Map<String, toSym>> getMultiFull(String fSyms, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+
+        if (fSyms.length() > 300) {
+            throw new InvalidParameterException("The max character length of fSyms is 300!");
+        }
+
+        if (tSyms.length() > 100) {
+            throw new InvalidParameterException("The max character length of tSyms is 100!");
+        }
+
         String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricemultifull?fsyms=%s&tsyms=%s",
-                String.join(",", fromSym).toUpperCase(), String.join(",", toSym).toUpperCase());
+                fSyms.toUpperCase(), tSyms.toUpperCase());
+
+        if (tryConversion != null) {
+            formattedUrl += "&tryConversion=" + tryConversion.toString();
+        }
+
+        if (e != null) {
+            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            formattedUrl += "&e=" + e;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
@@ -74,36 +187,51 @@ public class Market {
     }
 
     /**
-     * Gets the current day price average for a symbol pair
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @return DayAverage A object containing different API data
-     * @throws IOException when a connection cannot be made
-     * @throws OutOfCallsException when no more API calls are available
+     * @see Market#getMultiFull(String, String, Boolean, String, String, Boolean)
      */
-    public static double getDayAverage(String fromSym, String toSym) throws
-            IOException, OutOfCallsException {
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/dayAvg?fsym=%s&tsym=%s",
-                fromSym.toUpperCase(), toSym.toUpperCase());
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
-
-        JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
-        return jsonObject.get(toSym).getAsDouble();
+    public static Map<String, Map<String, toSym>> getMultiFull(String fSym, String tSyms) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+        return getMultiFull(fSym, tSyms, null, null, null, null);
     }
 
     /**
      * Gets the day average price for a symbol pair on multiple exchanges
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
-     * @param exchanges The exchanges to consider in the price average
+     * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
+     * @param tSym The currency symbol to convert into [Max character length: 10]
+     * @param e The exchange to obtain data from (our aggregated average - CCCAGG - by default) [Max character length: 150]
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
      * @return ExchangeAverage A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static ExchangeAverage getExchangeAverage(String fromSym, String toSym, String... exchanges) throws
-            IOException, OutOfCallsException {
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/generateAvg?fsym=%s&tsym=%s&e=%s",
-                fromSym.toUpperCase(), toSym.toUpperCase(), String.join(",", exchanges).toUpperCase());
+    public static ExchangeAverage getExchangeAverage(String fSym, String tSym, String e, String extraParams, Boolean sign) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+        if (fSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of fSyms is 10!");
+        }
+
+        if (tSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of tSym is 10!");
+        }
+
+        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/generateAvg?fsym=%s&tsym=%s",
+                fSym.toUpperCase(), tSym.toUpperCase());
+
+        if (e != null) {
+            if (e.length() > 150) throw new InvalidParameterException("The max character length of e is 150!");
+            formattedUrl += "&e=" + e;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
@@ -111,14 +239,51 @@ public class Market {
     }
 
     /**
+     * @see Market#getExchangeAverage(String, String, String, String, Boolean)
+     */
+    public static ExchangeAverage getExchangeAverage(String fSym, String tSym, String e) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+        return getExchangeAverage(fSym, tSym, e, null, null);
+    }
+
+    /**
+     * @see Market#getExchangeAverage(String, String, String, String, Boolean)
+     */
+    public static ExchangeAverage getExchangeAverage(String fSym, String tSym) throws
+            IOException, OutOfCallsException, InvalidParameterException {
+        return getExchangeAverage(fSym, tSym, "CCCAGG", null, null);
+    }
+
+    /**
      * Gets the top cryptocurrencies trading to the input symbol by volume
-     * @param toSym The symbol (cryptocurrency or currency) to convert to
+     * @param tSym The currency symbol to convert into [Max character length: 10]
+     * @param limit The number of data points to return
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
      * @return TopVolumes A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static List<Coin> getTopVolumes(String toSym) throws IOException, OutOfCallsException {
-        String formattedUrl = "https://min-api.cryptocompare.com/data/top/volumes?tsym=" + toSym.toUpperCase();
+    public static List<Coin> getTopVolumes(String tSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
+        if (tSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of tSym is 10!");
+        }
+
+        String formattedUrl = "https://min-api.cryptocompare.com/data/top/volumes?tsym=" + tSym.toUpperCase();
+
+        if (limit != null) {
+            formattedUrl += "&limit=" + limit;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
@@ -127,14 +292,49 @@ public class Market {
     }
 
     /**
+     * @see Market#getTopVolumes(String, Integer, String, Boolean)
+     */
+    public static List<Coin> getTopVolumes(String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
+        return getTopVolumes(tSym, limit, null, null);
+    }
+
+    /**
+     * @see Market#getTopVolumes(String, Integer, String, Boolean)
+     */
+    public static List<Coin> getTopVolumes(String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
+        return getTopVolumes(tSym, null, null, null);
+    }
+
+    /**
      * Gets the top trading pairs from an input symbol by volume
-     * @param fromSym The symbol (cryptocurrency or currency) to convert from
-     * @return TopPairs A object containing different API data
+     * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
+     * @param limit The number of data points to return
+     * @param extraParams The name of your application (we recommend you send it) [Max character length: 2000]
+     * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
+     * @return List A List of pair objects
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static List<Pair> getTopPairs(String fromSym) throws IOException, OutOfCallsException {
-        String formattedUrl = "https://min-api.cryptocompare.com/data/top/pairs?fsym=" + fromSym.toUpperCase();
+    public static List<Pair> getTopPairs(String fSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
+        if (fSym.length() > 10) {
+            throw new InvalidParameterException("The max character length of fSym is 10!");
+        }
+
+        String formattedUrl = "https://min-api.cryptocompare.com/data/top/pairs?fsym=" + fSym.toUpperCase();
+
+        if (limit != null) {
+            formattedUrl += "&limit=" + limit;
+        }
+
+        if (extraParams != null) {
+            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            formattedUrl += "&extraParams=" + extraParams;
+        }
+
+        if (sign != null) {
+            formattedUrl += "&sign=" + sign.toString();
+        }
+
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
@@ -143,9 +343,16 @@ public class Market {
     }
 
     /**
+     * @see Market#getTopPairs(String, Integer, String, Boolean)
+     */
+    public static List<Pair> getTopPairs(String fSym) throws IOException, OutOfCallsException, InvalidParameterException {
+        return getTopPairs(fSym, null, null, null);
+    }
+
+    /**
      * Represents the trading pair to-symbol
      */
-    public class toSym {
+    public static class toSym {
         /**
          * Type
          */
@@ -531,7 +738,7 @@ public class Market {
     /**
      * Represents exchange average
      */
-    public class ExchangeAverage {
+    public static class ExchangeAverage {
         /**
          * Markets used to get data
          */
@@ -783,7 +990,7 @@ public class Market {
     /**
      * Represents a cryptocurrency
      */
-    public class Coin {
+    public static class Coin {
         /**
          * The symbol of the coin
          */
@@ -871,7 +1078,7 @@ public class Market {
     /**
      * Represents a trading pair
      */
-    public class Pair {
+    public static class Pair {
         /**
          * Exchange the pair is being traded on
          */

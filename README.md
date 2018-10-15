@@ -35,7 +35,7 @@ dependencies {
 ```java
 public class Test {
     public static void main(String[] args) {
-        double dayAverage = Market.getDayAverage("BTC", "USD");
+        double dayAverage = Historic.getDayAverage("BTC", "USD");
         System.out.println("Bitcoin day average:");
         System.out.println(dayAverage);
 
@@ -43,7 +43,7 @@ public class Test {
         System.out.println("Bitcoin average from Coinbase, Kraken, and Bitstamp:");
         System.out.println(exchangeAverage.getHigh24Hour());
 
-        Map<String, Double> btcPrice = Market.getPrice("BTC", "USD", "EUR");
+        Map<String, Double> btcPrice = Market.getPrice("BTC", "USD,EUR");
         System.out.println("Bitcoin price in USD and EUR:");
         System.out.println(btcPrice);
     }

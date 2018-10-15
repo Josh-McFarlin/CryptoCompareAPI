@@ -3,7 +3,6 @@ package me.joshmcfarlin.cryptocompareapi;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
-import me.joshmcfarlin.cryptocompareapi.utils.IntervalTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.RateLimiting;
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +18,7 @@ public class Example {
         System.out.println(RateLimiting.callable(CallTypes.PRICE));
     }
 
-    private static void coinsTest() throws IOException, OutOfCallsException, InterruptedException {
+    private static void coinsTest() throws IOException, OutOfCallsException {
         System.out.println("\nCoins APITest:");
         Coins.CoinList coinList = Coins.getCoinList();
 
@@ -35,7 +34,7 @@ public class Example {
         System.out.println(btcSnapshot.getData().getGeneral().getStartDate());
     }
 
-    private static void exchangesTest() throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+    private static void exchangesTest() throws IOException, OutOfCallsException, InvalidParameterException {
         System.out.println("\nExchanges APITest:");
         Exchanges.ExchangeList exchangeList = Exchanges.getAllExchanges();
 
@@ -47,7 +46,7 @@ public class Example {
         System.out.println(topExchanges.get(0).getExchange());
     }
 
-    private static void newsTest() throws IOException, OutOfCallsException, InterruptedException {
+    private static void newsTest() throws IOException, OutOfCallsException {
         System.out.println("\nNews APITest:");
         List<News.NewsProvider> newsProviders = News.NewsProviderList();
         System.out.println("First news provider:");
@@ -60,14 +59,14 @@ public class Example {
         System.out.println(newsList.get(0));
     }
 
-    private static void socialTest() throws IOException, OutOfCallsException, InterruptedException {
+    private static void socialTest() throws IOException, OutOfCallsException {
         System.out.println("\nSocial APITest:");
         Social.SocialStats socialStats = Social.getStats(1182);
         System.out.println("Facebook likes:");
         System.out.println(socialStats.getData().getFacebook().getLikes());
     }
 
-    private static void historicTest() throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+    private static void historicTest() throws IOException, OutOfCallsException, InvalidParameterException {
         System.out.println("\nHistoric APITest:");
         Historic.History history = Historic.getDay("BTC", "USD", 30);
         System.out.println("First high price for BTC-USD:");
@@ -78,25 +77,25 @@ public class Example {
         System.out.println(bitcoinPriceAt);
     }
 
-    private static void marketTest() throws IOException, OutOfCallsException, InterruptedException {
+    private static void marketTest() throws IOException, OutOfCallsException, InvalidParameterException {
         System.out.println("\nMarket APITest:");
-        double dayAverage = Market.getDayAverage("BTC", "USD");
+        double dayAverage = Historic.getDayAverage("BTC", "USD");
         System.out.println("Bitcoin day average:");
         System.out.println(dayAverage);
 
-        Market.ExchangeAverage exchangeAverage = Market.getExchangeAverage("BTC", "USD", "Coinbase", "Kraken", "Bitstamp");
+        Market.ExchangeAverage exchangeAverage = Market.getExchangeAverage("BTC", "USD", "Coinbase,Kraken,Bitstamp");
         System.out.println("Bitcoin average from Coinbase, Kraken, and Bitstamp:");
         System.out.println(exchangeAverage.getHigh24Hour());
 
-        Map<String, Double> btcPrice = Market.getPrice("BTC", "USD", "EUR");
+        Map<String, Double> btcPrice = Market.getPrice("BTC", "USD,EUR");
         System.out.println("Bitcoin price in USD and EUR:");
         System.out.println(btcPrice);
 
-        Map<String, Map<String, Double>> btcETHPrice = Market.getMultiPrice(new String[] {"BTC", "ETH"}, new String[] {"USD", "EUR"});
+        Map<String, Map<String, Double>> btcETHPrice = Market.getMultiPrice("BTC,ETH", "USD,EUR");
         System.out.println("Bitcoin and Ethereum price in USD and EUR:");
         System.out.println(btcETHPrice);
 
-        Map<String, Map<String, Market.toSym>> multiFull = Market.getMultiFull(new String[] {"BTC", "ETH"}, new String[] {"USD", "EUR"});
+        Map<String, Map<String, Market.toSym>> multiFull = Market.getMultiFull("BTC,ETH", "USD,EUR");
         System.out.println("Bitcoin to USD 24 Hour Volume:");
         System.out.println(multiFull.get("BTC").get("USD").getVolume24Hour());
         System.out.println("Ethereum to EUR 24 Hour High:");
@@ -111,7 +110,7 @@ public class Example {
         System.out.println(topPairs);
     }
 
-    private static void miningTest() throws IOException, OutOfCallsException, InterruptedException {
+    private static void miningTest() throws IOException, OutOfCallsException {
         System.out.println("\nMining APITest:");
         Mining.Contracts contracts = Mining.getContracts();
         System.out.println("Current mining contracts:");

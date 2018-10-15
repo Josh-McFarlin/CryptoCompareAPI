@@ -60,7 +60,7 @@ public class Coins {
     /**
      * Represents all coins provided by the CryptoCompare API
      */
-    public class CoinList {
+    public static class CoinList {
         /**
          * Indicates request success
          */
@@ -103,7 +103,7 @@ public class Coins {
         /**
          * Represents a coin on CryptoCompare's website
          */
-        public class CoinEntry {
+        public static class CoinEntry {
             /**
              * The ID of the coin on CryptoCompare's website
              */
@@ -305,7 +305,7 @@ public class Coins {
     /**
      * Represents a snapshot about the coin
      */
-    public class PairSnapshot {
+    public static class PairSnapshot {
         /**
          * Indicates request success
          */
@@ -361,7 +361,7 @@ public class Coins {
         /**
          * Represents data about the coin
          */
-        public class Data {
+        public static class Data {
             /**
              * The algorithm used by the cryptocurrency
              */
@@ -469,7 +469,7 @@ public class Coins {
             /**
              * Represents general data about the coin
              */
-            public class AggregatedData {
+            public static class AggregatedData {
                 /**
                  * Type
                  */
@@ -747,7 +747,7 @@ public class Coins {
             /**
              * Represents exchange data
              */
-            public class Exchange {
+            public static class Exchange {
                 /**
                  * Type
                  */
@@ -949,7 +949,7 @@ public class Coins {
     /**
      * Represents full snapshot data
      */
-    public class CoinSnapshot {
+    public static class CoinSnapshot {
         /**
          * Indicates request success
          */
@@ -1005,7 +1005,7 @@ public class Coins {
         /**
          * Represents the data
          */
-        public class Data {
+        public static class Data {
             /**
              * SEO data for the coin
              */
@@ -1074,7 +1074,7 @@ public class Coins {
             /**
              * Represents SEO data
              */
-            public class SEO {
+            public static class SEO {
                 /**
                  * The page title on CryptoCompare
                  */
@@ -1170,7 +1170,7 @@ public class Coins {
             /**
              * Represents the general data available for this coin
              */
-            public class General {
+            public static class General {
                 /**
                  * The id of the coin
                  */
@@ -1577,7 +1577,7 @@ public class Coins {
                 /**
                  * Represents a coin sponsor
                  */
-                public class Sponsor {
+                public static class Sponsor {
                     /**
                      * The text displayed on the website at the top
                      */
@@ -1622,7 +1622,7 @@ public class Coins {
             /**
              * Represents ICO data
              */
-            public class ICO {
+            public static class ICO {
                 /**
                  * Status of the ICO
                  */

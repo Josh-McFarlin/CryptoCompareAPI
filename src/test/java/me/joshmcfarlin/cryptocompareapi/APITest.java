@@ -2,7 +2,6 @@ package me.joshmcfarlin.cryptocompareapi;
 
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
-import me.joshmcfarlin.cryptocompareapi.utils.IntervalTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.RateLimiting;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +19,7 @@ class APITest {
     }
 
     @Test
-    void shouldReturnCoinListWithCoins() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldReturnCoinListWithCoins() throws IOException, OutOfCallsException {
         Coins.CoinList coinList = Coins.getCoinList();
         assertNotNull(coinList);
         assertFalse(coinList.getCoins().isEmpty());
@@ -28,7 +27,7 @@ class APITest {
     }
 
     @Test
-    void shouldReturnExchangeListWithExchanges() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldReturnExchangeListWithExchanges() throws IOException, OutOfCallsException {
         Exchanges.ExchangeList exchangeList = Exchanges.getAllExchanges();
         assertNotNull(exchangeList);
         assertFalse(exchangeList.getExchanges().isEmpty());
@@ -36,7 +35,7 @@ class APITest {
     }
 
     @Test
-    void shouldNotReturnNullEmptyNewsList() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldNotReturnNullEmptyNewsList() throws IOException, OutOfCallsException {
         List<News.NewsProvider> newsProviders = News.NewsProviderList();
         assertNotNull(newsProviders);
         assertFalse(newsProviders.isEmpty());
@@ -47,7 +46,7 @@ class APITest {
     }
 
     @Test
-    void shouldReturnNewsListWithNews() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldReturnNewsListWithNews() throws IOException, OutOfCallsException {
         List<News.NewsProvider> newsProviders = News.NewsProviderList();
         assertFalse(newsProviders.isEmpty());
         assertNotNull(newsProviders.get(0).getKey());
@@ -58,82 +57,82 @@ class APITest {
     }
 
     @Test
-    void shouldNotReturnNullSocialStats() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldNotReturnNullSocialStats() throws IOException, OutOfCallsException {
         Social.SocialStats socialStats = Social.getStats(1182);
         assertNotNull(socialStats);
         assertNotNull(socialStats.getData());
     }
 
     @Test
-    void shouldNotReturnNullEmptyHistoricData() throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+    void shouldNotReturnNullEmptyHistoricData() throws IOException, OutOfCallsException, InvalidParameterException {
         Historic.History history = Historic.getDay("BTC", "USD", 30);
         assertNotNull(history);
         assertFalse(history.getData().isEmpty());
     }
 
     @Test
-    void shouldNotReturnNullEmptyHistoricPriceMap() throws IOException, OutOfCallsException, InterruptedException, InvalidParameterException {
+    void shouldNotReturnNullEmptyHistoricPriceMap() throws IOException, OutOfCallsException, InvalidParameterException {
         Map bitcoinPriceAt = Historic.getPriceAtTime("BTC", "USD,EUR,ETH", 1515190000);
         assertNotNull(bitcoinPriceAt);
         assertFalse(bitcoinPriceAt.isEmpty());
     }
 
     @Test
-    void shouldNotReturnNullAverage() throws IOException, OutOfCallsException, InterruptedException {
-        double dayAverage = Market.getDayAverage("BTC", "USD");
+    void shouldNotReturnNullAverage() throws IOException, OutOfCallsException, InvalidParameterException {
+        double dayAverage = Historic.getDayAverage("BTC", "USD");
         assertTrue(dayAverage > 0);
     }
 
     @Test
-    void shouldNotReturnNullEmptyExchangeAverage() throws IOException, OutOfCallsException, InterruptedException {
-        Market.ExchangeAverage exchangeAverage = Market.getExchangeAverage("BTC", "USD", "Coinbase", "Kraken", "Bitstamp");
+    void shouldNotReturnNullEmptyExchangeAverage() throws IOException, OutOfCallsException, InvalidParameterException {
+        Market.ExchangeAverage exchangeAverage = Market.getExchangeAverage("BTC", "USD", "Coinbase,Kraken,Bitstamp");
         assertNotNull(exchangeAverage);
     }
 
     @Test
-    void shouldNotReturnNullEmptyMarketAverage() throws IOException, OutOfCallsException, InterruptedException {
-        Map<String, Double> btcPrice = Market.getPrice("BTC", "USD", "EUR");
+    void shouldNotReturnNullEmptyMarketAverage() throws IOException, OutOfCallsException, InvalidParameterException {
+        Map<String, Double> btcPrice = Market.getPrice("BTC", "USD,EUR");
         assertNotNull(btcPrice);
         assertFalse(btcPrice.isEmpty());
     }
 
     @Test
-    void shouldNotReturnNullEmptyMultiPrice() throws IOException, OutOfCallsException, InterruptedException {
-        Map<String, Map<String, Double>> btcETHPrice = Market.getMultiPrice(new String[]{"BTC", "ETH"}, new String[]{"USD", "EUR"});
+    void shouldNotReturnNullEmptyMultiPrice() throws IOException, OutOfCallsException, InvalidParameterException {
+        Map<String, Map<String, Double>> btcETHPrice = Market.getMultiPrice("BTC,ETH", "USD,EUR");
         assertNotNull(btcETHPrice);
         assertFalse(btcETHPrice.isEmpty());
     }
 
     @Test
-    void shouldNotReturnNullEmptyMultiFull() throws IOException, OutOfCallsException, InterruptedException {
-        Map<String, Map<String, Market.toSym>> multiFull = Market.getMultiFull(new String[] {"BTC", "ETH"}, new String[] {"USD", "EUR"});
+    void shouldNotReturnNullEmptyMultiFull() throws IOException, OutOfCallsException, InvalidParameterException {
+        Map<String, Map<String, Market.toSym>> multiFull = Market.getMultiFull("BTC,ETH", "USD,EUR");
         assertNotNull(multiFull);
         assertFalse(multiFull.isEmpty());
     }
 
     @Test
-    void shouldNotReturnNullEmptyTopVolumes() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldNotReturnNullEmptyTopVolumes() throws IOException, OutOfCallsException, InvalidParameterException {
         List<Market.Coin> usdTopVol = Market.getTopVolumes("USD");
         assertNotNull(usdTopVol);
         assertFalse(usdTopVol.isEmpty());
     }
 
     @Test
-    void shouldNotReturnNullEmptyTopPairs() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldNotReturnNullEmptyTopPairs() throws IOException, OutOfCallsException, InvalidParameterException {
         List<Market.Pair> topPairs = Market.getTopPairs("BTC");
         assertNotNull(topPairs);
         assertFalse(topPairs.isEmpty());
     }
 
     @Test
-    void shouldNotReturnNullEmptyMiningContracts() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldNotReturnNullEmptyMiningContracts() throws IOException, OutOfCallsException {
         Mining.Contracts contracts = Mining.getContracts();
         assertNotNull(contracts);
         assertFalse(contracts.getContracts().isEmpty());
     }
 
     @Test
-    void shouldNotReturnNullEmptyMiningHardware() throws IOException, OutOfCallsException, InterruptedException {
+    void shouldNotReturnNullEmptyMiningHardware() throws IOException, OutOfCallsException {
         Mining.Equipment equipment = Mining.getEquipment();
         assertNotNull(equipment);
         assertFalse(equipment.getEquipment().isEmpty());

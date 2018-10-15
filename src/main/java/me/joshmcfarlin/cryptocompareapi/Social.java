@@ -31,7 +31,7 @@ public class Social {
     /**
      * Represents social statistics provided by the CryptoCompare API
      */
-    public class SocialStats {
+    public static class SocialStats {
         /**
          * Indicates request success
          */
@@ -87,7 +87,7 @@ public class Social {
         /**
          * Represents data returned by the API
          */
-        public class Data {
+        public static class Data {
             /**
              * Represents general social info
              */
@@ -169,7 +169,7 @@ public class Social {
             /**
              * Represents general info
              */
-            public class General {
+            public static class General {
                 /**
                  * The coin's short name
                  */
@@ -226,7 +226,7 @@ public class Social {
             /**
              * Represents social info from CryptoCompare
              */
-            public class CryptoCompare {
+            public static class CryptoCompare {
                 /**
                  * Represents similar items
                  */
@@ -334,7 +334,7 @@ public class Social {
                 /**
                  * Represents similar items on CryptoCompare
                  */
-                public class SimilarItem {
+                public static class SimilarItem {
                     /**
                      * The item's id
                      */
@@ -417,7 +417,7 @@ public class Social {
                 /**
                  * Represents CryptopianFollowers
                  */
-                public class CryptopianFollowers {
+                public static class CryptopianFollowers {
                     /**
                      * The follower's id
                      */
@@ -487,7 +487,7 @@ public class Social {
                 /**
                  * Represents PageViewsSplit
                  */
-                public class PageViewsSplit {
+                public static class PageViewsSplit {
                     /**
                      * The int representing overview
                      */
@@ -597,7 +597,7 @@ public class Social {
             /**
              * Represents social data from Twitter
              */
-            public class Twitter {
+            public static class Twitter {
                 /**
                  * The number of followers on Twitter
                  */
@@ -712,7 +712,7 @@ public class Social {
             /**
              * Represents social data from Reddit
              */
-            public class Reddit {
+            public static class Reddit {
                 /**
                  * The number of posts per hour on Reddit
                  */
@@ -844,7 +844,7 @@ public class Social {
             /**
              * Represents social data from Facebook
              */
-            public class Facebook {
+            public static class Facebook {
                 /**
                  * The number of likes on Facebook
                  */
@@ -924,7 +924,7 @@ public class Social {
             /**
              * Represents social data from a code repository
              */
-            public class CodeRepository {
+            public static class CodeRepository {
                 /**
                  * A list of code repository objects
                  */
@@ -954,7 +954,7 @@ public class Social {
                 /**
                  * Represents data about a code repository
                  */
-                public class CodeEntry {
+                public static class CodeEntry {
                     /**
                      * When the repository was created
                      */
@@ -1184,7 +1184,7 @@ public class Social {
                     /**
                      * Represents data about a repository's parent
                      */
-                    public class Parent {
+                    public static class Parent {
                         /**
                          * The name of the repository's parent
                          */
@@ -1228,7 +1228,7 @@ public class Social {
                     /**
                      * Represents data about a repository's source
                      */
-                    public class Source {
+                    public static class Source {
                         /**
                          * The name of the repository's source
                          */

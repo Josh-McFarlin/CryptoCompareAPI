@@ -45,7 +45,7 @@ public class News {
     /**
      * Represents a news provider on CryptoCompare's website
      */
-    public class NewsProvider {
+    public static class NewsProvider {
         /**
          * Key name used by CryptoCompare
          */
@@ -103,7 +103,7 @@ public class News {
     /**
      * Represents a news story on CryptoCompare's website
      */
-    public class NewsStory {
+    public static class NewsStory {
         /**
          * News story ID on CryptoCompare's website
          */
@@ -247,7 +247,7 @@ public class News {
         /**
          * Represents information about a news provider
          */
-        public class ShortNewsProvider {
+        public static class ShortNewsProvider {
             /**
              * Name provided on CryptoCompare's website
              */
