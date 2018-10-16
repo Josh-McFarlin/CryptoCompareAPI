@@ -17,7 +17,7 @@ public class Connection {
      * @return Reader containing Json information
      * @throws IOException when a connection cannot be made
      */
-    static Reader getJSON(String urlString) throws IOException {
+    public static Reader getJSON(String urlString) throws IOException {
         URL url = new URL(urlString);
 
         HttpURLConnection response = (HttpURLConnection) url.openConnection();

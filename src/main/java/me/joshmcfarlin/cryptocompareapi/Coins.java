@@ -21,7 +21,7 @@ public class Coins {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    CoinList getCoinList() throws IOException, OutOfCallsException {
+    public CoinList getCoinList() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/coinlist", CallTypes.PRICE);
 
         return new Gson().fromJson(r, CoinList.class);
@@ -35,7 +35,7 @@ public class Coins {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException {
+    public PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException {
         String formattedUrl = String.format("https://www.cryptocompare.com/api/data/coinsnapshot/?fsym=%s&tsym=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase());
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
@@ -50,7 +50,7 @@ public class Coins {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException {
+    public CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException {
         String formattedUrl = "https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=" + id;
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 

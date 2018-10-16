@@ -25,7 +25,7 @@ public class Exchanges {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    ExchangeList getAllExchanges() throws IOException, OutOfCallsException {
+    public ExchangeList getAllExchanges() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/exchanges", CallTypes.PRICE);
 
         Type type = new TypeToken<Map<String, Map<String, List<String>>>>() {}.getType();
@@ -45,7 +45,7 @@ public class Exchanges {
      * @throws OutOfCallsException when no more API calls are available
      * @throws InvalidParameterException when a given parameter does not meet the API guidelines
      */
-    List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
+    public List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fromSym is 10!");
         }
@@ -80,14 +80,14 @@ public class Exchanges {
     /**
      * @see Exchanges#getTopExchanges(String, String, Integer, String, Boolean)
      */
-    List<Exchange> getTopExchanges(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
+    public List<Exchange> getTopExchanges(String fSym, String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
         return getTopExchanges(fSym, tSym, null, null, null);
     }
 
     /**
      * @see Exchanges#getTopExchanges(String, String, Integer, String, Boolean)
      */
-    List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
+    public List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
         return getTopExchanges(fSym, tSym, limit, null, null);
     }
 

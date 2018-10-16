@@ -22,7 +22,7 @@ public class News {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    List<NewsProvider> newsProviderList() throws IOException, OutOfCallsException {
+    public List<NewsProvider> newsProviderList() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/news/providers", CallTypes.NEWS);
 
         Type newsListType = new TypeToken<List<NewsProvider>>() {}.getType();
@@ -35,7 +35,7 @@ public class News {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    List<NewsStory> newsList() throws IOException, OutOfCallsException {
+    public List<NewsStory> newsList() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/news/", CallTypes.NEWS);
 
         Type newsListType = new TypeToken<List<NewsStory>>() {}.getType();

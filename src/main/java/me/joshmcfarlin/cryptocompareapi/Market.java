@@ -31,7 +31,7 @@ public class Market {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    Map<String, Double> getPrice(String fSym, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
+    public Map<String, Double> getPrice(String fSym, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
             IOException, OutOfCallsException, InvalidParameterException {
 
         if (fSym.length() > 10) {
@@ -72,7 +72,7 @@ public class Market {
     /**
      * @see Market#getPrice(String, String, Boolean, String, String, Boolean)
      */
-    Map<String, Double> getPrice(String fSym, String tSyms) throws
+    public Map<String, Double> getPrice(String fSym, String tSyms) throws
             IOException, OutOfCallsException, InvalidParameterException {
         return getPrice(fSym, tSyms, null, null, null, null);
     }
@@ -89,7 +89,7 @@ public class Market {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    Map<String, Map<String, Double>> getMultiPrice(String fSyms, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
+    public Map<String, Map<String, Double>> getMultiPrice(String fSyms, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
             IOException, OutOfCallsException, InvalidParameterException {
 
         if (fSyms.length() > 300) {
@@ -130,7 +130,7 @@ public class Market {
     /**
      * @see Market#getMultiPrice(String, String, Boolean, String, String, Boolean)
      */
-    Map<String, Map<String, Double>> getMultiPrice(String fSym, String tSyms) throws
+    public Map<String, Map<String, Double>> getMultiPrice(String fSym, String tSyms) throws
             IOException, OutOfCallsException, InvalidParameterException {
         return getMultiPrice(fSym, tSyms, null, null, null, null);
     }
@@ -147,7 +147,7 @@ public class Market {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    Map<String, Map<String, toSym>> getMultiFull(String fSyms, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
+    public Map<String, Map<String, toSym>> getMultiFull(String fSyms, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
             IOException, OutOfCallsException, InvalidParameterException {
 
         if (fSyms.length() > 300) {
@@ -189,7 +189,7 @@ public class Market {
     /**
      * @see Market#getMultiFull(String, String, Boolean, String, String, Boolean)
      */
-    Map<String, Map<String, toSym>> getMultiFull(String fSym, String tSyms) throws
+    public Map<String, Map<String, toSym>> getMultiFull(String fSym, String tSyms) throws
             IOException, OutOfCallsException, InvalidParameterException {
         return getMultiFull(fSym, tSyms, null, null, null, null);
     }
@@ -205,7 +205,7 @@ public class Market {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    ExchangeAverage getExchangeAverage(String fSym, String tSym, String e, String extraParams, Boolean sign) throws
+    public ExchangeAverage getExchangeAverage(String fSym, String tSym, String e, String extraParams, Boolean sign) throws
             IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fSyms is 10!");
@@ -241,7 +241,7 @@ public class Market {
     /**
      * @see Market#getExchangeAverage(String, String, String, String, Boolean)
      */
-    ExchangeAverage getExchangeAverage(String fSym, String tSym, String e) throws
+    public ExchangeAverage getExchangeAverage(String fSym, String tSym, String e) throws
             IOException, OutOfCallsException, InvalidParameterException {
         return getExchangeAverage(fSym, tSym, e, null, null);
     }
@@ -249,7 +249,7 @@ public class Market {
     /**
      * @see Market#getExchangeAverage(String, String, String, String, Boolean)
      */
-    ExchangeAverage getExchangeAverage(String fSym, String tSym) throws
+    public ExchangeAverage getExchangeAverage(String fSym, String tSym) throws
             IOException, OutOfCallsException, InvalidParameterException {
         return getExchangeAverage(fSym, tSym, "CCCAGG", null, null);
     }
@@ -264,7 +264,7 @@ public class Market {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    List<Coin> getTopVolumes(String tSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
+    public List<Coin> getTopVolumes(String tSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
         if (tSym.length() > 10) {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
@@ -294,14 +294,14 @@ public class Market {
     /**
      * @see Market#getTopVolumes(String, Integer, String, Boolean)
      */
-    List<Coin> getTopVolumes(String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
+    public List<Coin> getTopVolumes(String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
         return getTopVolumes(tSym, limit, null, null);
     }
 
     /**
      * @see Market#getTopVolumes(String, Integer, String, Boolean)
      */
-    List<Coin> getTopVolumes(String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
+    public List<Coin> getTopVolumes(String tSym) throws IOException, OutOfCallsException, InvalidParameterException {
         return getTopVolumes(tSym, null, null, null);
     }
 
@@ -315,7 +315,7 @@ public class Market {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    List<Pair> getTopPairs(String fSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
+    public List<Pair> getTopPairs(String fSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
@@ -345,7 +345,7 @@ public class Market {
     /**
      * @see Market#getTopPairs(String, Integer, String, Boolean)
      */
-    List<Pair> getTopPairs(String fSym) throws IOException, OutOfCallsException, InvalidParameterException {
+    public List<Pair> getTopPairs(String fSym) throws IOException, OutOfCallsException, InvalidParameterException {
         return getTopPairs(fSym, null, null, null);
     }
 

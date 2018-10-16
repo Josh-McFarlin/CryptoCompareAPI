@@ -20,7 +20,7 @@ public class Mining {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    Contracts getContracts() throws IOException, OutOfCallsException {
+    public Contracts getContracts() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningcontracts/", CallTypes.OTHER);
 
         return new Gson().fromJson(r, Contracts.class);
@@ -32,7 +32,7 @@ public class Mining {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    Equipment getEquipment() throws IOException, OutOfCallsException {
+    public Equipment getEquipment() throws IOException, OutOfCallsException {
         Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningequipment/", CallTypes.OTHER);
 
         return new Gson().fromJson(r, Equipment.class);
