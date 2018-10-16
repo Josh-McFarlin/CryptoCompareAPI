@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-        implementation 'me.joshmcfarlin:CryptoCompareAPI:master'
+        implementation 'me.joshmcfarlin:CryptoCompareAPI:master-SNAPSHOT'
 }
 ```
 
@@ -29,7 +29,7 @@ dependencies {
 <dependency>
     <groupId>me.joshmcfarlin</groupId>
     <artifactId>CryptoCompareAPI</artifactId>
-    <version>master</version>
+    <version>master-SNAPSHOT</version>
 </dependency>
 ```
 
