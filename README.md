@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.Josh-McFarlin:CryptoCompareAPI:master-SNAPSHOT'
+        implementation 'me.joshmcfarlin:CryptoCompareAPI:master'
 }
 ```
 
@@ -25,9 +25,9 @@ dependencies {
 ```
 ```xml
 <dependency>
-    <groupId>com.github.Josh-McFarlin</groupId>
+    <groupId>me.joshmcfarlin</groupId>
     <artifactId>CryptoCompareAPI</artifactId>
-    <version>master-SNAPSHOT</version>
+    <version>master</version>
 </dependency>
 ```
 
@@ -38,16 +38,16 @@ public class Test {
     
     public static void main(String[] args) {
         double dayAverage = api.historic.getDayAverage("BTC", "USD");
-            System.out.println("Bitcoin day average:");
-            System.out.println(dayAverage);
-    
-            Market.ExchangeAverage exchangeAverage = api.market.getExchangeAverage("BTC", "USD", "Coinbase,Kraken,Bitstamp");
-            System.out.println("Bitcoin average from Coinbase, Kraken, and Bitstamp:");
-            System.out.println(exchangeAverage.getHigh24Hour());
-    
-            Map<String, Double> btcPrice = api.market.getPrice("BTC", "USD,EUR");
-            System.out.println("Bitcoin price in USD and EUR:");
-            System.out.println(btcPrice);
+        System.out.println("Bitcoin day average:");
+        System.out.println(dayAverage);
+
+        Market.ExchangeAverage exchangeAverage = api.market.getExchangeAverage("BTC", "USD", "Coinbase,Kraken,Bitstamp");
+        System.out.println("Bitcoin average from Coinbase, Kraken, and Bitstamp:");
+        System.out.println(exchangeAverage.getHigh24Hour());
+
+        Map<String, Double> btcPrice = api.market.getPrice("BTC", "USD,EUR");
+        System.out.println("Bitcoin price in USD and EUR:");
+        System.out.println(btcPrice);
     }
 }
 ```
