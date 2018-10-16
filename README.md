@@ -1,7 +1,9 @@
 # CryptoCompareAPI
 A Java implementation of the [CryptoCompare API service.](https://min-api.cryptocompare.com/)
 
-## Downloading
+## Download
+
+[![Release](https://jitpack.io/v/me.joshmcfarlin/CryptoCompareAPI.svg)](https://jitpack.io/#me.joshmcfarlin/CryptoCompareAPI)
 
 #### Gradle
 ```
