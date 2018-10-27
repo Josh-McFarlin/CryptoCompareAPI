@@ -2,6 +2,7 @@ package me.joshmcfarlin.cryptocompareapi;
 
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.models.coin.CoinList;
 import me.joshmcfarlin.cryptocompareapi.utils.RateLimiting;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ class APITest {
 
     @Test
     void shouldReturnCoinListWithCoins() throws IOException, OutOfCallsException {
-        Coins.CoinList coinList = api.coins.getCoinList();
+        CoinList coinList = api.coins.getCoinList();
         assertNotNull(coinList);
         assertFalse(coinList.getCoins().isEmpty());
         assertEquals("BTC", coinList.getCoins().get("BTC").getName());

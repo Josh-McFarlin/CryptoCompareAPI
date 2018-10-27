@@ -1,6 +1,8 @@
 package me.joshmcfarlin.cryptocompareapi;
 
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
+import me.joshmcfarlin.cryptocompareapi.models.coin.CoinSnapshot;
+import me.joshmcfarlin.cryptocompareapi.models.coin.PairSnapshot;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.utils.RateLimiting;
@@ -27,11 +29,11 @@ public class Example {
         System.out.println("Bitcoin ID:");
         //System.out.println(coinList.getCoins().get("BTC").getId());
 
-        Coins.PairSnapshot ethBTCSnapshot = api.coins.getPairSnapshot("ETH", "BTC");
+        PairSnapshot ethBTCSnapshot = api.coins.getPairSnapshot("ETH", "BTC");
         System.out.println("Ethereum Block Number:");
         System.out.println(ethBTCSnapshot.getData().getBlockNumber());
 
-        Coins.CoinSnapshot btcSnapshot = api.coins.getCoinSnapshot(1182);
+        CoinSnapshot btcSnapshot = api.coins.getCoinSnapshot(1182);
         System.out.println("Bitcoin Start Date:");
         System.out.println(btcSnapshot.getData().getGeneral().getStartDate());
     }
