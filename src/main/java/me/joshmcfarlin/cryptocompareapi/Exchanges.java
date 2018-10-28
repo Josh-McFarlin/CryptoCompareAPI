@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
+import me.joshmcfarlin.cryptocompareapi.models.exchanges.ExchangeList;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -153,91 +153,6 @@ public class Exchanges {
          */
         public double getVolume24hTo() {
             return volume24hTo;
-        }
-    }
-
-    /**
-     * Represents a map of exchanges
-     */
-    public class ExchangeList {
-        /**
-         * A map of all exchanges
-         */
-        private Map<String, Exchange> exchanges = new HashMap<>();
-
-        /**
-         * Creates an ExchangeList from a map of exchanges
-         * @param map A map of exchanges
-         */
-        ExchangeList(Map<String, Map<String, List<String>>> map) {
-            map.forEach((key, val) -> {
-                Exchange e = new Exchange(val);
-                this.exchanges.put(key, e);
-            });
-        }
-
-        /**
-         * {@link ExchangeList#exchanges}
-         */
-        public Map<String, Exchange> getExchanges() {
-            return exchanges;
-        }
-
-        /**
-         * Represents a cryptocurrency exchange
-         */
-        public class Exchange {
-            /**
-             * A map of coins listed by the exchange
-             */
-            private Map<String, Coin> coins = new HashMap<>();
-
-            /**
-             * Creates an exchange from a list of coins
-             * @param coins A List of coins traded on the exchange
-             */
-            Exchange(Map<String, List<String>> coins) {
-                coins.forEach((coin, pair) -> {
-                    if (pair != null && !pair.isEmpty()) {
-                        Coin c = new Coin(pair);
-                        this.coins.put(coin, c);
-                    }
-                });
-            }
-
-            /**
-             * {@link Exchange#coins}
-             */
-            public Map<String, Coin> getCoins() {
-                return coins;
-            }
-        }
-
-        /**
-         * Represents a cryptocurrency
-         */
-        public class Coin {
-            /**
-             * A list of trading pairs
-             */
-            private List<String> tradingPairs;
-
-            /**
-             * Creates a coin from a list of trading pairs
-             * @param tradingPairs The trading pairs to set
-             */
-            Coin(List<String> tradingPairs) {
-                if (tradingPairs != null && !tradingPairs.isEmpty()) {
-                    this.tradingPairs = tradingPairs;
-                }
-            }
-
-            /**
-             * {@link Coin#tradingPairs}
-             */
-            public List<String> getTradingPairs() {
-                return tradingPairs;
-            }
         }
     }
 }
