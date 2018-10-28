@@ -31,8 +31,8 @@ public class Market {
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public Map<String, Double> getPrice(String fSym, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
-            IOException, OutOfCallsException, InvalidParameterException {
+    public Map<String, Double> getPrice(String fSym, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign)
+			throws IOException, OutOfCallsException, InvalidParameterException {
 
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fSym is 10!");

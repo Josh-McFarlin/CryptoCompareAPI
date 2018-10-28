@@ -1,14 +1,17 @@
 package me.joshmcfarlin.cryptocompareapi;
 
-import com.google.gson.*;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.models.historic.AverageType;
+import me.joshmcfarlin.cryptocompareapi.models.historic.CalcType;
+import me.joshmcfarlin.cryptocompareapi.models.historic.History;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
-import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
-import java.io.*;
-import java.util.List;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Map;
 
 /**
@@ -124,7 +127,8 @@ public class Historic {
      */
     public History getHour(String fSym, String tSym, Boolean tryConversion, String e,
                                   Integer aggregate, Boolean aggregatePredictableTimePeriods,
-                                  Integer limit, Integer toTs, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
+                                  Integer limit, Integer toTs, String extraParams, Boolean sign)
+			throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
@@ -162,7 +166,8 @@ public class Historic {
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > 2000)
+            	throw new InvalidParameterException("The max character length of extraParams is 2000!");
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -214,7 +219,8 @@ public class Historic {
      */
     public History getDay(String fSym, String tSym, Boolean tryConversion, String e,
                                  Integer aggregate, Boolean aggregatePredictableTimePeriods,
-                                 Integer limit, Integer toTs, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
+                                 Integer limit, Integer toTs, String extraParams, Boolean sign)
+			throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
@@ -252,7 +258,8 @@ public class Historic {
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > 2000)
+            	throw new InvalidParameterException("The max character length of extraParams is 2000!");
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -301,7 +308,8 @@ public class Historic {
      * @throws OutOfCallsException when no more API calls are available
      */
     public Map getPriceAtTime(String fSym, String tSyms, Boolean tryConversion, Integer ts,
-                                     String e, String extraParams, CalcType calculationType, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
+							  String e, String extraParams, CalcType calculationType, Boolean sign)
+			throws IOException, OutOfCallsException, InvalidParameterException {
         if (fSym.length() > 10) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
@@ -437,301 +445,4 @@ public class Historic {
     * Historical Daily Exchange Volume
     * Historical Hourly Exchange Volume
      */
-
-    /**
-     * Represents Average Type used by the API
-     */
-    public enum AverageType {
-        /**
-         * A VWAP of the hourly close price
-         */
-        HOURVWAP("HourVWAP"),
-        /**
-         * The average between the 24H high and low
-         */
-        MIDHIGHLOW("MidHighLow"),
-        /**
-         * The total volume from / the total volume to (only avilable with tryConversion set to false)
-         */
-        VOLFVOLT("VolFVolT");
-
-        /**
-         * The text that will be passed to the API call
-         */
-        private String text;
-
-        AverageType(String text) {
-            this.text = text;
-        }
-
-        /**
-         * {@link AverageType#text}
-         */
-        public String getText() {
-            return text;
-        }
-    }
-
-    /**
-     * Represents Calculation Type used by the API
-     */
-    public enum CalcType {
-        /**
-         * A close of the day close price
-         */
-        CLOSE("Close"),
-        /**
-         * The average between the 24H high and low
-         */
-        MIDHIGHLOW("MidHighLow"),
-        /**
-         * The total volume to / the total volume from
-         */
-        VOLFVOLT("VolFVolT");
-
-        /**
-         * The text that will be passed to the API call
-         */
-        private String text;
-
-        CalcType(String text) {
-            this.text = text;
-        }
-
-        /**
-         * {@link CalcType#text}
-         */
-        public String getText() {
-            return text;
-        }
-    }
-
-    /**
-     * Represents historic data provided by the CryptoCompare API
-     */
-    public class History {
-        /**
-         * Indicates request success
-         */
-        @SerializedName("Response")
-        private String response;
-
-        /**
-         * Indicates HTML request response type
-         */
-        @SerializedName("Type")
-        private int type;
-
-        /**
-         * Historic data returned by the API
-         */
-        @SerializedName("Data")
-        private List<Data> data;
-
-        /**
-         * Indicates the Unix starting time of the request
-         */
-        @SerializedName("TimeTo")
-        private int timeTo;
-
-        /**
-         * Indicates the Unix ending time of the request
-         */
-        @SerializedName("TimeFrom")
-        private int timeFrom;
-
-        /**
-         * Indicates first value in array
-         */
-        @SerializedName("FirstValueInArray")
-        private boolean firstValueInArray;
-
-        /**
-         * Indicates if a currency conversion was used to get the data
-         */
-        @SerializedName("ConversionType")
-        private ConversionType conversionType;
-
-        /**
-         * Indicates if the data was aggregated
-         */
-        @SerializedName("Aggregated")
-        private boolean aggregated;
-
-        /**
-         * {@link History#response}
-         */
-        public String getResponse() {
-            return response;
-        }
-
-        /**
-         * {@link History#type}
-         */
-        public int getType() {
-            return type;
-        }
-
-        /**
-         * {@link History#data}
-         */
-        public List<Data> getData() {
-            return data;
-        }
-
-        /**
-         * {@link History#timeTo}
-         */
-        public int getTimeTo() {
-            return timeTo;
-        }
-
-        /**
-         * {@link History#timeFrom}
-         */
-        public int getTimeFrom() {
-            return timeFrom;
-        }
-
-        /**
-         * {@link History#firstValueInArray}
-         */
-        public boolean isFirstValueInArray() {
-            return firstValueInArray;
-        }
-
-        /**
-         * {@link History#conversionType}
-         */
-        public ConversionType getConversionType() {
-            return conversionType;
-        }
-
-        /**
-         * {@link History#aggregated}
-         */
-        public boolean isAggregated() {
-            return aggregated;
-        }
-
-        /**
-         * Represents data returned by the API
-         */
-        public class Data {
-            /**
-             * Represents Unix time
-             */
-            private int time;
-
-            /**
-             * Symbol close on provided date
-             */
-            private double close;
-
-            /**
-             * Symbol high on provided date
-             */
-            private double high;
-
-            /**
-             * Symbol low on provided date
-             */
-            private double low;
-
-            /**
-             * Symbol open on provided date
-             */
-            private double open;
-
-            /**
-             * Volume from the symbol on provided date
-             */
-            @SerializedName("volumefrom")
-            private double volumeFrom;
-
-            /**
-             * Volume to the symbol on provided date
-             */
-            @SerializedName("volumeto")
-            private double volumeTo;
-
-            /**
-             * {@link Data#time}
-             */
-            public int getTime() {
-                return time;
-            }
-
-            /**
-             * {@link Data#close}
-             */
-            public double getClose() {
-                return close;
-            }
-
-            /**
-             * {@link Data#high}
-             */
-            public double getHigh() {
-                return high;
-            }
-
-            /**
-             * {@link Data#low}
-             */
-            public double getLow() {
-                return low;
-            }
-
-            /**
-             * {@link Data#open}
-             */
-            public double getOpen() {
-                return open;
-            }
-
-            /**
-             * {@link Data#volumeFrom}
-             */
-            public double getVolumeFrom() {
-                return volumeFrom;
-            }
-
-            /**
-             * {@link Data#volumeTo}
-             */
-            public double getVolumeTo() {
-                return volumeTo;
-            }
-        }
-
-        /**
-         * Represents a conversion type between cryptocurrencies or currencies
-         */
-        public class ConversionType {
-            /**
-             * The type of currency used to make the conversion
-             */
-            private String type;
-
-            /**
-             * The symbol of the currency used in the conversion
-             */
-            private String conversionSymbol;
-
-            /**
-             * {@link ConversionType#type}
-             */
-            public String getType() {
-                return type;
-            }
-
-            /**
-             * {@link ConversionType#conversionSymbol}
-             */
-            public String getConversionSymbol() {
-                return conversionSymbol;
-            }
-        }
-    }
 }
