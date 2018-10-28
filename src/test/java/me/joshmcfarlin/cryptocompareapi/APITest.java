@@ -2,6 +2,7 @@ package me.joshmcfarlin.cryptocompareapi;
 
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.api.*;
 import me.joshmcfarlin.cryptocompareapi.models.coin.CoinList;
 import me.joshmcfarlin.cryptocompareapi.utils.RateLimiting;
 import org.junit.jupiter.api.Test;

@@ -1,0 +1,11 @@
+me.joshmcfarlin.cryptocompareapi
+me.joshmcfarlin.cryptocompareapi.Exceptions
+me.joshmcfarlin.cryptocompareapi.api
+me.joshmcfarlin.cryptocompareapi.models.coin
+me.joshmcfarlin.cryptocompareapi.models.exchanges
+me.joshmcfarlin.cryptocompareapi.models.historic
+me.joshmcfarlin.cryptocompareapi.models.market
+me.joshmcfarlin.cryptocompareapi.models.mining
+me.joshmcfarlin.cryptocompareapi.models.news
+me.joshmcfarlin.cryptocompareapi.models.social
+me.joshmcfarlin.cryptocompareapi.utils

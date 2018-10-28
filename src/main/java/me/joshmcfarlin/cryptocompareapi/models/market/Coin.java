@@ -1,7 +1,7 @@
 package me.joshmcfarlin.cryptocompareapi.models.market;
 
 import com.google.gson.annotations.SerializedName;
-import me.joshmcfarlin.cryptocompareapi.Market;
+import me.joshmcfarlin.cryptocompareapi.api.Market;
 
 /**
  * Represents a cryptocurrency
@@ -49,42 +49,42 @@ public class Coin {
 	}
 
 	/**
-	 * {@link Market.Coin#symbol}
+	 * {@link Coin#symbol}
 	 */
 	public String getSymbol() {
 		return symbol;
 	}
 
 	/**
-	 * {@link Market.Coin#supply}
+	 * {@link Coin#supply}
 	 */
 	public double getSupply() {
 		return supply;
 	}
 
 	/**
-	 * {@link Market.Coin#fullName}
+	 * {@link Coin#fullName}
 	 */
 	public String getFullName() {
 		return fullName;
 	}
 
 	/**
-	 * {@link Market.Coin#name}
+	 * {@link Coin#name}
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * {@link Market.Coin#id}
+	 * {@link Coin#id}
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
-	 * {@link Market.Coin#volume24HourTo}
+	 * {@link Coin#volume24HourTo}
 	 */
 	public double getVolume24HourTo() {
 		return volume24HourTo;

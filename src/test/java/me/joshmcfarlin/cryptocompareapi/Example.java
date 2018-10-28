@@ -1,6 +1,7 @@
 package me.joshmcfarlin.cryptocompareapi;
 
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
+import me.joshmcfarlin.cryptocompareapi.api.*;
 import me.joshmcfarlin.cryptocompareapi.models.coin.CoinSnapshot;
 import me.joshmcfarlin.cryptocompareapi.models.coin.PairSnapshot;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;

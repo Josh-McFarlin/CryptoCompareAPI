@@ -1,7 +1,7 @@
 package me.joshmcfarlin.cryptocompareapi.models.mining;
 
 import com.google.gson.annotations.SerializedName;
-import me.joshmcfarlin.cryptocompareapi.Mining;
+import me.joshmcfarlin.cryptocompareapi.api.Mining;
 
 /**
  * Represents data about mining equipment
@@ -121,126 +121,126 @@ public class Equip {
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#id}
+	 * {@link Equip#id}
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#parentID}
+	 * {@link Equip#parentID}
 	 */
 	public int getParentID() {
 		return parentID;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#company}
+	 * {@link Equip#company}
 	 */
 	public String getCompany() {
 		return company;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#url}
+	 * {@link Equip#url}
 	 */
 	public String getUrl() {
 		return url;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#logoURL}
+	 * {@link Equip#logoURL}
 	 */
 	public String getLogoURL() {
 		return logoURL;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#name}
+	 * {@link Equip#name}
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#recommended}
+	 * {@link Equip#recommended}
 	 */
 	public boolean isRecommended() {
 		return recommended;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#sponsored}
+	 * {@link Equip#sponsored}
 	 */
 	public boolean isSponsored() {
 		return sponsored;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#affiliateURL}
+	 * {@link Equip#affiliateURL}
 	 */
 	public String getAffiliateURL() {
 		return affiliateURL;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#algorithm}
+	 * {@link Equip#algorithm}
 	 */
 	public String getAlgorithm() {
 		return algorithm;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#hashesPerSecond}
+	 * {@link Equip#hashesPerSecond}
 	 */
 	public String getHashesPerSecond() {
 		return hashesPerSecond;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#cost}
+	 * {@link Equip#cost}
 	 */
 	public double getCost() {
 		return cost;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#currency}
+	 * {@link Equip#currency}
 	 */
 	public String getCurrency() {
 		return currency;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#equipmentType}
+	 * {@link Equip#equipmentType}
 	 */
 	public String getEquipmentType() {
 		return equipmentType;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#powerConsumption}
+	 * {@link Equip#powerConsumption}
 	 */
 	public String getPowerConsumption() {
 		return powerConsumption;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#currenciesAvailable}
+	 * {@link Equip#currenciesAvailable}
 	 */
 	public String getCurrenciesAvailable() {
 		return currenciesAvailable;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#currenciesAvailableLogo}
+	 * {@link Equip#currenciesAvailableLogo}
 	 */
 	public String getCurrenciesAvailableLogo() {
 		return currenciesAvailableLogo;
 	}
 
 	/**
-	 * {@link Mining.Equipment.Equip#currenciesAvailableName}
+	 * {@link Equip#currenciesAvailableName}
 	 */
 	public String getCurrenciesAvailableName() {
 		return currenciesAvailableName;

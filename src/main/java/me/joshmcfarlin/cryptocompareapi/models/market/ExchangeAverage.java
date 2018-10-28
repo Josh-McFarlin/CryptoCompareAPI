@@ -1,7 +1,7 @@
 package me.joshmcfarlin.cryptocompareapi.models.market;
 
 import com.google.gson.annotations.SerializedName;
-import me.joshmcfarlin.cryptocompareapi.Market;
+import me.joshmcfarlin.cryptocompareapi.api.Market;
 
 /**
  * Represents exchange average
@@ -122,133 +122,133 @@ public class ExchangeAverage {
 	private double changePCTDay;
 
 	/**
-	 * {@link Market.ExchangeAverage#market}
+	 * {@link ExchangeAverage#market}
 	 */
 	public String getMarket() {
 		return market;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#fromSymbol}
+	 * {@link ExchangeAverage#fromSymbol}
 	 */
 	public String getFromSymbol() {
 		return fromSymbol;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#toSymbol}
+	 * {@link ExchangeAverage#toSymbol}
 	 */
 	public String getToSymbol() {
 		return toSymbol;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#flags}
+	 * {@link ExchangeAverage#flags}
 	 */
 	public int getFlags() {
 		return flags;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#price}
+	 * {@link ExchangeAverage#price}
 	 */
 	public double getPrice() {
 		return price;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#lastUpdate}
+	 * {@link ExchangeAverage#lastUpdate}
 	 */
 	public int getLastUpdate() {
 		return lastUpdate;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#lastVolume}
+	 * {@link ExchangeAverage#lastVolume}
 	 */
 	public double getLastVolume() {
 		return lastVolume;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#lastVolumeTo}
+	 * {@link ExchangeAverage#lastVolumeTo}
 	 */
 	public double getLastVolumeTo() {
 		return lastVolumeTo;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#lastTradeID}
+	 * {@link ExchangeAverage#lastTradeID}
 	 */
 	public String getLastTradeID() {
 		return lastTradeID;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#volume24Hour}
+	 * {@link ExchangeAverage#volume24Hour}
 	 */
 	public double getVolume24Hour() {
 		return volume24Hour;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#volume24HourTo}
+	 * {@link ExchangeAverage#volume24HourTo}
 	 */
 	public double getVolume24HourTo() {
 		return volume24HourTo;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#open24Hour}
+	 * {@link ExchangeAverage#open24Hour}
 	 */
 	public double getOpen24Hour() {
 		return open24Hour;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#high24Hour}
+	 * {@link ExchangeAverage#high24Hour}
 	 */
 	public double getHigh24Hour() {
 		return high24Hour;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#low24Hour}
+	 * {@link ExchangeAverage#low24Hour}
 	 */
 	public double getLow24Hour() {
 		return low24Hour;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#lastMarket}
+	 * {@link ExchangeAverage#lastMarket}
 	 */
 	public String getLastMarket() {
 		return lastMarket;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#change24Hour}
+	 * {@link ExchangeAverage#change24Hour}
 	 */
 	public double getChange24Hour() {
 		return change24Hour;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#changePCT24Hour}
+	 * {@link ExchangeAverage#changePCT24Hour}
 	 */
 	public double getChangePCT24Hour() {
 		return changePCT24Hour;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#changeDay}
+	 * {@link ExchangeAverage#changeDay}
 	 */
 	public double getChangeDay() {
 		return changeDay;
 	}
 
 	/**
-	 * {@link Market.ExchangeAverage#changePCTDay}
+	 * {@link ExchangeAverage#changePCTDay}
 	 */
 	public double getChangePCTDay() {
 		return changePCTDay;

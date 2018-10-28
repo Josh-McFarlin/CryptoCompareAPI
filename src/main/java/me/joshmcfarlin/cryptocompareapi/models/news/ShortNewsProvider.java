@@ -1,6 +1,6 @@
 package me.joshmcfarlin.cryptocompareapi.models.news;
 
-import me.joshmcfarlin.cryptocompareapi.News;
+import me.joshmcfarlin.cryptocompareapi.api.News;
 
 /**
  * Represents information about a news provider
@@ -27,21 +27,21 @@ public class ShortNewsProvider {
 	}
 
 	/**
-	 * {@link News.NewsStory.ShortNewsProvider#name}
+	 * {@link ShortNewsProvider#name}
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * {@link News.NewsStory.ShortNewsProvider#lang}
+	 * {@link ShortNewsProvider#lang}
 	 */
 	public String getLang() {
 		return lang;
 	}
 
 	/**
-	 * {@link News.NewsStory.ShortNewsProvider#img}
+	 * {@link ShortNewsProvider#img}
 	 */
 	public String getImg() {
 		return img;

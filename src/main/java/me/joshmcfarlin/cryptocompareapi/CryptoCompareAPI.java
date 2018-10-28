@@ -1,5 +1,7 @@
 package me.joshmcfarlin.cryptocompareapi;
 
+import me.joshmcfarlin.cryptocompareapi.api.*;
+
 /**
  * The class's default class to access all the methods
  */
