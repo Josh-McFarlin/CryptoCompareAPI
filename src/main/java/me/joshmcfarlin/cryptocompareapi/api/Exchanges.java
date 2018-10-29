@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
+import me.joshmcfarlin.cryptocompareapi.models.exchanges.Exchange;
 import me.joshmcfarlin.cryptocompareapi.models.exchanges.ExchangeList;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
@@ -90,70 +91,5 @@ public class Exchanges {
      */
     public List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit) throws IOException, OutOfCallsException, InvalidParameterException {
         return getTopExchanges(fSym, tSym, limit, null, null);
-    }
-
-    /**
-     * Represents a cryptocurrency exchange
-     */
-    public class Exchange {
-        /**
-         * The name of the exchange
-         */
-        private String exchange;
-
-        /**
-         * The symbol being traded from
-         */
-        private String fromSymbol;
-
-        /**
-         * The symbol being traded to
-         */
-        private String toSymbol;
-
-        /**
-         * 24 hour volume of the trading pair
-         */
-        private double volume24h;
-
-        /**
-         * 24 hour volume of the trading pair to
-         */
-        private double volume24hTo;
-
-        /**
-         * {@link Exchange#exchange}
-         */
-        public String getExchange() {
-            return exchange;
-        }
-
-        /**
-         * {@link Exchange#fromSymbol}
-         */
-        public String getFromSymbol() {
-            return fromSymbol;
-        }
-
-        /**
-         * {@link Exchange#toSymbol}
-         */
-        public String getToSymbol() {
-            return toSymbol;
-        }
-
-        /**
-         * {@link Exchange#volume24h}
-         */
-        public double getVolume24h() {
-            return volume24h;
-        }
-
-        /**
-         * {@link Exchange#volume24hTo}
-         */
-        public double getVolume24hTo() {
-            return volume24hTo;
-        }
     }
 }
