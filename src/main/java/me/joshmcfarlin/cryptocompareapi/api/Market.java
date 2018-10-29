@@ -3,6 +3,7 @@ package me.joshmcfarlin.cryptocompareapi.api;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.models.market.Coin;
 import me.joshmcfarlin.cryptocompareapi.models.market.ExchangeAverage;
@@ -45,7 +46,7 @@ public class Market {
             throw new InvalidParameterException("The max character length of tSyms is 500!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/price?fsym=%s&tsyms=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/price?fsym=%s&tsyms=%s",
                 fSym.toUpperCase(), tSyms.toUpperCase());
 
         if (tryConversion != null) {
@@ -103,7 +104,7 @@ public class Market {
             throw new InvalidParameterException("The max character length of tSyms is 100!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricemulti?fsyms=%s&tsyms=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/pricemulti?fsyms=%s&tsyms=%s",
                 fSyms.toUpperCase(), tSyms.toUpperCase());
 
         if (tryConversion != null) {
@@ -161,7 +162,7 @@ public class Market {
             throw new InvalidParameterException("The max character length of tSyms is 100!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricemultifull?fsyms=%s&tsyms=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/pricemultifull?fsyms=%s&tsyms=%s",
                 fSyms.toUpperCase(), tSyms.toUpperCase());
 
         if (tryConversion != null) {
@@ -218,7 +219,7 @@ public class Market {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/generateAvg?fsym=%s&tsym=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/generateAvg?fsym=%s&tsym=%s",
                 fSym.toUpperCase(), tSym.toUpperCase());
 
         if (e != null) {
@@ -272,7 +273,7 @@ public class Market {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
 
-        String formattedUrl = "https://min-api.cryptocompare.com/data/top/volumes?tsym=" + tSym.toUpperCase();
+        String formattedUrl = CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/top/volumes?tsym=" + tSym.toUpperCase();
 
         if (limit != null) {
             formattedUrl += "&limit=" + limit;
@@ -323,7 +324,7 @@ public class Market {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
 
-        String formattedUrl = "https://min-api.cryptocompare.com/data/top/pairs?fsym=" + fSym.toUpperCase();
+        String formattedUrl = CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/top/pairs?fsym=" + fSym.toUpperCase();
 
         if (limit != null) {
             formattedUrl += "&limit=" + limit;

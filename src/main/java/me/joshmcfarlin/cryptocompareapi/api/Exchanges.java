@@ -3,6 +3,7 @@ package me.joshmcfarlin.cryptocompareapi.api;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.models.exchanges.ExchangeList;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
@@ -26,7 +27,7 @@ public class Exchanges {
      * @throws OutOfCallsException when no more API calls are available
      */
     public ExchangeList getAllExchanges() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/exchanges", CallTypes.PRICE);
+        Reader r = Connection.getJSON(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/all/exchanges", CallTypes.PRICE);
 
         Type type = new TypeToken<Map<String, Map<String, List<String>>>>() {}.getType();
         Map<String, Map<String, List<String>>> exchangeMap = new Gson().fromJson(r, type);
@@ -54,7 +55,7 @@ public class Exchanges {
             throw new InvalidParameterException("The max character length of fromSym is 10!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/top/exchanges?fsym=%s&tsym=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/top/exchanges?fsym=%s&tsym=%s",
                 fSym.toUpperCase(), tSym.toUpperCase());
 
         if (limit != null) {

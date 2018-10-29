@@ -2,6 +2,7 @@ package me.joshmcfarlin.cryptocompareapi.api;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
 import me.joshmcfarlin.cryptocompareapi.models.mining.Coin;
 import me.joshmcfarlin.cryptocompareapi.models.mining.Contract;
 import me.joshmcfarlin.cryptocompareapi.models.mining.Contracts;
@@ -18,14 +19,16 @@ import java.util.Map;
  * @author Josh McFarlin
  */
 public class Mining {
-    /**
+
+
+	/**
      * Gets information about recent mining contracts
      * @return Contracts A object containing different API data
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
     public Contracts getContracts() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningcontracts/", CallTypes.OTHER);
+        Reader r = Connection.getJSON(CryptoCompareAPIConstant.CRYPTO_API_URL + "/miningcontracts/", CallTypes.OTHER);
 
         return new Gson().fromJson(r, Contracts.class);
     }
@@ -37,7 +40,7 @@ public class Mining {
      * @throws OutOfCallsException when no more API calls are available
      */
     public Equipment getEquipment() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON("https://www.cryptocompare.com/api/data/miningequipment/", CallTypes.OTHER);
+        Reader r = Connection.getJSON(CryptoCompareAPIConstant.CRYPTO_API_URL + "/miningequipment/", CallTypes.OTHER);
 
         return new Gson().fromJson(r, Equipment.class);
     }

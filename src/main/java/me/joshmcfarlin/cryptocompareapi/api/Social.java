@@ -2,6 +2,7 @@ package me.joshmcfarlin.cryptocompareapi.api;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
 import me.joshmcfarlin.cryptocompareapi.models.social.SocialStats;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
@@ -23,7 +24,7 @@ public class Social {
      * @throws OutOfCallsException when no more API calls are available
      */
     public SocialStats getStats(int id) throws IOException, OutOfCallsException {
-        String formattedUrl = "https://www.cryptocompare.com/api/data/socialstats/?id=" + id;
+        String formattedUrl = CryptoCompareAPIConstant.CRYPTO_API_URL + "/socialstats/?id=" + id;
 
         Reader r = Connection.getJSON(formattedUrl, CallTypes.OTHER);
         return new Gson().fromJson(r, SocialStats.class);

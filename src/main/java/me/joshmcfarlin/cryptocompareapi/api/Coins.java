@@ -2,6 +2,7 @@ package me.joshmcfarlin.cryptocompareapi.api;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
 import me.joshmcfarlin.cryptocompareapi.models.coin.*;
 import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
@@ -23,7 +24,7 @@ public class Coins {
      * @throws OutOfCallsException when no more API calls are available
      */
     public CoinList getCoinList() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON("https://min-api.cryptocompare.com/data/all/coinlist", CallTypes.PRICE);
+        Reader r = Connection.getJSON(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/all/coinlist", CallTypes.PRICE);
 
         return new Gson().fromJson(r, CoinList.class);
     }
@@ -37,7 +38,7 @@ public class Coins {
      * @throws OutOfCallsException when no more API calls are available
      */
     public PairSnapshot getPairSnapshot(String fromSym, String toSym) throws IOException, OutOfCallsException {
-        String formattedUrl = String.format("https://www.cryptocompare.com/api/data/coinsnapshot/?fsym=%s&tsym=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.CRYPTO_API_URL + "/coinsnapshot/?fsym=%s&tsym=%s",
                 fromSym.toUpperCase(), toSym.toUpperCase());
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
@@ -52,7 +53,7 @@ public class Coins {
      * @throws OutOfCallsException when no more API calls are available
      */
     public CoinSnapshot getCoinSnapshot(int id) throws IOException, OutOfCallsException {
-        String formattedUrl = "https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=" + id;
+        String formattedUrl = CryptoCompareAPIConstant.CRYPTO_API_URL + "/coinsnapshotfullbyid/?id=" + id;
         Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
 
         return new Gson().fromJson(r, CoinSnapshot.class);

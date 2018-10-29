@@ -2,6 +2,7 @@ package me.joshmcfarlin.cryptocompareapi.api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.models.historic.AverageType;
@@ -46,7 +47,7 @@ public class Historic {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histominute?fsym=%s&tsym=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/histominute?fsym=%s&tsym=%s",
                 fSym.toUpperCase(), tSym.toUpperCase());
 
         if (tryConversion != null) {
@@ -137,7 +138,7 @@ public class Historic {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histohour?fsym=%s&tsym=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/histohour?fsym=%s&tsym=%s",
                 fSym.toUpperCase(), tSym.toUpperCase());
 
         if (tryConversion != null) {
@@ -229,7 +230,7 @@ public class Historic {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/histoday?fsym=%s&tsym=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/histoday?fsym=%s&tsym=%s",
                 fSym.toUpperCase(), tSym.toUpperCase());
 
         if (tryConversion != null) {
@@ -318,7 +319,7 @@ public class Historic {
             throw new InvalidParameterException("The max character length of tSyms is 30!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/pricehistorical?fsym=%s&tsyms=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/pricehistorical?fsym=%s&tsyms=%s",
                 fSym.toUpperCase(), tSyms.toUpperCase());
 
         if (tryConversion != null) {
@@ -394,7 +395,7 @@ public class Historic {
             throw new InvalidParameterException("The max character length of tSyms is 10!");
         }
 
-        String formattedUrl = String.format("https://min-api.cryptocompare.com/data/dayAvg?fsym=%s&tsym=%s",
+        String formattedUrl = String.format(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/dayAvg?fsym=%s&tsym=%s",
                 fSym.toUpperCase(), tSym.toUpperCase());
 
         if (tryConversion != null) {
