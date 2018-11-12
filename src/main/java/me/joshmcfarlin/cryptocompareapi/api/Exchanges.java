@@ -21,6 +21,7 @@ import java.util.Map;
  * @author Josh McFarlin
  */
 public class Exchanges {
+
     /**
      * Gets all available trading pairs for each cryptocurrency on all exchanges available from the API
      * @return ExchangeList a object containing different API data
@@ -48,11 +49,11 @@ public class Exchanges {
      * @throws InvalidParameterException when a given parameter does not meet the API guidelines
      */
     public List<Exchange> getTopExchanges(String fSym, String tSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
-        if (fSym.length() > 10) {
+        if (fSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fromSym is 10!");
         }
 
-        if (tSym.length() > 10) {
+        if (tSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fromSym is 10!");
         }
 
@@ -64,7 +65,7 @@ public class Exchanges {
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH) throw new InvalidParameterException("The max character length of extraParams is 2000!");
             formattedUrl += "&extraParams=" + extraParams;
         }
 

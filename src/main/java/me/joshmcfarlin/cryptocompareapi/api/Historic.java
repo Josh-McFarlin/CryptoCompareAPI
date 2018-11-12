@@ -20,6 +20,7 @@ import java.util.Map;
  * @author Josh McFarlin
  */
 public class Historic {
+
     /**
      * Get market data for a symbol pair by minute up to to the provided limit
      * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
@@ -39,11 +40,11 @@ public class Historic {
     public History getMinute(String fSym, String tSym, Boolean tryConversion, String e,
                                     Integer aggregate, Boolean aggregatePredictableTimePeriods,
                                     Integer limit, Integer toTs, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
-        if (fSym.length() > 10) {
+        if (fSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
 
-        if (tSym.length() > 10) {
+        if (tSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
 
@@ -55,7 +56,9 @@ public class Historic {
         }
 
         if (e != null) {
-            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            if (e.length() > CryptoCompareAPIConstant.EXCHANGE_FROM_MAX_LENGTH){
+                throw new InvalidParameterException("The max character length of e is 30!");
+            }
             formattedUrl += "&e=" + e;
         }
 
@@ -76,7 +79,9 @@ public class Historic {
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH){
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -130,11 +135,11 @@ public class Historic {
                                   Integer aggregate, Boolean aggregatePredictableTimePeriods,
                                   Integer limit, Integer toTs, String extraParams, Boolean sign)
 			throws IOException, OutOfCallsException, InvalidParameterException {
-        if (fSym.length() > 10) {
+        if (fSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
 
-        if (tSym.length() > 10) {
+        if (tSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
 
@@ -146,7 +151,9 @@ public class Historic {
         }
 
         if (e != null) {
-            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            if (e.length() > CryptoCompareAPIConstant.EXCHANGE_FROM_MAX_LENGTH){
+                throw new InvalidParameterException("The max character length of e is 30!");
+            }
             formattedUrl += "&e=" + e;
         }
 
@@ -167,8 +174,9 @@ public class Historic {
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000)
-            	throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH){
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -222,11 +230,11 @@ public class Historic {
                                  Integer aggregate, Boolean aggregatePredictableTimePeriods,
                                  Integer limit, Integer toTs, String extraParams, Boolean sign)
 			throws IOException, OutOfCallsException, InvalidParameterException {
-        if (fSym.length() > 10) {
+        if (fSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
 
-        if (tSym.length() > 10) {
+        if (tSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
 
@@ -238,7 +246,9 @@ public class Historic {
         }
 
         if (e != null) {
-            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            if (e.length() > CryptoCompareAPIConstant.EXCHANGE_FROM_MAX_LENGTH){
+                throw new InvalidParameterException("The max character length of e is 30!");
+            }
             formattedUrl += "&e=" + e;
         }
 
@@ -259,8 +269,9 @@ public class Historic {
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000)
-            	throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -306,16 +317,15 @@ public class Historic {
      * @param sign If set to true, the server will sign the requests (by default we don't sign them), this is useful for usage in smart contracts
      * @return Map containing information about price at input time
      * @throws IOException when a connection cannot be made
-     * @throws OutOfCallsException when no more API calls are available
      */
     public Map getPriceAtTime(String fSym, String tSyms, Boolean tryConversion, Integer ts,
 							  String e, String extraParams, CalcType calculationType, Boolean sign)
-			throws IOException, OutOfCallsException, InvalidParameterException {
-        if (fSym.length() > 10) {
+            throws IOException, InvalidParameterException, OutOfCallsException {
+        if (fSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
 
-        if (tSyms.length() > 30) {
+        if (tSyms.length() > CryptoCompareAPIConstant.SYMBOL_LIST_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of tSyms is 30!");
         }
 
@@ -331,12 +341,16 @@ public class Historic {
         }
 
         if (e != null) {
-            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            if (e.length() > CryptoCompareAPIConstant.EXCHANGE_FROM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of e is 30!");
+            }
             formattedUrl += "&e=" + e;
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -387,11 +401,11 @@ public class Historic {
                                        Integer UTCHourDiff, Integer toTs, String extraParams, Boolean sign) throws
             IOException, OutOfCallsException, InvalidParameterException {
 
-        if (fSym.length() > 10) {
+        if (fSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
 
-        if (tSym.length() > 30) {
+        if (tSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of tSyms is 10!");
         }
 
@@ -403,7 +417,9 @@ public class Historic {
         }
 
         if (e != null) {
-            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            if (e.length() > CryptoCompareAPIConstant.AVERAGE_TYPE_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of e is 30!");
+            }
             formattedUrl += "&e=" + e;
         }
 
@@ -420,7 +436,9 @@ public class Historic {
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 

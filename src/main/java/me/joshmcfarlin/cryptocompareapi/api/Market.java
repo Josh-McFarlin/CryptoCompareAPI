@@ -23,6 +23,10 @@ import java.util.Map;
  * @author Josh McFarlin
  */
 public class Market {
+
+    public static final int MULTI_PRICE_FROM_SYMBOL_LIST_MAX_LENGTH = 300;
+    public static final int MULTI_PRICE_TO_SYMBOL_LIST_MAX_LENGTH = 100;
+
     /**
      * Gets price of an input symbol in multiple output symbols
      * @param fSym The cryptocurrency symbol of interest [Max character length: 10]
@@ -38,11 +42,11 @@ public class Market {
     public Map<String, Double> getPrice(String fSym, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign)
 			throws IOException, OutOfCallsException, InvalidParameterException {
 
-        if (fSym.length() > 10) {
+        if (fSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
 
-        if (tSyms.length() > 500) {
+        if (tSyms.length() > CryptoCompareAPIConstant.SYMBOL_LONG_LIST_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of tSyms is 500!");
         }
 
@@ -54,12 +58,16 @@ public class Market {
         }
 
         if (e != null) {
-            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            if (e.length() > CryptoCompareAPIConstant.EXCHANGE_FROM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of e is 30!");
+            }
             formattedUrl += "&e=" + e;
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -96,11 +104,11 @@ public class Market {
     public Map<String, Map<String, Double>> getMultiPrice(String fSyms, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
             IOException, OutOfCallsException, InvalidParameterException {
 
-        if (fSyms.length() > 300) {
+        if (fSyms.length() > MULTI_PRICE_FROM_SYMBOL_LIST_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fSyms is 300!");
         }
 
-        if (tSyms.length() > 100) {
+        if (tSyms.length() > MULTI_PRICE_TO_SYMBOL_LIST_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of tSyms is 100!");
         }
 
@@ -154,11 +162,11 @@ public class Market {
     public Map<String, Map<String, ToSym>> getMultiFull(String fSyms, String tSyms, Boolean tryConversion, String e, String extraParams, Boolean sign) throws
             IOException, OutOfCallsException, InvalidParameterException {
 
-        if (fSyms.length() > 300) {
+        if (fSyms.length() > MULTI_PRICE_FROM_SYMBOL_LIST_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fSyms is 300!");
         }
 
-        if (tSyms.length() > 100) {
+        if (tSyms.length() > MULTI_PRICE_TO_SYMBOL_LIST_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of tSyms is 100!");
         }
 
@@ -170,12 +178,16 @@ public class Market {
         }
 
         if (e != null) {
-            if (e.length() > 30) throw new InvalidParameterException("The max character length of e is 30!");
+            if (e.length() > CryptoCompareAPIConstant.EXCHANGE_FROM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of e is 30!");
+            }
             formattedUrl += "&e=" + e;
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -223,12 +235,16 @@ public class Market {
                 fSym.toUpperCase(), tSym.toUpperCase());
 
         if (e != null) {
-            if (e.length() > 150) throw new InvalidParameterException("The max character length of e is 150!");
+            if (e.length() > 150) {
+                throw new InvalidParameterException("The max character length of e is 150!");
+            }
             formattedUrl += "&e=" + e;
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > 2000) {
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -269,7 +285,7 @@ public class Market {
      * @throws OutOfCallsException when no more API calls are available
      */
     public List<Coin> getTopVolumes(String tSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
-        if (tSym.length() > 10) {
+        if (tSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of tSym is 10!");
         }
 
@@ -280,7 +296,9 @@ public class Market {
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 
@@ -320,7 +338,7 @@ public class Market {
      * @throws OutOfCallsException when no more API calls are available
      */
     public List<Pair> getTopPairs(String fSym, Integer limit, String extraParams, Boolean sign) throws IOException, OutOfCallsException, InvalidParameterException {
-        if (fSym.length() > 10) {
+        if (fSym.length() > CryptoCompareAPIConstant.SYMBOL_MAX_LENGTH) {
             throw new InvalidParameterException("The max character length of fSym is 10!");
         }
 
@@ -331,7 +349,9 @@ public class Market {
         }
 
         if (extraParams != null) {
-            if (extraParams.length() > 2000) throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            if (extraParams.length() > CryptoCompareAPIConstant.EXTRA_PARAM_MAX_LENGTH) {
+                throw new InvalidParameterException("The max character length of extraParams is 2000!");
+            }
             formattedUrl += "&extraParams=" + extraParams;
         }
 
