@@ -8,6 +8,8 @@ public class CryptoCompareAPIConstant {
 
 	public static final String MINI_CRYPTO_API_URL = "https://min-api.cryptocompare.com/data";
 
+	public static final String MINI_CRYPTO_API_URL_STATS = "https://min-api.cryptocompare.com/stats";
+
 	public static final int SYMBOL_MAX_LENGTH = 10;
 
 	public static final int SYMBOL_LIST_MAX_LENGTH = 30;

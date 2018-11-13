@@ -5,13 +5,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.models.exchanges.Exchange;
 import me.joshmcfarlin.cryptocompareapi.models.exchanges.ExchangeList;
-import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
-import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class Exchanges {
      * @throws OutOfCallsException when no more API calls are available
      */
     public ExchangeList getAllExchanges() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/all/exchanges", CallTypes.PRICE);
+        Reader r = Connection.getJSONWithLimitVerif(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/all/exchanges");
 
         Type type = new TypeToken<Map<String, Map<String, List<String>>>>() {}.getType();
         Map<String, Map<String, List<String>>> exchangeMap = new Gson().fromJson(r, type);
@@ -73,7 +73,7 @@ public class Exchanges {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         Type type = new TypeToken<List<Exchange>>() {}.getType();
