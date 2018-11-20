@@ -1,16 +1,15 @@
 package me.joshmcfarlin.cryptocompareapi.api;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.models.news.NewsProvider;
 import me.joshmcfarlin.cryptocompareapi.models.news.NewsStory;
-import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
-import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class News {
      * @throws OutOfCallsException when no more API calls are available
      */
     public List<NewsProvider> newsProviderList() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/news/providers", CallTypes.NEWS);
+        Reader r = Connection.getJSONWithLimitVerif(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/news/providers");
 
         Type newsListType = new TypeToken<List<NewsProvider>>() {}.getType();
         return new Gson().fromJson(r, newsListType);
@@ -39,7 +38,7 @@ public class News {
      * @throws OutOfCallsException when no more API calls are available
      */
     public List<NewsStory> newsList() throws IOException, OutOfCallsException {
-        Reader r = Connection.getJSON(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/news/", CallTypes.NEWS);
+        Reader r = Connection.getJSONWithLimitVerif(CryptoCompareAPIConstant.MINI_CRYPTO_API_URL + "/news/");
 
         Type newsListType = new TypeToken<List<NewsStory>>() {}.getType();
         return new Gson().fromJson(r, newsListType);

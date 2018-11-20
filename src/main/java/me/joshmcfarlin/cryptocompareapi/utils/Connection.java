@@ -31,16 +31,15 @@ public class Connection {
     /**
      * Gets JSON data from a provided URL after checking call availability
      * @param urlString The URL to get JSON information from
-     * @param type The type of API call being made
      * @return Reader containing Json information
      * @throws IOException when a connection cannot be made
      * @throws OutOfCallsException when no more API calls are available
      */
-    public static Reader getJSON(String urlString, CallTypes type) throws IOException, OutOfCallsException {
-        if (RateLimiting.callable(type)) {
+    public static Reader getJSONWithLimitVerif(String urlString) throws IOException, OutOfCallsException {
+        if (RateLimiting.callable()) {
             return getJSON(urlString);
         } else {
-            throw new OutOfCallsException(String.format("No more %s calls are left, please try later.", type));
+            throw new OutOfCallsException(String.format("No more calls are left, please try later."));
         }
     }
 }

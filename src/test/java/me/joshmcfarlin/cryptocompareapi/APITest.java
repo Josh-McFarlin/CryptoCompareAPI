@@ -29,7 +29,7 @@ class APITest {
 
     @Test
     void shouldReturnValidAPIUsage() throws IOException {
-        RateLimiting.Rates rates = RateLimiting.getRates();
+        RateLimiting.TotalRate rates = RateLimiting.getRates();
         assertNotNull(rates);
     }
 

@@ -1,15 +1,13 @@
 package me.joshmcfarlin.cryptocompareapi.api;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
-import me.joshmcfarlin.cryptocompareapi.models.social.SocialStats;
-import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
-import me.joshmcfarlin.cryptocompareapi.utils.Connection;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.models.social.SocialStats;
+import me.joshmcfarlin.cryptocompareapi.utils.Connection;
 
-import java.io.*;
-import java.util.List;
+import java.io.IOException;
+import java.io.Reader;
 
 /**
  * Contains methods for requesting information about social media accounts for cryptocurrencies and exchanges
@@ -26,7 +24,7 @@ public class Social {
     public SocialStats getStats(int id) throws IOException, OutOfCallsException {
         String formattedUrl = CryptoCompareAPIConstant.CRYPTO_API_URL + "/socialstats/?id=" + id;
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.OTHER);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
         return new Gson().fromJson(r, SocialStats.class);
     }
 

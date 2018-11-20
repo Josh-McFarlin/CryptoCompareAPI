@@ -5,15 +5,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import me.joshmcfarlin.cryptocompareapi.CryptoCompareAPIConstant;
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.models.market.Coin;
 import me.joshmcfarlin.cryptocompareapi.models.market.ExchangeAverage;
 import me.joshmcfarlin.cryptocompareapi.models.market.Pair;
 import me.joshmcfarlin.cryptocompareapi.models.market.ToSym;
-import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
-import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +75,7 @@ public class Market {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         Type type = new TypeToken<Map<String, Double>>() {}.getType();
         return new Gson().fromJson(r, type);
@@ -133,7 +133,7 @@ public class Market {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         Type type = new TypeToken<Map<String, Map<String, Double>>>() {}.getType();
         return new Gson().fromJson(r, type);
@@ -195,7 +195,7 @@ public class Market {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         Type type = new TypeToken<Map<String, Map<String, ToSym>>>() {}.getType();
@@ -252,7 +252,7 @@ public class Market {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         return new Gson().fromJson(jsonObject.getAsJsonObject("RAW"), ExchangeAverage.class);
@@ -306,7 +306,7 @@ public class Market {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         Type type = new TypeToken<List<Coin>>() {}.getType();
@@ -359,7 +359,7 @@ public class Market {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         Type type = new TypeToken<List<Pair>>() {}.getType();

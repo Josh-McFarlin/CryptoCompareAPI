@@ -1,7 +1,7 @@
 package me.joshmcfarlin.cryptocompareapi;
 
 import me.joshmcfarlin.cryptocompareapi.Exceptions.InvalidParameterException;
-import me.joshmcfarlin.cryptocompareapi.api.*;
+import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.models.coin.CoinSnapshot;
 import me.joshmcfarlin.cryptocompareapi.models.coin.PairSnapshot;
 import me.joshmcfarlin.cryptocompareapi.models.exchanges.Exchange;
@@ -16,9 +16,9 @@ import me.joshmcfarlin.cryptocompareapi.models.mining.Equipment;
 import me.joshmcfarlin.cryptocompareapi.models.news.NewsProvider;
 import me.joshmcfarlin.cryptocompareapi.models.news.NewsStory;
 import me.joshmcfarlin.cryptocompareapi.models.social.SocialStats;
-import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
-import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
+import me.joshmcfarlin.cryptocompareapi.utils.IntervalTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.RateLimiting;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +28,8 @@ public class Example {
 
     private static void rateLimitingTest() throws IOException {
         System.out.println("\nRate Limiting APITest:");
-        RateLimiting.Rates r = RateLimiting.getRates();
-        System.out.println(r.getHour().getCallsMade());
-
-        System.out.println("Are any price calls left?");
-        System.out.println(RateLimiting.callable(CallTypes.PRICE));
+        RateLimiting.TotalRate r = RateLimiting.getRates();
+        System.out.println(r.getData().getCallsLeft().getInterval(IntervalTypes.HOUR));
     }
 
     private static void coinsTest() throws IOException, OutOfCallsException {

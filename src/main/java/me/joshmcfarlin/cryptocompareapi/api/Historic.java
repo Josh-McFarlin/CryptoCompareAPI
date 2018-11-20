@@ -8,7 +8,6 @@ import me.joshmcfarlin.cryptocompareapi.Exceptions.OutOfCallsException;
 import me.joshmcfarlin.cryptocompareapi.models.historic.AverageType;
 import me.joshmcfarlin.cryptocompareapi.models.historic.CalcType;
 import me.joshmcfarlin.cryptocompareapi.models.historic.History;
-import me.joshmcfarlin.cryptocompareapi.utils.CallTypes;
 import me.joshmcfarlin.cryptocompareapi.utils.Connection;
 
 import java.io.IOException;
@@ -89,7 +88,7 @@ public class Historic {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         return new Gson().fromJson(r, History.class);
     }
@@ -184,7 +183,7 @@ public class Historic {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         return new Gson().fromJson(r, History.class);
     }
@@ -279,7 +278,7 @@ public class Historic {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         return new Gson().fromJson(r, History.class);
     }
@@ -362,7 +361,7 @@ public class Historic {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.HISTO);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         return new Gson().fromJson(jsonObject.get(fSym), Map.class);
@@ -446,7 +445,7 @@ public class Historic {
             formattedUrl += "&sign=" + sign.toString();
         }
 
-        Reader r = Connection.getJSON(formattedUrl, CallTypes.PRICE);
+        Reader r = Connection.getJSONWithLimitVerif(formattedUrl);
 
         JsonObject jsonObject = new Gson().fromJson(r, JsonObject.class);
         return jsonObject.get(tSym).getAsDouble();
