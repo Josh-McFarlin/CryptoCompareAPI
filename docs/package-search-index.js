@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"me.joshmcfarlin.cryptocompareapi"},{"l":"me.joshmcfarlin.cryptocompareapi.Exceptions"},{"l":"me.joshmcfarlin.cryptocompareapi.utils"}]
